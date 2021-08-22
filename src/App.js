@@ -1,23 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import GridPlane from "./components/GridPlane";
 
 function App() {
+  const [length, setLength] = useState(10);
+  const [width, setWidth] = useState(20);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <GridPlane length={length} width={width} />
     </div>
   );
 }

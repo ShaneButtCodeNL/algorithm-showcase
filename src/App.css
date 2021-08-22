@@ -1,38 +1,44 @@
-.App {
-  text-align: center;
+:root {
+  --border-color: rgb(0, 0, 0);
+  --origin-color: rgb(16, 247, 8);
+  --end-color: rgb(241, 9, 9);
+  --wall-color: #000;
+  --traveled-color: rgb(26, 12, 223);
+  --checked-color: rgb(101, 91, 231);
+
+  --col-nums: 10;
+  --row-nums: 10;
+  --block-size: 20px;
+  --grid-gap: 3px;
+}
+/**
+Main Page
+**/
+
+/**
+GridPlane
+**/
+#gridPlane {
+  display: grid;
+  gap: var(--grid-gap);
+  grid-template-columns: repeat(var(--col-nums), var(--block-size));
+  grid-template-rows: repeat(var(--row-nums), var(--block-size));
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/**
+GridBlock
+**/
+.gridBlock {
+  width: var(--block-size);
+  height: var(--block-size);
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--border-color);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.gridBlockOrigin {
+  background-color: var(--origin-color);
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.gridBlockEnd {
+  background-color: var(--end-color);
 }
