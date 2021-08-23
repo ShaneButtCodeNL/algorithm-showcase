@@ -16,6 +16,14 @@ Main Page
 **/
 
 /**
+ToolBar
+**/
+.toolBarInput {
+  border: none;
+  width: 6ch;
+}
+
+/**
 GridPlane
 **/
 #gridPlane {
