@@ -23,6 +23,21 @@ ToolBar
   width: 6ch;
 }
 
+#toggleModeDiv {
+  display: inline-block;
+}
+
+.toggleModeItem {
+  display: inline;
+  margin: 0 1ch;
+  padding: 0 0.5ch;
+  border-style: outset;
+  cursor: pointer;
+}
+
+.activeToggleItem {
+  border-style: inset;
+}
 /**
 GridPlane
 **/
@@ -49,4 +64,13 @@ GridBlock
 }
 .gridBlockEnd {
   background-color: var(--end-color);
+}
+.gridBlockWall {
+  background-color: var(--wall-color);
+}
+.gridBlockChecked {
+  background-color: var(--checked-color);
+}
+.gridBlockTraveled {
+  background-color: var(--traveled-color);
 }

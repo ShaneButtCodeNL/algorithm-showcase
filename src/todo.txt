@@ -1,0 +1,6 @@
+[X]  Display grid
+[X]  change size of grid
+[X]  ability to add walls
+[X]  ability to move origin
+[X]  ability to move end point
+[]  implement the algorythm

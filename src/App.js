@@ -26,11 +26,55 @@ function App() {
   const [step, setStep] = useState(0);
   const [origin, setOrigin] = useState(0);
   const [end, setEnd] = useState(length * width - 1);
+  const [addWall, setAddWall] = useState(false);
+  const [changeOrigin, setChangeOrigin] = useState(false);
+  const [changeEnd, setChangeEnd] = useState(false);
+  const [s, setS] = useState(false);
+  const toggleAddWall = () => {
+    setAddWall(!addWall);
+    setChangeEnd(false);
+    setChangeOrigin(false);
+  };
+  const toggleChangeOrigin = () => {
+    setAddWall(false);
+    setChangeEnd(false);
+    setChangeOrigin(!changeOrigin);
+  };
+  const toggleChangeEnd = () => {
+    setAddWall(false);
+    setChangeEnd(!changeEnd);
+    setChangeOrigin(false);
+  };
   const resetGrids = () => {
     setStep(0);
     setOrigin(0);
     setEnd(length * width - 1);
+    setAddWall(false);
+    setChangeEnd(false);
+    setChangeOrigin(false);
     setGrids([makeGrid(length, width)]);
+  };
+  const blockClick = (index) => {
+    const block = grids[step][index];
+    if (addWall) {
+      if (index === origin || index === end) return;
+      block.isWall = !block.isWall;
+      setS(!s);
+      return;
+    }
+    if (changeEnd) {
+      if (index === origin) return;
+      if (block.isWall) return;
+      setEnd(index);
+      return;
+    }
+    if (changeOrigin) {
+      if (index === end) return;
+      if (block.isWall) return;
+      setOrigin(index);
+      return;
+    }
+    console.log("Clicked Block " + index);
   };
   useEffect(() => {
     resetGrids();
@@ -42,6 +86,12 @@ function App() {
         length={length}
         setLength={setLength}
         setWidth={setWidth}
+        toggleAddWall={toggleAddWall}
+        toggleChangeEnd={toggleChangeEnd}
+        toggleChangeOrigin={toggleChangeOrigin}
+        addWall={addWall}
+        changeEnd={changeEnd}
+        changeOrigin={changeOrigin}
       />
       <GridPlane
         length={length}
@@ -49,6 +99,7 @@ function App() {
         grid={grids[step]}
         origin={origin}
         end={end}
+        blockClick={blockClick}
       />
     </div>
   );

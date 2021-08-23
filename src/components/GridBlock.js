@@ -1,16 +1,18 @@
 import { useState } from "react";
 
 export default function GridBlock(props) {
-  const [wall] = useState(props.isWall);
-  const [checked] = useState(props.checked);
-  const [traveled] = useState(props.traveled);
   return (
     <div
-      className={`gridBlock ${wall ? "gridBlockWall" : ""} ${
-        checked ? (traveled ? "gridBlockTraveled" : "gridBlockChecked") : ""
+      className={`gridBlock ${props.isWall ? "gridBlockWall" : ""} ${
+        props.checked
+          ? props.traveled
+            ? "gridBlockTraveled"
+            : "gridBlockChecked"
+          : ""
       } ${props.isOrigin ? "gridBlockOrigin" : ""} ${
         props.isEnd ? "gridBlockEnd" : ""
       }`}
+      onClick={() => props.blockClick(props.index)}
     ></div>
   );
 }

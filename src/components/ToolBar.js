@@ -9,7 +9,7 @@ export default function ToolBar(props) {
   const widthInputRef = useRef(null);
   return (
     <div>
-      <label for="lengthSlider">{`Length: `}</label>
+      <label htmlFor="lengthSlider">{`Length: `}</label>
       <input
         className="toolBarInput"
         ref={lengthInputRef}
@@ -42,7 +42,7 @@ export default function ToolBar(props) {
         min={min}
         max={max}
       />
-      <label for="widthSlider">{`Width: `}</label>
+      <label htmlFor="widthSlider">{`Width: `}</label>
       <input
         className="toolBarInput"
         ref={widthInputRef}
@@ -71,6 +71,32 @@ export default function ToolBar(props) {
         min={min}
         max={max}
       />
+      <div id="toggleModeDiv">
+        <div
+          className={`toggleModeItem ${
+            props.addWall ? "activeToggleItem" : ""
+          }`}
+          onClick={() => props.toggleAddWall()}
+        >
+          Add Wall
+        </div>
+        <div
+          className={`toggleModeItem ${
+            props.changeOrigin ? "activeToggleItem" : ""
+          }`}
+          onClick={() => props.toggleChangeOrigin()}
+        >
+          Move Origin
+        </div>
+        <div
+          className={`toggleModeItem ${
+            props.changeEnd ? "activeToggleItem" : ""
+          }`}
+          onClick={() => props.toggleChangeEnd()}
+        >
+          Move End
+        </div>
+      </div>
     </div>
   );
 }
