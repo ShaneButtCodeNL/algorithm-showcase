@@ -59,12 +59,6 @@ GridBlock
   border-color: var(--border-color);
 }
 
-.gridBlockOrigin {
-  background-color: var(--origin-color);
-}
-.gridBlockEnd {
-  background-color: var(--end-color);
-}
 .gridBlockWall {
   background-color: var(--wall-color);
 }
@@ -73,4 +67,10 @@ GridBlock
 }
 .gridBlockTraveled {
   background-color: var(--traveled-color);
+}
+.gridBlockOrigin {
+  background-color: var(--origin-color);
+}
+.gridBlockEnd {
+  background-color: var(--end-color);
 }

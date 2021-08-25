@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { BFS } from "./PathFinding";
 import GridPlane from "./components/GridPlane";
 import ToolBar from "./components/ToolBar";
 /**
@@ -19,6 +20,7 @@ const getEuclidianDistance = (x1, y1, x2, y2) =>
  * @returns GridBlock[]
  */
 const makeGrid = (l, w) => {
+  console.log("MakeGrid:", l, w);
   return Array.from({ length: (w || 10) * (l || 10) }, (_, i) => {
     return {
       isWall: false,
@@ -31,11 +33,12 @@ const makeGrid = (l, w) => {
   });
 };
 function App() {
-  const [length, setLength] = useState(10);
-  const [width, setWidth] = useState(20);
-  const [grids, setGrids] = useState([makeGrid(length, width)]);
-  const [grid, setGrid] = useState(grids[0]);
+  const [length, setLength] = useState(5);
+  const [width, setWidth] = useState(5);
+  const [grid, setGrid] = useState(() => makeGrid(5, 5));
+  const [grids, setGrids] = useState([grid]);
   const [step, setStep] = useState(0);
+  const [maxSteps, setMaxSteps] = useState(1);
   const [origin, setOrigin] = useState(0);
   const [end, setEnd] = useState(length * width - 1);
   const [addWall, setAddWall] = useState(false);
@@ -59,19 +62,28 @@ function App() {
   };
   const resetGrids = () => {
     setStep(0);
+    setMaxSteps(1);
     setOrigin(0);
     setEnd(length * width - 1);
     setAddWall(false);
     setChangeEnd(false);
     setChangeOrigin(false);
-    setGrids([makeGrid(length, width)]);
+    setGrid(() => makeGrid(length, width));
+    setGrids([grid]);
+  };
+  const applySearch = (id) => {
+    if (id === 1) {
+      BFS(grid, setGrids, origin, end, length, width);
+      console.log("MaxSteps:", maxSteps);
+      return;
+    }
   };
   const blockClick = (index) => {
-    const block = grids[step][index];
+    const block = grid[index];
     if (addWall) {
       if (index === origin || index === end) return;
       block.isWall = !block.isWall;
-      setS(!s);
+      setGrids([grid]);
       return;
     }
     if (changeEnd) {
@@ -99,14 +111,21 @@ function App() {
   useEffect(() => {
     resetGrids();
   }, [length, width]);
+  useEffect(() => {
+    setMaxSteps(grids.length - 1);
+  }, [grids]);
+  useEffect(() => {
+    setGrid(grids[step]);
+  }, [step]);
   return (
     <div className="App">
       <ToolBar
         width={width}
         length={length}
         step={step}
-        grid={grid}
-        setStep={setStep}
+        maxSteps={maxSteps}
+        applySearch={applySearch}
+        changeStep={setStep}
         setLength={setLength}
         setWidth={setWidth}
         toggleAddWall={toggleAddWall}
@@ -119,7 +138,7 @@ function App() {
       <GridPlane
         length={length}
         width={width}
-        grid={grids[step]}
+        grid={grid}
         origin={origin}
         end={end}
         blockClick={blockClick}

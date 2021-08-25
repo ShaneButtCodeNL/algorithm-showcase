@@ -9,10 +9,12 @@ export default function GridBlock(props) {
             ? "gridBlockTraveled"
             : "gridBlockChecked"
           : ""
-      } ${props.isOrigin ? "gridBlockOrigin" : ""} ${
-        props.isEnd ? "gridBlockEnd" : ""
+      } ${props.isEnd ? "gridBlockEnd" : ""} ${
+        props.isOrigin ? "gridBlockOrigin" : ""
       }`}
       onClick={() => props.blockClick(props.index)}
-    ></div>
+    >
+      {props.index}
+    </div>
   );
 }

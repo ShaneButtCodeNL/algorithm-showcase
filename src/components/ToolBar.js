@@ -1,12 +1,15 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const min = 2;
 const max = 100;
 export default function ToolBar(props) {
+  const [algo, setAlgo] = useState(1);
   const lengthSlideRef = useRef(null);
   const lengthInputRef = useRef(null);
   const widthSlideRef = useRef(null);
   const widthInputRef = useRef(null);
+  const algoSelectRef = useRef(null);
+  const stepRef = useRef(null);
   return (
     <div>
       <label htmlFor="lengthSlider">{`Length: `}</label>
@@ -25,8 +28,8 @@ export default function ToolBar(props) {
             lengthInputRef.current.value = min;
           if (lengthInputRef.current.value > max)
             lengthInputRef.current.value = max;
-          props.setLength(lengthInputRef.current.value);
-          lengthSlideRef.current.value = "" + lengthInputRef.current.value;
+          props.setLength(parseInt(lengthInputRef.current.value));
+          lengthSlideRef.current.value = lengthInputRef.current.value;
         }}
       />
       <input
@@ -54,8 +57,8 @@ export default function ToolBar(props) {
           if (!widthInputRef.current.value) widthInputRef.current.value = min;
           if (widthInputRef.current.value > max)
             widthInputRef.current.value = max;
-          props.setWidth(widthInputRef.current.value);
-          widthSlideRef.current.value = "" + widthInputRef.current.value;
+          props.setWidth(parseInt(widthInputRef.current.value));
+          widthSlideRef.current.value = widthInputRef.current.value;
         }}
       />
       <input
@@ -96,6 +99,28 @@ export default function ToolBar(props) {
         >
           Move End
         </div>
+      </div>
+      <div id="pathAlgoSelectDiv">
+        <select
+          ref={algoSelectRef}
+          onChange={() => setAlgo(parseInt(algoSelectRef.current.value))}
+        >
+          <option value={1}>Bredth First Search</option>
+          <option value={2}>A* (Not Implemented)</option>
+        </select>
+        <button onClick={() => props.applySearch(algo)}>Solve</button>
+      </div>
+      <div id="stepControlDiv">
+        <input
+          type="number"
+          ref={stepRef}
+          defaultValue={props.step}
+          min={0}
+          max={props.maxSteps}
+          onChange={() => {
+            props.changeStep(stepRef.current.value);
+          }}
+        />
       </div>
     </div>
   );
