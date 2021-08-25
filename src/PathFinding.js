@@ -1,5 +1,5 @@
-const posToXY = (pos, l, w) => [Math.floor(pos / l), pos % w];
-const XYtoPos = (x, y, l) => x * l + y;
+const posToXY = (pos, l, w) => [Math.floor(pos / w), pos % w];
+const XYtoPos = (x, y, w) => x * w + y;
 
 export function BFS(grid, setGrids, origin, end, length, width) {
   let queue = [grid[origin]];
@@ -10,14 +10,14 @@ export function BFS(grid, setGrids, origin, end, length, width) {
     }),
   ];
   console.log(stepGrid);
-  console.log("Starting BFS", origin, end);
+  console.log("Starting BFS", origin, end, length, width);
   while (queue.length) {
     let block = queue.shift();
     const [x, y] = posToXY(block.pos, length, width);
 
     //Up
     if (x > 0) {
-      let newPos = XYtoPos(x - 1, y, length);
+      let newPos = XYtoPos(x - 1, y, width);
       //End Found
       if (newPos === end) {
         grid[newPos].prev = block.pos;
@@ -43,7 +43,7 @@ export function BFS(grid, setGrids, origin, end, length, width) {
     }
     //Right
     if (y < width - 1) {
-      let newPos = XYtoPos(x, y + 1, length);
+      let newPos = XYtoPos(x, y + 1, width);
       //End Found
       if (newPos === end) {
         grid[newPos].prev = block.pos;
@@ -69,7 +69,7 @@ export function BFS(grid, setGrids, origin, end, length, width) {
     }
     //Down
     if (x < length - 1) {
-      let newPos = XYtoPos(x + 1, y, length);
+      let newPos = XYtoPos(x + 1, y, width);
       //End Found
       if (newPos === end) {
         grid[newPos].prev = block.pos;
@@ -95,7 +95,7 @@ export function BFS(grid, setGrids, origin, end, length, width) {
     }
     //Left
     if (y > 0) {
-      let newPos = XYtoPos(x, y - 1, length);
+      let newPos = XYtoPos(x, y - 1, width);
       //End Found
       if (newPos === end) {
         grid[newPos].prev = block.pos;
