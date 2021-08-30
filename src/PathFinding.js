@@ -1,14 +1,14 @@
 const posToXY = (pos, l, w) => [Math.floor(pos / w), pos % w];
 const XYtoPos = (x, y, w) => x * w + y;
 
-export function BFS(grid, setGrids, origin, end, length, width) {
+export async function BFS(grid, setGrids, origin, end, length, width) {
   let queue = [grid[origin]];
-  grid[origin].checked = true;
   let stepGrid = [
     grid.map((v) => {
       return { ...v };
     }),
   ];
+  grid[origin].checked = true;
   console.log(stepGrid);
   console.log("Starting BFS", origin, end, length, width);
   while (queue.length) {

@@ -3,4 +3,9 @@
 [X]  ability to add walls
 [X]  ability to move origin
 [X]  ability to move end point
-[]  implement the algorythm
+[X]  implement the algorythm
+[]  have grid update when adding wall or moveng origin/end
+        -Half way there works on every second update
+
+bugs:
+-Gridsand grid not updateing in BFS each time

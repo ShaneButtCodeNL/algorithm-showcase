@@ -1,9 +1,8 @@
 import { useRef, useState } from "react";
 
 const min = 2;
-const max = 100;
+const max = 25;
 export default function ToolBar(props) {
-  const [algo, setAlgo] = useState(1);
   const lengthSlideRef = useRef(null);
   const lengthInputRef = useRef(null);
   const widthSlideRef = useRef(null);
@@ -103,12 +102,12 @@ export default function ToolBar(props) {
       <div id="pathAlgoSelectDiv">
         <select
           ref={algoSelectRef}
-          onChange={() => setAlgo(parseInt(algoSelectRef.current.value))}
+          onChange={() => props.setAlgo(parseInt(algoSelectRef.current.value))}
         >
           <option value={1}>Bredth First Search</option>
           <option value={2}>A* (Not Implemented)</option>
         </select>
-        <button onClick={() => props.applySearch(algo)}>Solve</button>
+        <button onClick={() => props.applySearch(props.algo)}>Solve</button>
       </div>
       <div id="stepControlDiv">
         <input
@@ -118,6 +117,12 @@ export default function ToolBar(props) {
           min={0}
           max={props.maxSteps}
           onChange={() => {
+            if (
+              stepRef.current.value === "" ||
+              stepRef.current.value < 0 ||
+              stepRef.current.value > props.maxSteps
+            )
+              return;
             props.changeStep(stepRef.current.value);
           }}
         />

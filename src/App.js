@@ -44,7 +44,8 @@ function App() {
   const [addWall, setAddWall] = useState(false);
   const [changeOrigin, setChangeOrigin] = useState(false);
   const [changeEnd, setChangeEnd] = useState(false);
-  const [s, setS] = useState(false);
+  const [solved, setSolved] = useState(false);
+  const [algoID, setAlgoID] = useState(1);
   const toggleAddWall = () => {
     setAddWall(!addWall);
     setChangeEnd(false);
@@ -70,15 +71,43 @@ function App() {
     setChangeOrigin(false);
     setGrid(() => makeGrid(length, width));
     setGrids([grid]);
+    setSolved(false);
   };
-  const applySearch = (id) => {
+  const applySearch = async (id) => {
     if (id === 1) {
-      BFS(grid, setGrids, origin, end, length, width);
-      console.log("MaxSteps:", maxSteps);
+      await BFS(grid, setGrids, origin, end, length, width);
+      setSolved(true);
       return;
     }
   };
-  const blockClick = (index) => {
+  const blockClick = async (index) => {
+    if (solved) {
+      console.log(
+        "Entered blockClick solved block \ngrids:",
+        grids.length,
+        grid
+      );
+      let newGrid = grids[0];
+      let block = newGrid[index];
+      setSolved((s) => false);
+      if (addWall) {
+        if (index === origin || index === end) return;
+        block.isWall = !block.isWall;
+      }
+      if (changeEnd) {
+        if (index === origin || index === end || block.isWall) return;
+        setEnd(index);
+      }
+      if (changeOrigin) {
+        if (index === origin || index === end || block.isWall) return;
+        setOrigin(index);
+      }
+      setGrid(newGrid);
+      setGrids([newGrid]);
+      await applySearch(algoID);
+      console.log(grids.length, grid);
+      return;
+    }
     const block = grid[index];
     if (addWall) {
       if (index === origin || index === end) return;
@@ -113,6 +142,7 @@ function App() {
   }, [length, width]);
   useEffect(() => {
     setMaxSteps(grids.length - 1);
+    setStep(grids.length - 1);
   }, [grids]);
   useEffect(() => {
     setGrid(grids[step]);
@@ -134,6 +164,8 @@ function App() {
         addWall={addWall}
         changeEnd={changeEnd}
         changeOrigin={changeOrigin}
+        algo={algoID}
+        setAlgo={setAlgoID}
       />
       <GridPlane
         length={length}
