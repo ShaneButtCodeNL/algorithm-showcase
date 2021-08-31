@@ -28,7 +28,6 @@ const makeGrid = (l, w) => {
       traveled: false,
       prev: i,
       pos: i,
-      cost: 0,
     };
   });
 };
@@ -62,6 +61,7 @@ function App() {
     setChangeOrigin(false);
   };
   const resetGrids = () => {
+    const newGrid = makeGrid(length, width);
     setStep(0);
     setMaxSteps(1);
     setOrigin(0);
@@ -69,15 +69,31 @@ function App() {
     setAddWall(false);
     setChangeEnd(false);
     setChangeOrigin(false);
-    setGrid(() => makeGrid(length, width));
-    setGrids([grid]);
+    setGrid(newGrid);
+    setGrids([newGrid]);
+    setSolved(false);
+  };
+  const resetSearch = () => {
+    let newGrid = grid.map((v, i) => {
+      let block = { ...v };
+      block.prev = i;
+      block.traveled = false;
+      block.checked = false;
+      return block;
+    });
+    setStep(0);
+    setGrid(newGrid);
+    setGrids([newGrid]);
     setSolved(false);
   };
   const applySearch = async (id) => {
+    let newGrid = [...grids[0]].map((v) => {
+      return { ...v };
+    });
     if (id === 1) {
-      await BFS(grid, setGrids, origin, end, length, width);
+      let res = await BFS(newGrid, origin, end, length, width);
       setSolved(true);
-      return;
+      return res;
     }
   };
   const blockClick = async (index) => {
@@ -87,25 +103,30 @@ function App() {
         grids.length,
         grid
       );
-      let newGrid = grids[0];
-      let block = newGrid[index];
-      setSolved((s) => false);
+      //let newGrid = grids[0];
+      //let block = newGrid[index];
       if (addWall) {
         if (index === origin || index === end) return;
+        resetSearch();
+        const newGrid = grid.map((v) => {
+          return { ...v };
+        });
+        let block = newGrid[index];
         block.isWall = !block.isWall;
+        applySearch(algoID).then((res) => setGrids(res));
       }
       if (changeEnd) {
-        if (index === origin || index === end || block.isWall) return;
+        if (index === origin || index === end || grid[index].isWall) return;
         setEnd(index);
       }
       if (changeOrigin) {
-        if (index === origin || index === end || block.isWall) return;
+        if (index === origin || index === end || grid[index].isWall) return;
         setOrigin(index);
       }
-      setGrid(newGrid);
-      setGrids([newGrid]);
-      await applySearch(algoID);
-      console.log(grids.length, grid);
+      //setGrid(newGrid);
+      //setGrids([newGrid]);
+      //await applySearch(algoID);
+      console.log("SolvedBlockClickEnd: ", grids.length, grid);
       return;
     }
     const block = grid[index];
@@ -154,6 +175,7 @@ function App() {
         length={length}
         step={step}
         maxSteps={maxSteps}
+        setGrids={setGrids}
         applySearch={applySearch}
         changeStep={setStep}
         setLength={setLength}

@@ -107,7 +107,13 @@ export default function ToolBar(props) {
           <option value={1}>Bredth First Search</option>
           <option value={2}>A* (Not Implemented)</option>
         </select>
-        <button onClick={() => props.applySearch(props.algo)}>Solve</button>
+        <button
+          onClick={async () =>
+            props.applySearch(props.algo).then((res) => props.setGrids(res))
+          }
+        >
+          Solve
+        </button>
       </div>
       <div id="stepControlDiv">
         <input
