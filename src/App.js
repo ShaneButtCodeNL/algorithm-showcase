@@ -60,6 +60,10 @@ function App() {
     setChangeEnd(!changeEnd);
     setChangeOrigin(false);
   };
+  const changeStep = (num) => {
+    setStep(num);
+    setGrid(grids[num]);
+  };
   const resetGrids = () => {
     const newGrid = makeGrid(length, width);
     setStep(0);
@@ -73,7 +77,7 @@ function App() {
     setGrids([newGrid]);
     setSolved(false);
   };
-  const resetSearch = () => {
+  const resetSearch = async () => {
     let newGrid = grid.map((v, i) => {
       let block = { ...v };
       block.prev = i;
@@ -82,17 +86,20 @@ function App() {
       return block;
     });
     setStep(0);
+    setMaxSteps(1);
     setGrid(newGrid);
     setGrids([newGrid]);
     setSolved(false);
   };
-  const applySearch = async (id) => {
-    let newGrid = [...grids[0]].map((v) => {
+  const applySearch = async (id, grid) => {
+    let newGrid = [...grid].map((v) => {
       return { ...v };
     });
     if (id === 1) {
       let res = await BFS(newGrid, origin, end, length, width);
       setSolved(true);
+      setMaxSteps(res.length - 1);
+      setStep(res.length - 1);
       return res;
     }
   };
@@ -103,17 +110,20 @@ function App() {
         grids.length,
         grid
       );
-      //let newGrid = grids[0];
-      //let block = newGrid[index];
       if (addWall) {
         if (index === origin || index === end) return;
-        resetSearch();
-        const newGrid = grid.map((v) => {
+        await resetSearch();
+        const newGrid = grids[0].map((v) => {
           return { ...v };
         });
         let block = newGrid[index];
         block.isWall = !block.isWall;
-        applySearch(algoID).then((res) => setGrids(res));
+        applySearch(algoID, newGrid).then((res) => {
+          setGrids(res);
+          setGrid(res[res.length - 1]);
+          setStep(res.length - 1);
+          setMaxSteps(res.length - 1);
+        });
       }
       if (changeEnd) {
         if (index === origin || index === end || grid[index].isWall) return;
@@ -162,11 +172,7 @@ function App() {
     resetGrids();
   }, [length, width]);
   useEffect(() => {
-    setMaxSteps(grids.length - 1);
-    setStep(grids.length - 1);
-  }, [grids]);
-  useEffect(() => {
-    setGrid(grids[step]);
+    document.getElementById("pathStepDisplay").value = step;
   }, [step]);
   return (
     <div className="App">
@@ -174,10 +180,12 @@ function App() {
         width={width}
         length={length}
         step={step}
+        grid={grid}
         maxSteps={maxSteps}
+        setGrid={setGrid}
         setGrids={setGrids}
         applySearch={applySearch}
-        changeStep={setStep}
+        changeStep={changeStep}
         setLength={setLength}
         setWidth={setWidth}
         toggleAddWall={toggleAddWall}
@@ -197,6 +205,7 @@ function App() {
         end={end}
         blockClick={blockClick}
       />
+      <div>{`step:${step}\nmaxStep:${maxSteps}\ngrid:${grid}`}</div>
     </div>
   );
 }

@@ -109,7 +109,10 @@ export default function ToolBar(props) {
         </select>
         <button
           onClick={async () =>
-            props.applySearch(props.algo).then((res) => props.setGrids(res))
+            props.applySearch(props.algo, props.grid).then((res) => {
+              props.setGrids([...res]);
+              props.setGrid([...res][res.length - 1]);
+            })
           }
         >
           Solve
@@ -117,6 +120,7 @@ export default function ToolBar(props) {
       </div>
       <div id="stepControlDiv">
         <input
+          id="pathStepDisplay"
           type="number"
           ref={stepRef}
           defaultValue={props.step}
