@@ -5,6 +5,7 @@
   --wall-color: #000;
   --traveled-color: rgb(243, 229, 34);
   --checked-color: rgb(0, 174, 255);
+  --path-color: rgb(255, 136, 0);
 
   --col-nums: 10;
   --row-nums: 10;
@@ -73,4 +74,7 @@ GridBlock
 }
 .gridBlockEnd {
   background-color: var(--end-color);
+}
+.gridBlockPath {
+  background-color: var(--path-color);
 }

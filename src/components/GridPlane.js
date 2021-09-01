@@ -15,6 +15,7 @@ export default function GridPlane(props) {
           isWall={block.isWall}
           traveled={block.traveled}
           checked={block.checked}
+          path={block.path}
           blockClick={props.blockClick}
         />
       ))}

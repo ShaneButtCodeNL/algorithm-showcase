@@ -11,7 +11,7 @@ export default function GridBlock(props) {
           : ""
       } ${props.isEnd ? "gridBlockEnd" : ""} ${
         props.isOrigin ? "gridBlockOrigin" : ""
-      }`}
+      } ${props.path ? "gridBlockPath" : ""}`}
       onClick={async () => await props.blockClick(props.index)}
     >
       {props.index}

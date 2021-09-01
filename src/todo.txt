@@ -4,8 +4,10 @@
 [X]  ability to move origin
 [X]  ability to move end point
 [X]  implement the algorythm
+[X]  Show Path Build
 []  have grid update when adding wall or moveng origin/end
-        -Half way there works on every second update
+        -works with wall
+        -needs implementeing for origin/end move
 
 bugs:
--Gridsand grid not updateing in BFS each time
+*Fixed Gridsand grid not updateing in BFS each time

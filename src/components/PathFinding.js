@@ -28,6 +28,7 @@ const makeGrid = (l, w) => {
       traveled: false,
       prev: i,
       pos: i,
+      path: false,
     };
   });
 };

@@ -20,17 +20,30 @@ const cloneGrid = (grid) =>
 const validBlock = (blk) => {
   return !blk.isWall && !blk.checked;
 };
-const processBlock = (grid, steps, queue, block, end, x, y, width) => {
+const buildPath = (grids, origin, end) => {
+  const stack = [];
+  let grid = cloneGrid(grids[grids.length - 1]);
+  let block = grid[end];
+  while (block.prev !== block.pos) {
+    stack.push(block.pos);
+    block = grid[block.prev];
+  }
+  stack.push(origin);
+  while (stack.length) {
+    let pos = stack.pop();
+    grid[pos].path = true;
+    grids.push(cloneGrid(grid));
+  }
+  return grids;
+};
+const processBlock = (grid, steps, queue, block, end, x, y, width, origin) => {
   const pos = XYtoPos(x, y, width);
-  console.log(pos, end);
   if (pos === end) {
-    console.log("\tFoundEND");
     grid[pos].prev = block.pos;
     steps.push(cloneGrid(grid));
-    return steps;
+    return buildPath(steps, origin, end);
   }
   const newBlock = grid[pos];
-  console.log(x, y, pos, grid, newBlock);
   if (validBlock(newBlock)) {
     newBlock.prev = block.pos;
     newBlock.checked = true;
@@ -40,16 +53,6 @@ const processBlock = (grid, steps, queue, block, end, x, y, width) => {
   return steps;
 };
 export async function BFS(grid, origin, end, length, width) {
-  console.log(
-    "BFS2 called. . .\nOrigin: ",
-    origin,
-    " End: ",
-    end,
-    "Length: ",
-    length,
-    "Width: ",
-    width
-  );
   //Queue for blocks we can expand
   let queue = [];
   //Current state of the grid
@@ -72,11 +75,8 @@ export async function BFS(grid, origin, end, length, width) {
     if (x > 0) {
       const newPos = XYtoPos(x - 1, y, width);
       console.log("in bfs", newPos);
-
       //up is End
       if (newPos === end) {
-        console.log("\t\tFoundEND");
-
         return processBlock(
           currentGrid,
           stepGrid,
@@ -85,7 +85,8 @@ export async function BFS(grid, origin, end, length, width) {
           end,
           x - 1,
           y,
-          width
+          width,
+          origin
         );
       }
       processBlock(currentGrid, stepGrid, queue, block, end, x - 1, y, width);
@@ -93,12 +94,8 @@ export async function BFS(grid, origin, end, length, width) {
     //Check Right x y+1
     if (y < width - 1) {
       const newPos = XYtoPos(x, y + 1, width);
-      console.log("in bfs", newPos);
-
       //Right is End
       if (newPos === end) {
-        console.log("\t\tFoundEND");
-
         return processBlock(
           currentGrid,
           stepGrid,
@@ -107,7 +104,8 @@ export async function BFS(grid, origin, end, length, width) {
           end,
           x,
           y + 1,
-          width
+          width,
+          origin
         );
       }
       processBlock(currentGrid, stepGrid, queue, block, end, x, y + 1, width);
@@ -115,12 +113,8 @@ export async function BFS(grid, origin, end, length, width) {
     //Check for down x+1,y
     if (x < length - 1) {
       const newPos = XYtoPos(x + 1, y, width);
-      console.log("in bfs", newPos);
-
       //Down is End
       if (newPos === end) {
-        console.log("\t\tFoundEND");
-
         return processBlock(
           currentGrid,
           stepGrid,
@@ -129,7 +123,8 @@ export async function BFS(grid, origin, end, length, width) {
           end,
           x + 1,
           y,
-          width
+          width,
+          origin
         );
       }
       processBlock(currentGrid, stepGrid, queue, block, end, x + 1, y, width);
@@ -137,10 +132,8 @@ export async function BFS(grid, origin, end, length, width) {
     //Check left x y-1
     if (y > 0) {
       const newPos = XYtoPos(x, y - 1, width);
-      console.log("in bfs", newPos);
       //Left is End
       if (newPos === end) {
-        console.log("\t\tFoundEND");
         return processBlock(
           currentGrid,
           stepGrid,
@@ -149,7 +142,8 @@ export async function BFS(grid, origin, end, length, width) {
           end,
           x,
           y - 1,
-          width
+          width,
+          origin
         );
       }
       processBlock(currentGrid, stepGrid, queue, block, end, x, y - 1, width);
