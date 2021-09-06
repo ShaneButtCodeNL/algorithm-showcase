@@ -109,10 +109,12 @@ export default function ToolBar(props) {
         </select>
         <button
           onClick={async () =>
-            props.applySearch(props.algo, props.grid).then((res) => {
-              props.setGrids([...res]);
-              props.setGrid([...res][res.length - 1]);
-            })
+            props
+              .applySearch(props.algo, props.grid, props.origin, props.end)
+              .then((res) => {
+                props.setGrids([...res]);
+                props.setGrid([...res][res.length - 1]);
+              })
           }
         >
           Solve

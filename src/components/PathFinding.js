@@ -92,7 +92,7 @@ export default function PathFinding(props) {
     setGrids([newGrid]);
     setSolved(false);
   };
-  const applySearch = async (id, grid) => {
+  const applySearch = async (id, grid, origin, end) => {
     let newGrid = [...grid].map((v) => {
       return { ...v };
     });
@@ -119,7 +119,7 @@ export default function PathFinding(props) {
         });
         let block = newGrid[index];
         block.isWall = !block.isWall;
-        applySearch(algoID, newGrid).then((res) => {
+        applySearch(algoID, newGrid, origin, end).then((res) => {
           setGrids(res);
           setGrid(res[res.length - 1]);
           setStep(res.length - 1);
@@ -129,10 +129,30 @@ export default function PathFinding(props) {
       if (changeEnd) {
         if (index === origin || index === end || grid[index].isWall) return;
         setEnd(index);
+        await resetSearch();
+        const newGrid = grids[0].map((v) => {
+          return { ...v };
+        });
+        applySearch(algoID, newGrid, origin, index).then((res) => {
+          setGrids(res);
+          setGrid(res[res.length - 1]);
+          setStep(res.length - 1);
+          setMaxSteps(res.length - 1);
+        });
       }
       if (changeOrigin) {
         if (index === origin || index === end || grid[index].isWall) return;
         setOrigin(index);
+        await resetSearch();
+        const newGrid = grids[0].map((v) => {
+          return { ...v };
+        });
+        applySearch(algoID, newGrid, index, end).then((res) => {
+          setGrids(res);
+          setGrid(res[res.length - 1]);
+          setStep(res.length - 1);
+          setMaxSteps(res.length - 1);
+        });
       }
       //setGrid(newGrid);
       //setGrids([newGrid]);
@@ -182,6 +202,8 @@ export default function PathFinding(props) {
         length={length}
         step={step}
         grid={grid}
+        origin={origin}
+        end={end}
         maxSteps={maxSteps}
         setGrid={setGrid}
         setGrids={setGrids}

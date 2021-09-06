@@ -5,9 +5,8 @@
 [X]  ability to move end point
 [X]  implement the algorythm
 [X]  Show Path Build
-[]  have grid update when adding wall or moveng origin/end
-        -works with wall
-        -needs implementeing for origin/end move
+[X]  have grid update when adding wall or moveng origin/end
+[]  implement A* algo
 
 bugs:
-*Fixed Gridsand grid not updateing in BFS each time
+*Fixed* Gridsand grid not updateing in BFS each time
