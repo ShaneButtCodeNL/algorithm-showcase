@@ -29,6 +29,7 @@ const makeGrid = (l, w) => {
       prev: i,
       pos: i,
       path: false,
+      cost: 0,
     };
   });
 };
@@ -84,6 +85,7 @@ export default function PathFinding(props) {
       block.prev = i;
       block.traveled = false;
       block.checked = false;
+      block.cost = 0;
       return block;
     });
     setStep(0);

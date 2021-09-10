@@ -20,6 +20,9 @@ const cloneGrid = (grid) =>
 const validBlock = (blk) => {
   return !blk.isWall && !blk.checked;
 };
+const getEuclidianDistance = (x1, y1, x2, y2) => {
+  return Math.sqrt(Math.abs(x2 - x1) ** 2 + Math.abs(y2 - y1) ** 2);
+};
 const buildPath = (grids, origin, end) => {
   const stack = [];
   let grid = cloneGrid(grids[grids.length - 1]);
