@@ -47,17 +47,27 @@ export class MinPriorityQueue {
     let i = 0;
     while (this.#hasLeftChild(i)) {
       let smallerChildIndex = this.#getLeftIndex(i);
-      if (this.#hasRightChild(i) && this.#getRight(i) < this.#getLeft(i)) {
+      if (
+        this.#hasRightChild(i) &&
+        this.comparator(this.#getRight(i), this.#getLeft(i)) === -1
+      ) {
         smallerChildIndex = this.#getRightIndex(i);
       }
-      if (this.elements[i] < this.elements[smallerChildIndex]) break;
+      if (
+        this.comparator(this.elements[i], this.elements[smallerChildIndex]) ===
+        -1
+      )
+        break;
       this.#swap(i, smallerChildIndex);
       i = smallerChildIndex;
     }
   }
   #heapifyUp() {
     let i = this.size() - 1;
-    while (this.#hasParent(i) && this.#getParent(i) > this.elements[i]) {
+    while (
+      this.#hasParent(i) &&
+      this.comparator(this.elements[i], this.#getParent(i)) === -1
+    ) {
       this.#swap(i, this.#getParentIndex(i));
       i = this.#getParentIndex(i);
     }

@@ -6,6 +6,7 @@
 [X]  implement the algorythm
 [X]  Show Path Build
 [X]  have grid update when adding wall or moveng origin/end
+[X]  implement PriortyQueue
 []  implement A* algo
 
 bugs:

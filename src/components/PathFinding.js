@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BFS } from "./Scripts/PathFinding";
+import { BFS, AStar } from "./Scripts/PathFinding";
 import GridPlane from "./GridPlane";
 import ToolBar from "./ToolBar";
 
@@ -30,6 +30,7 @@ const makeGrid = (l, w) => {
       pos: i,
       path: false,
       cost: 0,
+      blocksTraveled: 0,
     };
   });
 };
@@ -100,6 +101,13 @@ export default function PathFinding(props) {
     });
     if (id === 1) {
       let res = await BFS(newGrid, origin, end, length, width);
+      setSolved(true);
+      setMaxSteps(res.length - 1);
+      setStep(res.length - 1);
+      return res;
+    }
+    if (id === 2) {
+      let res = await AStar(newGrid, origin, end, length, width);
       setSolved(true);
       setMaxSteps(res.length - 1);
       setStep(res.length - 1);
