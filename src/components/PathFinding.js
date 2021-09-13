@@ -4,16 +4,6 @@ import GridPlane from "./GridPlane";
 import ToolBar from "./ToolBar";
 
 /**
- * Find Eclidian distance between two points
- * @param {Number} x1 X value of first point
- * @param {Number} y1 Y value of first point
- * @param {Number} x2 X value of second point
- * @param {Number} y2 Y value of second point
- * @returns {Number} The Eclidian distance
- */
-const getEuclidianDistance = (x1, y1, x2, y2) =>
-  Math.sqrt(Math.abs(x2 - x1) ** 2 + Math.abs(y2 - y1) ** 2);
-/**
  *  Makes a 2d grid of determined size
  * @param {number} l The Horazontal Length of the grid defaults to 10 if 0 or un defined
  * @param {number} w The Verticle Height of the grid defaults to 10 if 0 or undefined
@@ -30,7 +20,8 @@ const makeGrid = (l, w) => {
       pos: i,
       path: false,
       cost: 0,
-      blocksTraveled: 0,
+      costToTravelTo: 0,
+      costToTravelFrom: 0,
     };
   });
 };
@@ -190,14 +181,6 @@ export default function PathFinding(props) {
       return;
     }
     console.log("Clicked Block " + index);
-  };
-  const costToEnd = (pos) => {
-    return getEuclidianDistance(
-      Math.floor(pos / length),
-      pos % width,
-      Math.floor(end / length),
-      end % width
-    );
   };
   useEffect(() => {
     resetGrids();

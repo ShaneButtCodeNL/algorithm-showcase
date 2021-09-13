@@ -9,8 +9,10 @@
 
   --col-nums: 10;
   --row-nums: 10;
-  --block-size: 20px;
+  --block-size: 70px;
   --grid-gap: 3px;
+  --block-font-size: 0.5em;
+  --block-line-height: 1em;
 }
 /**
 Main Page
@@ -47,6 +49,7 @@ GridPlane
   gap: var(--grid-gap);
   grid-template-columns: repeat(var(--col-nums), var(--block-size));
   grid-template-rows: repeat(var(--row-nums), var(--block-size));
+  white-space: pre;
 }
 
 /**
@@ -58,6 +61,8 @@ GridBlock
   border-style: solid;
   border-width: 1px;
   border-color: var(--border-color);
+  font-size: var(--block-font-size);
+  line-height: var(--block-line-height);
 }
 
 .gridBlockWall {

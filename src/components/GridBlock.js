@@ -14,7 +14,7 @@ export default function GridBlock(props) {
       } ${props.path ? "gridBlockPath" : ""}`}
       onClick={async () => await props.blockClick(props.index)}
     >
-      {props.index}
+      {`Index:${props.index}\nhCost:${props.hCost}\nfCost:${props.fCost}\nCost:${props.cost}`}
     </div>
   );
 }

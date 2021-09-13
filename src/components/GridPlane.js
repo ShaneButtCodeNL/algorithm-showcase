@@ -17,6 +17,9 @@ export default function GridPlane(props) {
           checked={block.checked}
           path={block.path}
           blockClick={props.blockClick}
+          hCost={block.costToTravelTo}
+          fCost={block.costToTravelFrom}
+          cost={block.cost}
         />
       ))}
     </div>

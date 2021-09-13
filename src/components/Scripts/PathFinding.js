@@ -23,9 +23,10 @@ const validBlock = (blk) => {
   return !blk.isWall && !blk.checked;
 };
 const getEuclidianDistance = (x1, y1, x2, y2) => {
-  return Math.sqrt((x2 - x1) ** 2 - (y2 - y1) ** 2);
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 };
-const getManhattenDistance = (x1, y1, x2, y2) => Math.abs(x2 - x1 + (y2 - y1));
+const getManhattenDistance = (x1, y1, x2, y2) =>
+  Math.abs(Math.abs(x2 - x1) + Math.abs(y2 - y1));
 const buildPath = (grids, origin, end) => {
   const stack = [];
   let grid = cloneGrid(grids[grids.length - 1]);
@@ -80,7 +81,13 @@ const processBlockAStar = (
   if (validBlock(newBlock)) {
     newBlock.prev = block.pos;
     newBlock.checked = true;
-    newBlock.blocksTraveled = block.blocksTraveled + 1;
+    newBlock.costToTravelTo = Math.floor(
+      getManhattenDistance(...posToXY(end, width), x, y)
+    );
+    newBlock.costToTravelFrom = Math.floor(
+      getManhattenDistance(...posToXY(origin, width), x, y)
+    );
+    newBlock.cost = newBlock.costToTravelFrom + newBlock.costToTravelTo;
     console.log(
       "P1:",
       ...posToXY(end, width),
@@ -90,16 +97,19 @@ const processBlockAStar = (
       "D:",
       getManhattenDistance(...posToXY(end, width), x, y)
     );
-    newBlock.cost = 0 + getManhattenDistance(...posToXY(end, width), x, y);
     queue.add(newBlock);
     steps.push(cloneGrid(grid));
   }
   return steps;
 };
-const comparator = (a, b) => {
+const comparatorAStar = (a, b) => {
   console.log("A: %d B: %d", a.cost, b.cost);
   if (a.cost > b.cost) return 1;
   if (a.cost < b.cost) return -1;
+  if (a.costToTravelTo > b.costToTravelTo) return 1;
+  if (a.costToTravelTo < b.costToTravelTo) return -1;
+  if (a.costToTravelFrom > b.costToTravelFrom) return 1;
+  if (a.costToTravelFrom < b.costToTravelFrom) return -1;
   return 0;
 };
 export async function BFS(grid, origin, end, length, width) {
@@ -204,7 +214,7 @@ export async function BFS(grid, origin, end, length, width) {
 }
 
 export function AStar(grid, origin, end, length, width) {
-  let queue = new MinPriorityQueue(comparator);
+  let queue = new MinPriorityQueue(comparatorAStar);
   //Current state of the grid
   let currentGrid = cloneGrid(grid);
   //This stores the step we make
@@ -245,7 +255,8 @@ export function AStar(grid, origin, end, length, width) {
         end,
         x - 1,
         y,
-        width
+        width,
+        origin
       );
     }
     //Check Right x y+1
@@ -273,7 +284,8 @@ export function AStar(grid, origin, end, length, width) {
         end,
         x,
         y + 1,
-        width
+        width,
+        origin
       );
     }
     //Check for down x+1,y
@@ -301,7 +313,8 @@ export function AStar(grid, origin, end, length, width) {
         end,
         x + 1,
         y,
-        width
+        width,
+        origin
       );
     }
     //Check left x y-1
@@ -329,7 +342,8 @@ export function AStar(grid, origin, end, length, width) {
         end,
         x,
         y - 1,
-        width
+        width,
+        origin
       );
     }
   }

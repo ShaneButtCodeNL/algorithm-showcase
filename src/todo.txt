@@ -7,7 +7,8 @@
 [X]  Show Path Build
 [X]  have grid update when adding wall or moveng origin/end
 [X]  implement PriortyQueue
-[]  implement A* algo
+[X]  implement A* algo
+[]  implement a* algo allowing diagonal movement
 
 bugs:
 *Fixed* Gridsand grid not updateing in BFS each time
