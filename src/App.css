@@ -74,12 +74,12 @@ GridBlock
 .gridBlockTraveled {
   background-color: var(--traveled-color);
 }
+.gridBlockPath {
+  background-color: var(--path-color);
+}
 .gridBlockOrigin {
   background-color: var(--origin-color);
 }
 .gridBlockEnd {
   background-color: var(--end-color);
-}
-.gridBlockPath {
-  background-color: var(--path-color);
 }
