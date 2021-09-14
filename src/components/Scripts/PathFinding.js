@@ -20,7 +20,7 @@ const cloneGrid = (grid) =>
     return { ...v };
   });
 const validBlock = (blk) => {
-  return !blk.isWall && !blk.checked;
+  return !blk.isWall && !blk.traveled;
 };
 const getEuclidianDistance = (x1, y1, x2, y2) => {
   return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
@@ -51,7 +51,7 @@ const processBlock = (grid, steps, queue, block, end, x, y, width, origin) => {
     return buildPath(steps, origin, end);
   }
   const newBlock = grid[pos];
-  if (validBlock(newBlock)) {
+  if (validBlock(newBlock) && !newBlock.checked) {
     newBlock.prev = block.pos;
     newBlock.checked = true;
     queue.push(newBlock);
@@ -77,27 +77,19 @@ const processBlockAStar = (
     return buildPath(steps, origin, end);
   }
   const newBlock = grid[pos];
-
-  if (validBlock(newBlock)) {
+  let costToTravelTo = getManhattenDistance(...posToXY(end, width), x, y),
+    costToTravelFrom = block.costToTravelFrom + 1,
+    cost = costToTravelFrom + costToTravelTo;
+  if (validBlock(newBlock) && (cost < newBlock.cost || !newBlock.checked)) {
+    let flag = newBlock.checked;
     newBlock.prev = block.pos;
     newBlock.checked = true;
-    newBlock.costToTravelTo = Math.floor(
-      getManhattenDistance(...posToXY(end, width), x, y)
-    );
-    newBlock.costToTravelFrom = Math.floor(
-      getManhattenDistance(...posToXY(origin, width), x, y)
-    );
-    newBlock.cost = newBlock.costToTravelFrom + newBlock.costToTravelTo;
-    console.log(
-      "P1:",
-      ...posToXY(end, width),
-      "P2:",
-      x,
-      y,
-      "D:",
-      getManhattenDistance(...posToXY(end, width), x, y)
-    );
-    queue.add(newBlock);
+    newBlock.costToTravelTo = costToTravelTo;
+    newBlock.costToTravelFrom = costToTravelFrom;
+    newBlock.cost = cost;
+    if (flag) {
+      queue.heapify();
+    } else queue.add(newBlock);
     steps.push(cloneGrid(grid));
   }
   return steps;

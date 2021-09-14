@@ -72,6 +72,17 @@ export class MinPriorityQueue {
       i = this.#getParentIndex(i);
     }
   }
+  #clear() {
+    this.elements = [];
+  }
+
+  heapify() {
+    let clone = [...this.heap()];
+    this.#clear();
+    for (let e of clone) {
+      this.add(e);
+    }
+  }
 
   size() {
     return this.elements.length;

@@ -50,3 +50,11 @@ test("adding then removing several values 5 6 7 3 2 4 . . .", () => {
   expect(min.remove()).toBe(null);
   expect(min.size()).toBe(0);
 });
+test("Checking a full heapify . . .", () => {
+  min.elements = [6, 6, 7, 5, 8, 4, 0, 9, 77, 66, 55, 77, 1];
+  min.heapify();
+  expect(min.size()).toBe(13);
+  expect(min.remove()).toBe(0);
+  expect(min.remove()).toBe(1);
+  expect(min.remove()).toBe(4);
+});
