@@ -8,7 +8,9 @@
 [X]  have grid update when adding wall or moveng origin/end
 [X]  implement PriortyQueue
 [X]  implement A* algo
+[X]  implement hSearch
 []  implement a* algo allowing diagonal movement
 
 bugs:
 *Fixed* Gridsand grid not updateing in BFS each time
+Astar heuristic cost needs improvement

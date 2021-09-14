@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BFS, AStar } from "./Scripts/PathFinding";
+import { BFS, AStar, HSearch } from "./Scripts/PathFinding";
 import GridPlane from "./GridPlane";
 import ToolBar from "./ToolBar";
 
@@ -99,6 +99,13 @@ export default function PathFinding(props) {
     }
     if (id === 2) {
       let res = await AStar(newGrid, origin, end, length, width);
+      setSolved(true);
+      setMaxSteps(res.length - 1);
+      setStep(res.length - 1);
+      return res;
+    }
+    if (id === 3) {
+      let res = await HSearch(newGrid, origin, end, length, width);
       setSolved(true);
       setMaxSteps(res.length - 1);
       setStep(res.length - 1);

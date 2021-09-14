@@ -105,7 +105,8 @@ export default function ToolBar(props) {
           onChange={() => props.setAlgo(parseInt(algoSelectRef.current.value))}
         >
           <option value={1}>Bredth First Search</option>
-          <option value={2}>A* (Not Implemented)</option>
+          <option value={2}>A*</option>
+          <option value={3}>Heuristic Search</option>
         </select>
         <button
           onClick={async () =>

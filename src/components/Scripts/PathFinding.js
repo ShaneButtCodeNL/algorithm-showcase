@@ -108,8 +108,14 @@ const comparatorAStar = (a, b) => {
   if (a.cost < b.cost) return -1;
   if (a.costToTravelTo > b.costToTravelTo) return 1;
   if (a.costToTravelTo < b.costToTravelTo) return -1;
-  if (a.costToTravelFrom > b.costToTravelFrom) return 1;
-  if (a.costToTravelFrom < b.costToTravelFrom) return -1;
+  if (a.costToTravelFrom < b.costToTravelFrom) return 1;
+  if (a.costToTravelFrom > b.costToTravelFrom) return -1;
+  return 0;
+};
+const comparatorHSearch = (a, b) => {
+  console.log("A: %d B: %d", a.cost, b.cost);
+  if (a.costToTravelTo > b.costToTravelTo) return 1;
+  if (a.costToTravelTo < b.costToTravelTo) return -1;
   return 0;
 };
 export async function BFS(grid, origin, end, length, width) {
@@ -348,5 +354,143 @@ export function AStar(grid, origin, end, length, width) {
     }
   }
   console.log("AStar END NO PATH . . .");
+  return stepGrid;
+}
+
+export function HSearch(grid, origin, end, length, width) {
+  let queue = new MinPriorityQueue(comparatorHSearch);
+  //Current state of the grid
+  let currentGrid = cloneGrid(grid);
+  //This stores the step we make
+  let stepGrid = [cloneGrid(currentGrid)];
+  //Set origin to traveled and checked
+  currentGrid[origin].checked = true;
+  currentGrid[origin].traveled = true;
+  //Add origin to the queue
+  queue.add(currentGrid[origin]);
+  //Begin Search
+  while (queue.size()) {
+    let block = queue.remove();
+    const [x, y] = posToXY(block.pos, width);
+    block.traveled = true;
+    if (block.pos !== origin) stepGrid.push(cloneGrid(currentGrid));
+    //Check for up x-1,y
+    if (x > 0) {
+      const newPos = XYtoPos(x - 1, y, width);
+      //up is End
+      if (newPos === end) {
+        return processBlockAStar(
+          currentGrid,
+          stepGrid,
+          queue,
+          block,
+          end,
+          x - 1,
+          y,
+          width,
+          origin
+        );
+      }
+      processBlockAStar(
+        currentGrid,
+        stepGrid,
+        queue,
+        block,
+        end,
+        x - 1,
+        y,
+        width,
+        origin
+      );
+    }
+    //Check Right x y+1
+    if (y < width - 1) {
+      const newPos = XYtoPos(x, y + 1, width);
+      //Right is End
+      if (newPos === end) {
+        return processBlockAStar(
+          currentGrid,
+          stepGrid,
+          queue,
+          block,
+          end,
+          x,
+          y + 1,
+          width,
+          origin
+        );
+      }
+      processBlockAStar(
+        currentGrid,
+        stepGrid,
+        queue,
+        block,
+        end,
+        x,
+        y + 1,
+        width,
+        origin
+      );
+    }
+    //Check for down x+1,y
+    if (x < length - 1) {
+      const newPos = XYtoPos(x + 1, y, width);
+      //Down is End
+      if (newPos === end) {
+        return processBlockAStar(
+          currentGrid,
+          stepGrid,
+          queue,
+          block,
+          end,
+          x + 1,
+          y,
+          width,
+          origin
+        );
+      }
+      processBlockAStar(
+        currentGrid,
+        stepGrid,
+        queue,
+        block,
+        end,
+        x + 1,
+        y,
+        width,
+        origin
+      );
+    }
+    //Check left x y-1
+    if (y > 0) {
+      const newPos = XYtoPos(x, y - 1, width);
+      //Left is End
+      if (newPos === end) {
+        return processBlockAStar(
+          currentGrid,
+          stepGrid,
+          queue,
+          block,
+          end,
+          x,
+          y - 1,
+          width,
+          origin
+        );
+      }
+      processBlockAStar(
+        currentGrid,
+        stepGrid,
+        queue,
+        block,
+        end,
+        x,
+        y - 1,
+        width,
+        origin
+      );
+    }
+  }
+  console.log("Heuistic END NO PATH . . .");
   return stepGrid;
 }
