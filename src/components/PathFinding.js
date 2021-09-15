@@ -196,7 +196,7 @@ export default function PathFinding(props) {
     document.getElementById("pathStepDisplay").value = step;
   }, [step]);
   return (
-    <div>
+    <>
       <ToolBar
         width={width}
         length={length}
@@ -228,6 +228,6 @@ export default function PathFinding(props) {
         end={end}
         blockClick={blockClick}
       />
-    </div>
+    </>
   );
 }

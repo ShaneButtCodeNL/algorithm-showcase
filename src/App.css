@@ -6,6 +6,7 @@
   --traveled-color: rgb(243, 229, 34);
   --checked-color: rgb(0, 174, 255);
   --path-color: rgb(255, 136, 0);
+  --toolbar-font-color: rgb(255, 238, 0);
 
   --col-nums: 10;
   --row-nums: 10;
@@ -17,17 +18,64 @@
 /**
 Main Page
 **/
+.App {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+.displayWindow {
+  display: flex;
+  flex: 1 1;
+}
 
 /**
 ToolBar
 **/
+.sideBar {
+  display: flex;
+  width: 20ch;
+  height: 100%;
+  flex-shrink: 1;
+  transition: max-width 500ms ease-in;
+}
+.sideBarSlide {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1em 1ch;
+  border: 1px outset;
+  border-color: rgba(0, 0, 0, 0.3);
+}
+.sideToolBar button,
+input,
+select {
+  background-color: rgba(0, 0, 0, 0);
+  color: var(--toolbar-font-color);
+  border: 2px solid;
+  border-color: var(--toolbar-font-color);
+}
+.sideToolBar {
+  color: var(--toolbar-font-color);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: linear-gradient(to right, black, rgb(97, 97, 97), white);
+  overflow-x: hidden;
+}
 .toolBarInput {
   border: none;
   width: 6ch;
+  color: var(--toolbar-font-color);
+  outline-color: var(--toolbar-font-color);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 #toggleModeDiv {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.3em;
+  margin: 0.3em 0;
 }
 
 .toggleModeItem {
@@ -36,6 +84,8 @@ ToolBar
   padding: 0 0.5ch;
   border-style: outset;
   cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  width: 15ch;
 }
 
 .activeToggleItem {
