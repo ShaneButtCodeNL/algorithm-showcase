@@ -108,30 +108,30 @@ export default function ToolBar(props) {
               Move End
             </div>
           </div>
-          <div id="pathAlgoSelectDiv">
-            <select
-              ref={algoSelectRef}
-              onChange={() =>
-                props.setAlgo(parseInt(algoSelectRef.current.value))
-              }
-            >
-              <option value={1}>Bredth First Search</option>
-              <option value={2}>A*</option>
-              <option value={3}>Heuristic Search</option>
-            </select>
-            <button
-              onClick={async () =>
-                props
-                  .applySearch(props.algo, props.grid, props.origin, props.end)
-                  .then((res) => {
-                    props.setGrids([...res]);
-                    props.setGrid([...res][res.length - 1]);
-                  })
-              }
-            >
-              Solve
-            </button>
-          </div>
+
+          <select
+            ref={algoSelectRef}
+            onChange={() =>
+              props.setAlgo(parseInt(algoSelectRef.current.value))
+            }
+          >
+            <option value={1}>Bredth First Search</option>
+            <option value={2}>A*</option>
+            <option value={3}>Heuristic Search</option>
+          </select>
+          <button
+            onClick={async () =>
+              props
+                .applySearch(props.algo, props.grid, props.origin, props.end)
+                .then((res) => {
+                  props.setGrids([...res]);
+                  props.setGrid([...res][res.length - 1]);
+                })
+            }
+          >
+            Solve
+          </button>
+
           <div id="stepControlDiv">
             <input
               id="pathStepDisplay"

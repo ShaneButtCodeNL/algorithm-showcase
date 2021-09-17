@@ -10,6 +10,7 @@
 [X]  implement A* algo
 [X]  implement hSearch
 []  implement a* algo allowing diagonal movement
+[]  implement midpoint
 
 bugs:
 *Fixed* Gridsand grid not updateing in BFS each time
