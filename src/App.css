@@ -4,6 +4,7 @@
 
   --border-color: rgb(0, 0, 0);
   --origin-color: rgb(16, 247, 8);
+  --midway-color: rgb(94, 0, 138);
   --end-color: rgb(241, 9, 9);
   --wall-color: #000;
   --traveled-color: rgb(243, 229, 34);
@@ -164,6 +165,9 @@ GridBlock
 }
 .gridBlockOrigin {
   background-color: var(--origin-color);
+}
+.gridBlockMidWay {
+  background-color: var(--midway-color);
 }
 .gridBlockEnd {
   background-color: var(--end-color);

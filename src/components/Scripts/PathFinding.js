@@ -19,6 +19,18 @@ const cloneGrid = (grid) =>
   [...grid].map((v) => {
     return { ...v };
   });
+const resetGrid = (grid) => {
+  grid = cloneGrid(grid);
+  grid.forEach((block, index) => {
+    block.cost = 0;
+    block.checked = false;
+    block.traveled = false;
+    block.prev = index;
+    block.costToTravelFrom = 0;
+    block.costToTravelTo = 0;
+  });
+  return grid;
+};
 const validBlock = (blk) => {
   return !blk.isWall && !blk.traveled;
 };
@@ -485,4 +497,36 @@ export function HSearch(grid, origin, end, length, width) {
   }
   console.log("Heuistic END NO PATH . . .");
   return stepGrid;
+}
+
+export async function BFSWithMidPoint(grid, origin, mid, end, length, width) {
+  //Bfs from origin to mid
+  let stepGrid = await BFS(grid, origin, mid, length, width);
+  //Reset costs
+  let midToEnd = stepGrid[stepGrid.length - 1];
+
+  midToEnd = resetGrid(midToEnd);
+  let stepGrid2 = await BFS(midToEnd, mid, end, length, width);
+  return stepGrid.concat(stepGrid2);
+}
+
+export function HSearchWithMidPoint(grid, origin, mid, end, length, width) {
+  //hsearch from origin to mid
+  let stepGrid = HSearch(grid, origin, mid, length, width);
+  //reset
+  let midToEnd = resetGrid(stepGrid[stepGrid.length - 1]);
+  let stepGrid2 = HSearch(midToEnd, mid, end, length, width);
+  return stepGrid.concat(stepGrid2);
+}
+
+export function AStarWithMidPoint(grid, origin, mid, end, length, width) {
+  let stepGrid = AStar(grid, origin, mid, length, width);
+  let stepGrid2 = AStar(
+    resetGrid(stepGrid[stepGrid.length - 1]),
+    mid,
+    end,
+    length,
+    width
+  );
+  return stepGrid.concat(stepGrid2);
 }

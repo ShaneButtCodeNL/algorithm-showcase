@@ -107,6 +107,14 @@ export default function ToolBar(props) {
             >
               Move End
             </div>
+            <div
+              className={`toggleModeItem ${
+                props.changeMidPoint ? "activeToggleItem" : ""
+              }`}
+              onClick={() => props.toggleChangeMid()}
+            >
+              Set MidWay
+            </div>
           </div>
 
           <select
@@ -122,7 +130,13 @@ export default function ToolBar(props) {
           <button
             onClick={async () =>
               props
-                .applySearch(props.algo, props.grid, props.origin, props.end)
+                .applySearch(
+                  props.algo,
+                  props.grids[0],
+                  props.origin,
+                  props.midPoint,
+                  props.end
+                )
                 .then((res) => {
                   props.setGrids([...res]);
                   props.setGrid([...res][res.length - 1]);

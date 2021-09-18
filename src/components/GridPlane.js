@@ -11,6 +11,7 @@ export default function GridPlane(props) {
           key={index}
           index={index}
           isOrigin={index === props.origin}
+          isMidPoint={index === props.midPoint}
           isEnd={index === props.end}
           isWall={block.isWall}
           traveled={block.traveled}

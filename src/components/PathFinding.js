@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { BFS, AStar, HSearch } from "./Scripts/PathFinding";
+import {
+  BFS,
+  AStar,
+  HSearch,
+  BFSWithMidPoint,
+  AStarWithMidPoint,
+  HSearchWithMidPoint,
+} from "./Scripts/PathFinding";
 import GridPlane from "./GridPlane";
 import ToolBar from "./ToolBar";
 
@@ -34,25 +41,39 @@ export default function PathFinding(props) {
   const [maxSteps, setMaxSteps] = useState(1);
   const [origin, setOrigin] = useState(0);
   const [end, setEnd] = useState(length * width - 1);
+  const [midPoint, setMidPoint] = useState(-1);
   const [addWall, setAddWall] = useState(false);
   const [changeOrigin, setChangeOrigin] = useState(false);
   const [changeEnd, setChangeEnd] = useState(false);
+  const [changeMidPoint, setChangeMidPoint] = useState(false);
   const [solved, setSolved] = useState(false);
   const [algoID, setAlgoID] = useState(1);
+  //
+  //  Toggles
+  //
   const toggleAddWall = () => {
     setAddWall(!addWall);
     setChangeEnd(false);
     setChangeOrigin(false);
+    setChangeMidPoint(false);
   };
   const toggleChangeOrigin = () => {
     setAddWall(false);
     setChangeEnd(false);
     setChangeOrigin(!changeOrigin);
+    setChangeMidPoint(false);
   };
   const toggleChangeEnd = () => {
     setAddWall(false);
     setChangeEnd(!changeEnd);
     setChangeOrigin(false);
+    setChangeMidPoint(false);
+  };
+  const toggleChangeMid = () => {
+    setAddWall(false);
+    setChangeEnd(false);
+    setChangeOrigin(false);
+    setChangeMidPoint(!changeMidPoint);
   };
   const changeStep = (num) => {
     setStep(num);
@@ -86,32 +107,54 @@ export default function PathFinding(props) {
     setGrids([newGrid]);
     setSolved(false);
   };
-  const applySearch = async (id, grid, origin, end) => {
+  /**
+   * Applies the search to the grid
+   * @param {number} id The id for the algo
+   * @param {Object[]} grid The initial state of the grid
+   * @param {number} origin the starting point
+   * @param {number} end the goal space
+   * @returns
+   */
+  const applySearch = async (id, grid, origin, mid, end) => {
     let newGrid = [...grid].map((v) => {
       return { ...v };
     });
     if (id === 1) {
-      let res = await BFS(newGrid, origin, end, length, width);
+      let res =
+        mid === -1
+          ? await BFS(newGrid, origin, end, length, width)
+          : await BFSWithMidPoint(newGrid, origin, mid, end, length, width);
       setSolved(true);
       setMaxSteps(res.length - 1);
       setStep(res.length - 1);
       return res;
     }
     if (id === 2) {
-      let res = await AStar(newGrid, origin, end, length, width);
+      let res =
+        mid === -1
+          ? await AStar(newGrid, origin, end, length, width)
+          : await AStarWithMidPoint(newGrid, origin, mid, end, length, width);
       setSolved(true);
       setMaxSteps(res.length - 1);
       setStep(res.length - 1);
       return res;
     }
     if (id === 3) {
-      let res = await HSearch(newGrid, origin, end, length, width);
+      let res =
+        mid === -1
+          ? await HSearch(newGrid, origin, end, length, width)
+          : await HSearchWithMidPoint(newGrid, origin, mid, end, length, width);
       setSolved(true);
       setMaxSteps(res.length - 1);
       setStep(res.length - 1);
       return res;
     }
   };
+  /**
+   * Handeles the event of clicking a block
+   * @param {Number} index the linear position in the grid
+   * @returns null
+   */
   const blockClick = async (index) => {
     if (solved) {
       console.log(
@@ -127,7 +170,7 @@ export default function PathFinding(props) {
         });
         let block = newGrid[index];
         block.isWall = !block.isWall;
-        applySearch(algoID, newGrid, origin, end).then((res) => {
+        applySearch(algoID, newGrid, origin, midPoint, end).then((res) => {
           setGrids(res);
           setGrid(res[res.length - 1]);
           setStep(res.length - 1);
@@ -141,7 +184,7 @@ export default function PathFinding(props) {
         const newGrid = grids[0].map((v) => {
           return { ...v };
         });
-        applySearch(algoID, newGrid, origin, index).then((res) => {
+        applySearch(algoID, newGrid, origin, midPoint, index).then((res) => {
           setGrids(res);
           setGrid(res[res.length - 1]);
           setStep(res.length - 1);
@@ -155,17 +198,28 @@ export default function PathFinding(props) {
         const newGrid = grids[0].map((v) => {
           return { ...v };
         });
-        applySearch(algoID, newGrid, index, end).then((res) => {
+        applySearch(algoID, newGrid, index, midPoint, end).then((res) => {
           setGrids(res);
           setGrid(res[res.length - 1]);
           setStep(res.length - 1);
           setMaxSteps(res.length - 1);
         });
       }
-      //setGrid(newGrid);
-      //setGrids([newGrid]);
-      //await applySearch(algoID);
-      console.log("SolvedBlockClickEnd: ", grids.length, grid);
+      if (changeMidPoint) {
+        if (index === origin || index === end || grid[index].isWall) return;
+        index = midPoint === index ? -1 : index;
+        setMidPoint(index);
+        await resetSearch();
+        const newGrid = grids[0].map((v) => {
+          return { ...v };
+        });
+        applySearch(algoID, newGrid, origin, index, end).then((res) => {
+          setGrids(res);
+          setGrid(res[res.length - 1]);
+          setStep(res.length - 1);
+          setMaxSteps(res.length - 1);
+        });
+      }
       return;
     }
     const block = grid[index];
@@ -187,7 +241,11 @@ export default function PathFinding(props) {
       setOrigin(index);
       return;
     }
-    console.log("Clicked Block " + index);
+    if (changeMidPoint) {
+      if (index === origin || index === end) return;
+      if (block.isWall) return;
+      setMidPoint(index === midPoint ? -1 : index);
+    }
   };
   useEffect(() => {
     resetGrids();
@@ -202,8 +260,10 @@ export default function PathFinding(props) {
         length={length}
         step={step}
         grid={grid}
+        grids={grids}
         origin={origin}
         end={end}
+        midPoint={midPoint}
         maxSteps={maxSteps}
         setGrid={setGrid}
         setGrids={setGrids}
@@ -214,9 +274,11 @@ export default function PathFinding(props) {
         toggleAddWall={toggleAddWall}
         toggleChangeEnd={toggleChangeEnd}
         toggleChangeOrigin={toggleChangeOrigin}
+        toggleChangeMid={toggleChangeMid}
         addWall={addWall}
         changeEnd={changeEnd}
         changeOrigin={changeOrigin}
+        changeMidPoint={changeMidPoint}
         algo={algoID}
         setAlgo={setAlgoID}
       />
@@ -225,6 +287,7 @@ export default function PathFinding(props) {
         width={width}
         grid={grid}
         origin={origin}
+        midPoint={midPoint}
         end={end}
         blockClick={blockClick}
       />

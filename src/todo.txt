@@ -11,7 +11,11 @@
 [X]  implement hSearch
 []  implement a* algo allowing diagonal movement
 []  implement midpoint
+    -Done for BFS
 
 bugs:
 *Fixed* Gridsand grid not updateing in BFS each time
 Astar heuristic cost needs improvement
+
+ideas:
+make solve button show animation eash time

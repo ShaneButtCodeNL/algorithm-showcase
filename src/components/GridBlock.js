@@ -11,7 +11,9 @@ export default function GridBlock(props) {
           : ""
       } ${props.isEnd ? "gridBlockEnd" : ""} ${
         props.isOrigin ? "gridBlockOrigin" : ""
-      } ${props.path ? "gridBlockPath" : ""}`}
+      } ${props.path ? "gridBlockPath" : ""} ${
+        props.isMidPoint ? "gridBlockMidWay" : ""
+      }`}
       onClick={async () => await props.blockClick(props.index)}
     >
       {`Index:${props.index}\nhCost:${props.hCost}\nfCost:${props.fCost}\nCost:${props.cost}`}
