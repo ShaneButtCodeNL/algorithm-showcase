@@ -10,12 +10,13 @@
 [X]  implement A* algo
 [X]  implement hSearch
 []  implement a* algo allowing diagonal movement
-[]  implement midpoint
-    -Done for BFS
+[X]  implement midpoint
+[X]  Animate
 
 bugs:
 *Fixed* Gridsand grid not updateing in BFS each time
 Astar heuristic cost needs improvement
+playing steps in rev needs to look better
 
 ideas:
 make solve button show animation eash time

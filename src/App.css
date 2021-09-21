@@ -14,6 +14,7 @@
 
   --col-nums: 10;
   --row-nums: 10;
+  --animation-time: 250ms;
   --block-size: 70px;
   --grid-gap: 3px;
   --block-font-size: 0.5em;
@@ -141,6 +142,15 @@ GridPlane
 /**
 GridBlock
 **/
+.gridBlockPath {
+  background-color: var(--path-color);
+  height: var(--block-size);
+  width: var(--block-size);
+  transition: max-height var(--animation-time) ease-in,
+    max-width var(--animation-time) ease-in,
+    transform var(--animation-time) ease-in;
+  position: absolute;
+}
 .gridBlock {
   width: var(--block-size);
   height: var(--block-size);
@@ -149,20 +159,41 @@ GridBlock
   border-color: var(--border-color);
   font-size: var(--block-font-size);
   line-height: var(--block-line-height);
+  background-color: var(--background-color);
+  position: relative;
+  overflow: clip;
+  display: grid;
+  place-items: center;
 }
 
 .gridBlockWall {
   background-color: var(--wall-color);
 }
-.gridBlockChecked {
+
+.gridBlock::before {
+  content: "";
   background-color: var(--checked-color);
+  width: var(--block-size);
+  height: var(--block-size);
+  max-width: 0%;
+  max-height: 0%;
+}
+.gridBlockChecked::before {
+  transition: max-height var(--animation-time) ease-in,
+    max-width var(--animation-time) ease-in;
+  max-height: var(--block-size);
+  max-width: var(--block-size);
+}
+.gridBlockTraveled::before {
+  transition: max-height var(--animation-time) ease-in,
+    max-width var(--animation-time) ease-in;
+  max-height: 0%;
+  max-width: 0%;
 }
 .gridBlockTraveled {
   background-color: var(--traveled-color);
 }
-.gridBlockPath {
-  background-color: var(--path-color);
-}
+
 .gridBlockOrigin {
   background-color: var(--origin-color);
 }
