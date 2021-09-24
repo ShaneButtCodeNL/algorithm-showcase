@@ -3,6 +3,7 @@
   --default-color: rgb(233, 233, 233);
 
   --border-color: rgb(0, 0, 0);
+  --block-color: rgb(160, 160, 160);
   --origin-color: rgb(16, 247, 8);
   --midway-color: rgb(94, 0, 138);
   --end-color: rgb(241, 9, 9);
@@ -15,10 +16,26 @@
   --col-nums: 10;
   --row-nums: 10;
   --animation-time: 250ms;
-  --block-size: 70px;
+  --block-size: 30px;
   --grid-gap: 3px;
   --block-font-size: 0.5em;
   --block-line-height: 1em;
+}
+/**
+General classes
+**/
+button:hover {
+  cursor: pointer;
+}
+.growVertDiv {
+  transition: max-height 1000ms ease-in;
+  max-height: 100%;
+  overflow: hidden;
+}
+.shrinkVertDiv {
+  transition: max-height 1000ms;
+  max-height: 0%;
+  overflow: hidden;
 }
 /**
 Main Page
@@ -34,6 +51,7 @@ Main Page
 .displayWindow {
   display: flex;
   flex: 1 1;
+  overflow: hidden;
 }
 .titleBar {
   border-bottom: solid 1px;
@@ -102,6 +120,18 @@ select {
   background-color: rgba(0, 0, 0, 0);
 }
 
+#stepControlDiv {
+  display: flex;
+  width: 19ch;
+}
+#stepControlDiv button {
+  flex: 1 1;
+}
+.gridSearchSelect {
+  width: 22ch;
+  margin: 0 auto;
+}
+
 #toggleModeDiv {
   display: flex;
   flex-direction: column;
@@ -128,9 +158,19 @@ select {
   transition: filter 1000ms ease-out;
   filter: brightness(1.3);
 }
+.gridAnimationButtonContainer {
+  display: flex;
+  flex-shrink: 0;
+  width: 19ch;
+}
 /**
 GridPlane
 **/
+.gridPlaneWrapper {
+  overflow: auto;
+  flex-grow: 1;
+  padding: 1em;
+}
 #gridPlane {
   display: grid;
   gap: var(--grid-gap);
@@ -152,6 +192,7 @@ GridBlock
   position: absolute;
 }
 .gridBlock {
+  background-color: var(--block-color);
   width: var(--block-size);
   height: var(--block-size);
   border-style: solid;
@@ -159,13 +200,14 @@ GridBlock
   border-color: var(--border-color);
   font-size: var(--block-font-size);
   line-height: var(--block-line-height);
-  background-color: var(--background-color);
   position: relative;
   overflow: clip;
   display: grid;
   place-items: center;
 }
-
+.gridBlockChecked {
+  transition: background-color calc(2 * var(--animation-time)) ease-out;
+}
 .gridBlockWall {
   background-color: var(--wall-color);
 }
@@ -177,6 +219,8 @@ GridBlock
   height: var(--block-size);
   max-width: 0%;
   max-height: 0%;
+  transition: max-height var(--animation-time) ease-in,
+    max-width var(--animation-time) ease-in;
 }
 .gridBlockChecked::before {
   transition: max-height var(--animation-time) ease-in,

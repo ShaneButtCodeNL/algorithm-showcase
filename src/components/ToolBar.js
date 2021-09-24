@@ -2,10 +2,14 @@ import { useRef, useState } from "react";
 
 const min = 2;
 const max = 25;
+const minSpeed = 50;
+const maxSpeed = 500;
 export default function ToolBar(props) {
   const [slide, setSlide] = useState(0);
   const lengthSlideRef = useRef(null);
   const lengthInputRef = useRef(null);
+  const speedSlideRef = useRef(null);
+  const speedInputRef = useRef(null);
   const widthSlideRef = useRef(null);
   const widthInputRef = useRef(null);
   const algoSelectRef = useRef(null);
@@ -82,6 +86,34 @@ export default function ToolBar(props) {
             min={min}
             max={max}
           />
+          <label htmlFor="speedSlider">{`Speed :`}</label>
+          <input
+            className="toolBarInput"
+            type="number"
+            ref={speedInputRef}
+            defaultValue={props.speed}
+            min={minSpeed}
+            max={maxSpeed}
+            disabled={props.isAnimationPlaying}
+            onChange={() => {
+              props.setSpeed(parseInt(speedInputRef.current.value));
+              speedSlideRef.current.value = speedInputRef.current.value;
+            }}
+          />
+          <input
+            ref={speedSlideRef}
+            type="range"
+            id="speedSlider"
+            name="speedSlider"
+            defaultValue={props.speed}
+            min={minSpeed}
+            max={maxSpeed}
+            disabled={props.isAnimationPlaying}
+            onChange={() => {
+              props.setSpeed(speedSlideRef.current.value);
+              speedInputRef.current.value = speedSlideRef.current.value;
+            }}
+          />
           <div id="toggleModeDiv">
             <div
               className={`toggleModeItem ${
@@ -118,38 +150,118 @@ export default function ToolBar(props) {
           </div>
 
           <select
+            className="gridSearchSelect"
             ref={algoSelectRef}
-            onChange={() =>
-              props.setAlgo(parseInt(algoSelectRef.current.value))
-            }
+            onChange={() => {
+              props.setAlgo(parseInt(algoSelectRef.current.value));
+              props.stopAnimation();
+              props.setStarted(false);
+              props.changeStep(0);
+              props.setSolved(false);
+            }}
           >
             <option value={1}>Bredth First Search</option>
             <option value={2}>A*</option>
             <option value={3}>Heuristic Search</option>
           </select>
-          <button
-            onClick={async () =>
-              props
-                .applySearch(
+          <div
+            className={`${props.started ? "shrinkVert" : "growVert"}Div`}
+            style={{ width: "20ch" }}
+          >
+            <button
+              style={{ width: "92%" }}
+              disabled={props.started}
+              onClick={async () => {
+                props.setStarted(true);
+                await props.applySearch(
                   props.algo,
                   props.grids[0],
                   props.origin,
                   props.midPoint,
                   props.end
-                )
-                .then((res) => {
-                  props.setGrids([...res]);
-                  props.setGrid([...res][res.length - 1]);
-                })
-            }
+                );
+              }}
+            >
+              Start
+            </button>
+          </div>
+          <div
+            className={`gridAnimationButtonContainer ${
+              !props.started ? "shrinkVert" : "growVert"
+            }Div`}
           >
-            Solve
-          </button>
+            <button
+              disabled={!props.started}
+              onClick={() => {
+                props.startAnimation(
+                  props.step === props.maxSteps ? 0 : props.step,
+                  props.maxSteps,
+                  props.grids,
+                  props.speed
+                );
+              }}
+            >
+              Start Animation
+            </button>
+            <button
+              disabled={!props.started}
+              onClick={() => {
+                props.stopAnimation();
+              }}
+            >
+              Stop Animation
+            </button>
+          </div>
 
-          <div id="stepControlDiv">
+          <div
+            id="stepControlDiv"
+            className={`${props.started ? "growVert" : "shrinkVert"}Div`}
+          >
+            <button
+              onClick={() => {
+                stepRef.current.value = 0;
+                props.changeStep(0);
+              }}
+            >
+              F
+            </button>
+            <button
+              onClick={() => {
+                const newValue = Math.max(
+                  Number.parseInt(stepRef.current.value) - 1,
+                  0
+                );
+                stepRef.current.value = newValue;
+                props.changeStep(newValue);
+              }}
+            >
+              P
+            </button>
+            <button
+              onClick={() => {
+                const newValue = Math.min(
+                  Number.parseInt(stepRef.current.value) + 1,
+                  props.maxSteps
+                );
+                stepRef.current.value = newValue;
+                props.changeStep(newValue);
+              }}
+            >
+              N
+            </button>
+            <button
+              onClick={() => {
+                stepRef.current.value = props.maxSteps;
+                props.changeStep(props.maxSteps);
+              }}
+            >
+              L
+            </button>
+
             <input
               id="pathStepDisplay"
               type="number"
+              hidden={true}
               ref={stepRef}
               defaultValue={props.step}
               min={0}

@@ -48,6 +48,9 @@ export default function PathFinding(props) {
   const [changeMidPoint, setChangeMidPoint] = useState(false);
   const [solved, setSolved] = useState(false);
   const [algoID, setAlgoID] = useState(1);
+  const [animateRate, setAnimateRate] = useState(300);
+  const [animateInterval, setAnimateInterval] = useState(null);
+  const [started, setStarted] = useState(false);
   //
   //  Toggles
   //
@@ -79,7 +82,14 @@ export default function PathFinding(props) {
     setStep(num);
     setGrid(grids[num]);
   };
+  const changeSpeed = (num) => {
+    const r = document.querySelector(":root");
+    r.style.setProperty("--animation-speed", `${Math.min(num - 50, 300)}ms`);
+    setAnimateRate(num);
+  };
   const resetGrids = () => {
+    stopAnimation();
+    setStarted(false);
     const newGrid = makeGrid(length, width);
     setStep(0);
     setMaxSteps(1);
@@ -107,6 +117,26 @@ export default function PathFinding(props) {
     setGrids([newGrid]);
     setSolved(false);
   };
+  const startAnimation = (pos, maxPos, posGrids, speed) => {
+    if (!animateInterval) {
+      var inter = setInterval(() => {
+        console.log(pos, maxPos);
+        if (pos < maxPos) {
+          pos++;
+          setStep(pos);
+          setGrid(posGrids[pos]);
+        } else {
+          clearInterval(inter);
+          setAnimateInterval(null);
+        }
+      }, speed);
+      setAnimateInterval(inter);
+    }
+  };
+  const stopAnimation = () => {
+    clearInterval(animateInterval);
+    setAnimateInterval(null);
+  };
   /**
    * Applies the search to the grid
    * @param {number} id The id for the algo
@@ -124,9 +154,12 @@ export default function PathFinding(props) {
         mid === -1
           ? await BFS(newGrid, origin, end, length, width)
           : await BFSWithMidPoint(newGrid, origin, mid, end, length, width);
-      setSolved(true);
+      setGrids(res);
       setMaxSteps(res.length - 1);
-      setStep(res.length - 1);
+      setStep(solved ? res.length - 1 : 0);
+      setGrid(res[solved ? res.length - 1 : 0]);
+      if (!solved) startAnimation(0, res.length - 1, res, animateRate);
+      setSolved(true);
       return res;
     }
     if (id === 2) {
@@ -134,9 +167,12 @@ export default function PathFinding(props) {
         mid === -1
           ? await AStar(newGrid, origin, end, length, width)
           : await AStarWithMidPoint(newGrid, origin, mid, end, length, width);
-      setSolved(true);
+      setGrids(res);
       setMaxSteps(res.length - 1);
-      setStep(res.length - 1);
+      setStep(solved ? res.length - 1 : 0);
+      setGrid(res[solved ? res.length - 1 : 0]);
+      if (!solved) startAnimation(0, res.length - 1, res, animateRate);
+      setSolved(true);
       return res;
     }
     if (id === 3) {
@@ -144,9 +180,12 @@ export default function PathFinding(props) {
         mid === -1
           ? await HSearch(newGrid, origin, end, length, width)
           : await HSearchWithMidPoint(newGrid, origin, mid, end, length, width);
-      setSolved(true);
+      setGrids(res);
       setMaxSteps(res.length - 1);
-      setStep(res.length - 1);
+      setStep(solved ? res.length - 1 : 0);
+      setGrid(res[solved ? res.length - 1 : 0]);
+      if (!solved) startAnimation(0, res.length - 1, res, animateRate);
+      setSolved(true);
       return res;
     }
   };
@@ -173,8 +212,6 @@ export default function PathFinding(props) {
         applySearch(algoID, newGrid, origin, midPoint, end).then((res) => {
           setGrids(res);
           setGrid(res[res.length - 1]);
-          setStep(res.length - 1);
-          setMaxSteps(res.length - 1);
         });
       }
       if (changeEnd) {
@@ -187,8 +224,6 @@ export default function PathFinding(props) {
         applySearch(algoID, newGrid, origin, midPoint, index).then((res) => {
           setGrids(res);
           setGrid(res[res.length - 1]);
-          setStep(res.length - 1);
-          setMaxSteps(res.length - 1);
         });
       }
       if (changeOrigin) {
@@ -201,8 +236,6 @@ export default function PathFinding(props) {
         applySearch(algoID, newGrid, index, midPoint, end).then((res) => {
           setGrids(res);
           setGrid(res[res.length - 1]);
-          setStep(res.length - 1);
-          setMaxSteps(res.length - 1);
         });
       }
       if (changeMidPoint) {
@@ -216,8 +249,6 @@ export default function PathFinding(props) {
         applySearch(algoID, newGrid, origin, index, end).then((res) => {
           setGrids(res);
           setGrid(res[res.length - 1]);
-          setStep(res.length - 1);
-          setMaxSteps(res.length - 1);
         });
       }
       return;
@@ -265,12 +296,16 @@ export default function PathFinding(props) {
         end={end}
         midPoint={midPoint}
         maxSteps={maxSteps}
+        speed={animateRate}
+        started={started}
+        setStarted={setStarted}
         setGrid={setGrid}
         setGrids={setGrids}
         applySearch={applySearch}
         changeStep={changeStep}
         setLength={setLength}
         setWidth={setWidth}
+        setSpeed={changeSpeed}
         toggleAddWall={toggleAddWall}
         toggleChangeEnd={toggleChangeEnd}
         toggleChangeOrigin={toggleChangeOrigin}
@@ -281,6 +316,10 @@ export default function PathFinding(props) {
         changeMidPoint={changeMidPoint}
         algo={algoID}
         setAlgo={setAlgoID}
+        startAnimation={startAnimation}
+        stopAnimation={stopAnimation}
+        isAnimationPlaying={animateInterval !== null}
+        setSolved={setSolved}
       />
       <GridPlane
         length={length}

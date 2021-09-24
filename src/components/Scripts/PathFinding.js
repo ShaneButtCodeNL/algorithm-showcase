@@ -107,7 +107,6 @@ const processBlockAStar = (
   return steps;
 };
 const comparatorAStar = (a, b) => {
-  console.log("A: %d B: %d", a.cost, b.cost);
   if (a.cost > b.cost) return 1;
   if (a.cost < b.cost) return -1;
   if (a.costToTravelTo > b.costToTravelTo) return 1;
