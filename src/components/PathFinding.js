@@ -120,7 +120,6 @@ export default function PathFinding(props) {
   const startAnimation = (pos, maxPos, posGrids, speed) => {
     if (!animateInterval) {
       var inter = setInterval(() => {
-        console.log(pos, maxPos);
         if (pos < maxPos) {
           pos++;
           setStep(pos);

@@ -265,8 +265,32 @@ GridBlock
 }
 
 /**
-SearchNodePointer
+Search Control Bar
 **/
+.searchControlBar {
+  border: solid;
+  color: var(--toolbar-font-color);
+  width: fit-content;
+  padding: 1em;
+  border-radius: 1em / 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.searchControlBar input {
+  padding: 1ch 1ch;
+  width: 8ch;
+  border-color: rgba(250, 250, 250, 0.4);
+}
+
+.searchControlBar button {
+  width: 18ch;
+}
+
+.searchControlBar select {
+  width: 18ch;
+}
 
 /**
 SearchNodeList
@@ -295,6 +319,7 @@ SearchNode
   flex: 0 0 var(--search-node-size);
   display: grid;
   place-items: center;
+  transition: background-color var(--animation-time) ease-in;
 }
 .currentSearchNode {
   background-color: var(--traveled-color);
