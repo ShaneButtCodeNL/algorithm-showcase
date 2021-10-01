@@ -20,22 +20,28 @@
   --grid-gap: 3px;
   --block-font-size: 0.5em;
   --block-line-height: 1em;
+
+  --search-node-size: 3ch;
 }
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 /**
 General classes
 **/
 button:hover {
   cursor: pointer;
 }
-.growVertDiv {
-  transition: max-height 1000ms ease-in;
-  max-height: 100%;
-  overflow: hidden;
+label {
+  font-family: "Bebas Neue", cursive;
 }
-.shrinkVertDiv {
-  transition: max-height 1000ms;
-  max-height: 0%;
-  overflow: hidden;
+select {
+  background-color: rgb(100, 100, 100);
+  color: var(--toolbar-font-color);
+  border: 2px solid;
+  border-color: var(--toolbar-font-color);
+  border-radius: 0.5em;
+}
+select option {
+  background-color: var(--background-color);
 }
 /**
 Main Page
@@ -47,6 +53,8 @@ Main Page
   width: 100vw;
   display: flex;
   flex-direction: column;
+  font-size: 1.2em;
+  line-height: 1.3em;
 }
 .displayWindow {
   display: flex;
@@ -60,8 +68,15 @@ Main Page
   display: flex;
   flex-direction: column;
   margin-bottom: 0.1em;
+  padding: 0.3em;
 }
-
+.problemSelectDiv {
+  margin: auto 0.4em;
+}
+.problemSelectSelect {
+  width: clamp(20ch, 20vw, 40ch);
+  height: 3em;
+}
 /**
 ToolBar
 **/
@@ -69,8 +84,9 @@ ToolBar
   display: flex;
   width: 20ch;
   height: 100%;
-  flex-shrink: 1;
+  flex-shrink: 0;
   transition: max-width 500ms ease-in;
+  overflow-x: hidden;
 }
 .sideBarSlide {
   display: flex;
@@ -84,8 +100,7 @@ ToolBar
   background-color: rgb(100, 100, 100);
 }
 .sideToolBar button,
-input,
-select {
+input {
   background-color: rgba(0, 0, 0, 0);
   color: var(--toolbar-font-color);
   border: 2px solid;
@@ -94,6 +109,7 @@ select {
 }
 .sideToolBar {
   color: var(--toolbar-font-color);
+  flex-shrink: 0;
   height: 100%;
   display: flex;
   gap: 0.3em;
@@ -103,7 +119,6 @@ select {
     rgb(120, 120, 120),
     var(--background-color)
   );
-  overflow-x: hidden;
 }
 .sideToolBar * {
   margin-left: 0.2em;
@@ -128,7 +143,7 @@ select {
   flex: 1 1;
 }
 .gridSearchSelect {
-  width: 22ch;
+  width: 27ch;
   margin: 0 auto;
 }
 
@@ -162,6 +177,7 @@ select {
   display: flex;
   flex-shrink: 0;
   width: 19ch;
+  overflow: hidden;
 }
 /**
 GridPlane
@@ -246,4 +262,46 @@ GridBlock
 }
 .gridBlockEnd {
   background-color: var(--end-color);
+}
+
+/**
+SearchNodePointer
+**/
+
+/**
+SearchNodeList
+**/
+.searchNodeListContainer {
+  overflow: auto;
+  padding: 1em;
+}
+.searchNodeList {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: calc(50 * var(--search-node-size));
+}
+.searchPointerList {
+  display: flex;
+  height: fit-content;
+}
+
+/**
+SearchNode
+**/
+.searchNode {
+  outline: solid 1px;
+  height: var(--search-node-size);
+  width: var(--search-node-size);
+  flex: 0 0 var(--search-node-size);
+  display: grid;
+  place-items: center;
+}
+.currentSearchNode {
+  background-color: var(--traveled-color);
+}
+.checkedSearchNode {
+  background-color: var(--end-color);
+}
+.validSearchNode {
+  background-color: var(--origin-color);
 }

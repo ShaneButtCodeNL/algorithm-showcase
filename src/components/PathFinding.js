@@ -8,7 +8,7 @@ import {
   HSearchWithMidPoint,
 } from "./Scripts/PathFinding";
 import GridPlane from "./GridPlane";
-import ToolBar from "./ToolBar";
+import PathFindingToolBar from "./PathFindingToolBar";
 
 /**
  *  Makes a 2d grid of determined size
@@ -286,7 +286,7 @@ export default function PathFinding(props) {
   }, [step]);
   return (
     <>
-      <ToolBar
+      <PathFindingToolBar
         width={width}
         length={length}
         step={step}
