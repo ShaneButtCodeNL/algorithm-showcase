@@ -21,7 +21,7 @@
   --block-font-size: 0.5em;
   --block-line-height: 1em;
 
-  --search-node-size: 3ch;
+  --search-node-size: 5ch;
 }
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 /**
