@@ -78,6 +78,24 @@ Main Page
   height: 3em;
 }
 /**
+Control Bar
+**/
+.controlBarValueContainer {
+  display: flex;
+  gap: 0.5em;
+  justify-content: right;
+  flex-wrap: wrap;
+  width: clamp(25ch, 15vw, 28ch);
+}
+.controlBarValueItem {
+  border-right: solid 1px;
+  padding-left: 1ch;
+  flex: 1 0;
+}
+.controlBarValueContainer div:last-child {
+  border: none;
+}
+/**
 ToolBar
 **/
 .sideBar {
@@ -95,6 +113,7 @@ ToolBar
   padding: 1em 1ch;
   border: 1px outset;
   border-color: rgba(0, 0, 0, 0.3);
+  cursor: pointer;
 }
 .sideToolBar select {
   background-color: rgb(100, 100, 100);
@@ -178,6 +197,34 @@ input {
   flex-shrink: 0;
   width: 19ch;
   overflow: hidden;
+}
+/**
+Search Control Bar
+**/
+.searchControlBar {
+  border: solid;
+  color: var(--toolbar-font-color);
+  padding: 1em;
+  border-radius: 1em / 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  width: fit-content;
+}
+
+.searchControlBar input,
+.searchControlBar select {
+  padding: 1ch 1ch;
+  width: 8ch;
+  border-color: rgba(250, 250, 250, 0.4);
+}
+
+.searchControlBar button {
+  width: 18ch;
+}
+
+.searchControlBar select {
+  width: 18ch;
 }
 /**
 GridPlane
@@ -265,34 +312,6 @@ GridBlock
 }
 
 /**
-Search Control Bar
-**/
-.searchControlBar {
-  border: solid;
-  color: var(--toolbar-font-color);
-  width: fit-content;
-  padding: 1em;
-  border-radius: 1em / 2em;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3em;
-}
-
-.searchControlBar input {
-  padding: 1ch 1ch;
-  width: 8ch;
-  border-color: rgba(250, 250, 250, 0.4);
-}
-
-.searchControlBar button {
-  width: 18ch;
-}
-
-.searchControlBar select {
-  width: 18ch;
-}
-
-/**
 SearchNodeList
 **/
 .searchNodeListContainer {
@@ -303,6 +322,9 @@ SearchNodeList
   display: flex;
   flex-wrap: wrap;
   max-width: calc(50 * var(--search-node-size));
+}
+.orderNode {
+  transition: order var(--animation-time) ease-out;
 }
 .searchPointerList {
   display: flex;
@@ -319,7 +341,14 @@ SearchNode
   flex: 0 0 var(--search-node-size);
   display: grid;
   place-items: center;
-  transition: background-color var(--animation-time) ease-in;
+  transition: background-color var(--animation-time) ease-in,
+    filter var(--animation-time) ease-out;
+}
+.searchPointerNode {
+  display: flex;
+  justify-content: space-between;
+  height: fit-content;
+  padding-bottom: 0.1em;
 }
 .currentSearchNode {
   background-color: var(--traveled-color);

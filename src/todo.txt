@@ -1,3 +1,4 @@
+[]  Explanations of algorithms
 [X]  Display grid
 [X]  change size of grid
 [X]  ability to add walls
@@ -14,6 +15,14 @@
 [X]  Animate
 [X]  ability to change animation speed
 [X]  ability to start/stop animation
+[X]  Linear Search
+[X]  Binary Search
+[X]  Jump Search
+[]  implement change jump size(opt is sqrt(n))
+[X]  Implement pointers to show progress
+[X]  Controls for Search
+[X]  Animate Search
+[X]  Use filter to show ranges in binary search
 
 bugs:
 *Fixed* Gridsand grid not updateing in BFS each time
