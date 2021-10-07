@@ -18,7 +18,7 @@
 [X]  Linear Search
 [X]  Binary Search
 [X]  Jump Search
-[]  implement change jump size(opt is sqrt(n))
+[X]  implement change jump size(opt is sqrt(n))
 [X]  Implement pointers to show progress
 [X]  Controls for Search
 [X]  Animate Search

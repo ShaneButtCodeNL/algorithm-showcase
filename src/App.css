@@ -85,12 +85,14 @@ Control Bar
   gap: 0.5em;
   justify-content: right;
   flex-wrap: wrap;
-  width: clamp(25ch, 15vw, 28ch);
+  min-width: 18ch;
+  max-width: 64ch;
 }
 .controlBarValueItem {
   border-right: solid 1px;
   padding-left: 1ch;
-  flex: 1 0;
+  flex: 1 1 13ch;
+  outline: 1px solid rgba(0, 0, 0, 0.1);
 }
 .controlBarValueContainer div:last-child {
   border: none;
@@ -209,7 +211,7 @@ Search Control Bar
   display: flex;
   flex-direction: column;
   gap: 0.3em;
-  width: fit-content;
+  width: clamp(16ch, 50vw, 56ch);
 }
 
 .searchControlBar input,
