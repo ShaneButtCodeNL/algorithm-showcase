@@ -3,6 +3,7 @@ import "./App.css";
 import "./components/PathFinding";
 import PathFinding from "./components/PathFinding";
 import Searching from "./components/Searching";
+import Sorting from "./components/Sorting";
 import Title from "./components/Title";
 
 function App() {
@@ -13,6 +14,8 @@ function App() {
         return <PathFinding />;
       case 2:
         return <Searching />;
+      case 3:
+        return <Sorting />;
       default:
         return <></>;
     }
