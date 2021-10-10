@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BubbleSort } from "./Scripts/Sort";
 import SortingNodeList from "./SortingNodeList";
 import SortingToolBar from "./SortingToolBar";
 
@@ -13,12 +14,20 @@ const makeCollection = (num) =>
   Array.from({ length: num }, (_, i) => {
     return { value: i, order: i, state: 0 };
   });
+
+const cloneCollection = (collection) =>
+  collection.map((v) => {
+    return { ...v };
+  });
 export default function Sorting(props) {
   const [collection, setCollection] = useState(() => makeCollection(10));
   const [size, setSize] = useState(10);
-  const [algoID, setAlgoID] = useState(0);
+  const [algoID, setAlgoID] = useState(1);
   const [displayType, setDisplayType] = useState(0);
   const [mainPointer, setMainPointer] = useState(-1);
+  const [rightPosition, setRightPosition] = useState(-1);
+  const [leftPosition, setLeftPosition] = useState(-1);
+  const [asending, setAsending] = useState(true);
   const [animation, setAnimation] = useState(null);
   const [animationSpeed, setAnimationSpeed] = useState(100);
 
@@ -52,6 +61,30 @@ export default function Sorting(props) {
     clearInterval(animation);
     setAnimation(null);
   };
+
+  const applySort = (id) => {
+    let clone = cloneCollection(collection);
+    setRightPosition(-1);
+    setLeftPosition(-1);
+    setMainPointer(-1);
+    switch (id) {
+      case 1:
+        setMainPointer(0);
+        setRightPosition(collection.length - 1);
+        BubbleSort(
+          clone,
+          asending,
+          setCollection,
+          setMainPointer,
+          setRightPosition,
+          setAnimation,
+          animationSpeed
+        );
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <>
       <SortingToolBar
@@ -74,10 +107,15 @@ export default function Sorting(props) {
         collection={collection}
         size={size}
         mainPointer={mainPointer}
+        leftPointer={leftPosition}
+        rightPointer={rightPosition}
         animation={animation}
         isAnimated={animation !== null}
         setAnimation={setAnimation}
         stopAnimation={stopAnimation}
+        asending={asending}
+        setAsending={setAsending}
+        applySort={applySort}
       />
     </>
   );

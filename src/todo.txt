@@ -1,4 +1,6 @@
 []  Explanations of algorithms
+
+PathFinding
 [X]  Display grid
 [X]  change size of grid
 [X]  ability to add walls
@@ -15,6 +17,8 @@
 [X]  Animate
 [X]  ability to change animation speed
 [X]  ability to start/stop animation
+
+Search
 [X]  Linear Search
 [X]  Binary Search
 [X]  Jump Search
@@ -23,6 +27,13 @@
 [X]  Controls for Search
 [X]  Animate Search
 [X]  Use filter to show ranges in binary search
+
+Sort
+[X]  BubbleSort
+[]  MergeSort
+[X]  Implement pointers to show progress
+[]  Controls for Sort
+[]  Animate Sort
 
 bugs:
 *Fixed* Gridsand grid not updateing in BFS each time

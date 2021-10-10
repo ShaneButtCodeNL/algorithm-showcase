@@ -25,6 +25,8 @@ export default function SortingToolBar(props) {
           <label>Display Type</label>
           <select
             ref={displayRef}
+            disabled={props.isAnimated}
+            style={{ opacity: props.isAnimated ? "0.5" : "1" }}
             onChange={() =>
               props.setDisplayType(Number.parseInt(displayRef.current.value))
             }
@@ -35,6 +37,7 @@ export default function SortingToolBar(props) {
           <label>Collection Size</label>
           <input
             type="number"
+            disabled={props.isAnimated}
             ref={sizeInputRef}
             className="toolBarInput"
             min={minSize}
@@ -51,6 +54,7 @@ export default function SortingToolBar(props) {
           />
           <input
             type="range"
+            disabled={props.isAnimated}
             ref={sizeSliderRef}
             max={maxSize}
             min={minSize}
@@ -67,6 +71,7 @@ export default function SortingToolBar(props) {
           <label htmlFor="animationSpeedSlider">Animation Speed:</label>
           <input
             className="toolBarInput"
+            disabled={props.isAnimated}
             type="number"
             ref={speedInputRef}
             max={maxSpeed}
@@ -81,6 +86,7 @@ export default function SortingToolBar(props) {
           <input
             type="range"
             ref={speedSliderRef}
+            disabled={props.isAnimated}
             max={maxSpeed}
             min={minSpeed}
             defaultValue={getSpeedSetting(props.animationSpeed)}
@@ -94,6 +100,8 @@ export default function SortingToolBar(props) {
           <button
             type="button"
             name="randomButton"
+            disabled={props.isAnimated}
+            style={{ opacity: props.isAnimated ? "0.5" : "1" }}
             onClick={() => props.randomizeCollection()}
           >
             Randomize List

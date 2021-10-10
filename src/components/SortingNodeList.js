@@ -5,7 +5,12 @@ import SortingNode from "./SortingNode";
 export default function SortingNodeList(props) {
   return (
     <div>
-      <SortingControlBar setAlgoID={props.setAlgoID} />
+      <SortingControlBar
+        setAlgoID={props.setAlgoID}
+        algoID={props.algoID}
+        applySort={props.applySort}
+        isAnimated={props.isAnimated}
+      />
       <div className="searchNodeList">
         {props.collection.map((item, index) => {
           return (
@@ -21,8 +26,8 @@ export default function SortingNodeList(props) {
                 right={-1}
                 order={item.order}
                 isMainPos={props.mainPointer === item.order}
-                isLeftPos={false}
-                isRightPos={false}
+                left={props.leftPointer}
+                right={props.rightPointer}
               />
               <SortingNode
                 value={item.value}
