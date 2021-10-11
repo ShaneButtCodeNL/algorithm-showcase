@@ -16,7 +16,9 @@ export default function SortingNode(props) {
           flexShrink: "1",
           flexBasis: "auto",
           backgroundColor: "yellow",
-          height: `${props.value * 5}px`,
+          height: `${props.value * 3}px`,
+          outline: "solid 1px",
+          outlineColor: "black",
         }}
       ></div>
     );

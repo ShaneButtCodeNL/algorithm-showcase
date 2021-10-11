@@ -2,7 +2,7 @@ import SortPointerNode from "./SortPointerNode";
 import SortingControlBar from "./SortingControlBar";
 import SortingNode from "./SortingNode";
 
-const customStyle = { flexWrap: "none" };
+const customStyle = { flexWrap: "nowrap" };
 const displayNode = { flexGrow: "1", flexShrink: "1", flexBasis: "1px" };
 
 export default function SortingNodeList(props) {
@@ -17,7 +17,7 @@ export default function SortingNodeList(props) {
       />
       <div
         className="searchNodeList"
-        style={props.displayType === 1 ? customStyle : {}}
+        style={{ ...(props.displayType === 1 ? customStyle : {}) }}
       >
         {props.collection.map((item, index) => {
           return (

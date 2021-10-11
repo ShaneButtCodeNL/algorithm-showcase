@@ -50,11 +50,16 @@ export default function Sorting(props) {
       item.value = Math.floor(Math.random() * (maxValue + 1));
     }
     setCollection(resetSearchState(cloned));
+    setMainPointer(-1);
+    setLeftPosition(-1);
+    setRightPosition(-1);
   };
   const updateCollection = (num) => {
     setCollection(() => makeCollection(num));
     setSize(num);
     setMainPointer(-1);
+    setRightPosition(-1);
+    setLeftPosition(-1);
   };
   const stopAnimation = () => {
     if (animation === null) return;
