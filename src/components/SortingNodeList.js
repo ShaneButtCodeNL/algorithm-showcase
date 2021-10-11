@@ -14,6 +14,7 @@ export default function SortingNodeList(props) {
         applySort={props.applySort}
         isAnimated={props.isAnimated}
         stopAnimation={props.stopAnimation}
+        resetPointers={props.resetPointers}
       />
       <div
         className="searchNodeList"

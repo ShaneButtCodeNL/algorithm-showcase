@@ -18,9 +18,11 @@ export default function SortingControlBar(props) {
             ref={algoSelectRef}
             onChange={() => {
               props.setAlgoID(Number.parseInt(algoSelectRef.current.value));
+              props.resetPointers();
             }}
           >
             <option value={1}>Bubble Sort</option>
+            <option value={2}>Selection Sort</option>
           </select>
         </div>
       </div>

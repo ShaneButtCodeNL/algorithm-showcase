@@ -33,6 +33,7 @@ Search
 Sort
 [X]  BubbleSort
 []  InsertionSort
+[]  SelectionSort
 []  MergeSort
 [X]  Implement pointers to show progress
 [X]  Controls for Sort

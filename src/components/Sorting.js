@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BubbleSort } from "./Scripts/Sort";
+import { BubbleSort, SelectionSort } from "./Scripts/Sort";
 import SortingNodeList from "./SortingNodeList";
 import SortingToolBar from "./SortingToolBar";
 
@@ -41,6 +41,11 @@ export default function Sorting(props) {
     }
     return cloned;
   };
+  const resetPointers = () => {
+    setMainPointer(-1);
+    setLeftPosition(-1);
+    setRightPosition(-1);
+  };
   const randomizeCollection = () => {
     stopAnimation();
     let cloned = collection.map((v) => {
@@ -50,16 +55,12 @@ export default function Sorting(props) {
       item.value = Math.floor(Math.random() * (maxValue + 1));
     }
     setCollection(resetSearchState(cloned));
-    setMainPointer(-1);
-    setLeftPosition(-1);
-    setRightPosition(-1);
+    resetPointers();
   };
   const updateCollection = (num) => {
     setCollection(() => makeCollection(num));
     setSize(num);
-    setMainPointer(-1);
-    setRightPosition(-1);
-    setLeftPosition(-1);
+    resetPointers();
   };
   const stopAnimation = () => {
     if (animation === null) return;
@@ -83,6 +84,18 @@ export default function Sorting(props) {
           rightPosition
         );
         break;
+      case 2:
+        SelectionSort(
+          clone,
+          asending,
+          setCollection,
+          setMainPointer,
+          setLeftPosition,
+          setAnimation,
+          animationSpeed,
+          mainPointer,
+          leftPosition
+        );
       default:
         break;
     }
@@ -118,6 +131,7 @@ export default function Sorting(props) {
         asending={asending}
         setAsending={setAsending}
         applySort={applySort}
+        resetPointers={resetPointers}
       />
     </>
   );
