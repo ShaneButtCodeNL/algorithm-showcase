@@ -361,3 +361,11 @@ SearchNode
 .validSearchNode {
   background-color: var(--origin-color);
 }
+/**
+Sorting
+**/
+.sortingDisplayWindow {
+  overflow: auto;
+  padding: 0.3em;
+  flex-grow: 1;
+}

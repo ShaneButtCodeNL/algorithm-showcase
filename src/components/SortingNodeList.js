@@ -1,29 +1,37 @@
-import SearchPointerNode from "./SearchPointerNode";
+import SortPointerNode from "./SortPointerNode";
 import SortingControlBar from "./SortingControlBar";
 import SortingNode from "./SortingNode";
 
+const customStyle = { flexWrap: "none" };
+const displayNode = { flexGrow: "1", flexShrink: "1", flexBasis: "1px" };
+
 export default function SortingNodeList(props) {
   return (
-    <div>
+    <div className="sortingDisplayWindow">
       <SortingControlBar
         setAlgoID={props.setAlgoID}
         algoID={props.algoID}
         applySort={props.applySort}
         isAnimated={props.isAnimated}
+        stopAnimation={props.stopAnimation}
       />
-      <div className="searchNodeList">
+      <div
+        className="searchNodeList"
+        style={props.displayType === 1 ? customStyle : {}}
+      >
         {props.collection.map((item, index) => {
           return (
             <div
               className="orderNode"
               key={index}
-              style={{ order: item.order }}
+              style={{
+                ...{ order: item.order },
+                ...(props.displayType === 1 ? displayNode : {}),
+              }}
             >
-              <SearchPointerNode
+              <SortPointerNode
                 key={`pointer${index}`}
-                left={-1}
                 main={props.mainPointer}
-                right={-1}
                 order={item.order}
                 isMainPos={props.mainPointer === item.order}
                 left={props.leftPointer}
@@ -35,6 +43,7 @@ export default function SortingNodeList(props) {
                 state={item.state}
                 blur={false}
                 key={`node${index}`}
+                displayType={props.displayType}
               />
             </div>
           );

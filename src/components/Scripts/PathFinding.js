@@ -109,10 +109,11 @@ const processBlockAStar = (
 const comparatorAStar = (a, b) => {
   if (a.cost > b.cost) return 1;
   if (a.cost < b.cost) return -1;
-  if (a.costToTravelTo > b.costToTravelTo) return 1;
-  if (a.costToTravelTo < b.costToTravelTo) return -1;
   if (a.costToTravelFrom < b.costToTravelFrom) return 1;
   if (a.costToTravelFrom > b.costToTravelFrom) return -1;
+  if (a.costToTravelTo > b.costToTravelTo) return 1;
+  if (a.costToTravelTo < b.costToTravelTo) return -1;
+
   return 0;
 };
 const comparatorHSearch = (a, b) => {

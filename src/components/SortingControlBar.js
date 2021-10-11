@@ -27,12 +27,19 @@ export default function SortingControlBar(props) {
       <button
         type="button"
         onClick={() => {
-          console.log("ALGOID:", props.algoID);
           props.applySort(props.algoID);
         }}
         disabled={props.isAnimated}
       >
         Start
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          props.stopAnimation();
+        }}
+      >
+        Stop Animation
       </button>
     </fieldset>
   );

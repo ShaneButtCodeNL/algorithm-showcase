@@ -64,13 +64,8 @@ export default function Sorting(props) {
 
   const applySort = (id) => {
     let clone = cloneCollection(collection);
-    setRightPosition(-1);
-    setLeftPosition(-1);
-    setMainPointer(-1);
     switch (id) {
       case 1:
-        setMainPointer(0);
-        setRightPosition(collection.length - 1);
         BubbleSort(
           clone,
           asending,
@@ -78,7 +73,9 @@ export default function Sorting(props) {
           setMainPointer,
           setRightPosition,
           setAnimation,
-          animationSpeed
+          animationSpeed,
+          mainPointer,
+          rightPosition
         );
         break;
       default:
