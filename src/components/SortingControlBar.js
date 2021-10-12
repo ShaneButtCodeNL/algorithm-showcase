@@ -23,6 +23,7 @@ export default function SortingControlBar(props) {
           >
             <option value={1}>Bubble Sort</option>
             <option value={2}>Selection Sort</option>
+            <option value={3}>Insertion Sort</option>
           </select>
         </div>
       </div>

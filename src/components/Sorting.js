@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BubbleSort, SelectionSort } from "./Scripts/Sort";
+import { BubbleSort, InsertionSort, SelectionSort } from "./Scripts/Sort";
 import SortingNodeList from "./SortingNodeList";
 import SortingToolBar from "./SortingToolBar";
 
@@ -93,9 +93,21 @@ export default function Sorting(props) {
           setLeftPosition,
           setAnimation,
           animationSpeed,
-          mainPointer,
           leftPosition
         );
+        break;
+      case 3:
+        InsertionSort(
+          clone,
+          asending,
+          setCollection,
+          setMainPointer,
+          setRightPosition,
+          setAnimation,
+          animationSpeed,
+          rightPosition
+        );
+        break;
       default:
         break;
     }

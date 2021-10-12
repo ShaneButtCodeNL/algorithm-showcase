@@ -25,7 +25,6 @@ export function SelectionSort(
   setLeftPosition,
   setAnimation,
   animationSpeed,
-  mainPos,
   beginPos
 ) {
   setAnimationSpeed(animationSpeed);
@@ -73,7 +72,6 @@ export function InsertionSort(
   setRightPosition,
   setAnimation,
   animationSpeed,
-  mainPos,
   rightPos
 ) {
   setAnimationSpeed(animationSpeed);
@@ -85,12 +83,46 @@ export function InsertionSort(
   );
   let length = collection.length,
     end = rightPos === -1 ? 1 : rightPos,
-    pos = mainPos === -1 ? 0 : mainPos;
-  const isSorting = () => pos < end;
+    pos = 0;
   const clone = cloneCollection(collection);
   const copy = [...clone];
+  copy[0].state = 1;
   copy.sort((a, b) => a.order - b.order);
-  var animation = setInterval(() => {}, animationSpeed);
+  var animation = setInterval(() => {
+    //Sorted
+    if (end === length) {
+      clearInterval(animation);
+      setAnimation(null);
+      setPosition(-1);
+      setRightPosition(-1);
+      setCollection(clone);
+    } else {
+      setPosition(pos);
+      setRightPosition(end);
+      if (pos < end) {
+        //Found insertion
+        if (copy[end].value <= copy[pos].value) {
+          copy[end].state = 1;
+          //Move rest up 1 space
+          for (let i = pos; i <= end; i++) {
+            copy[i].order = copy[i].order + 1;
+          }
+          //Insert value
+          copy[end].order = pos;
+          copy.sort((a, b) => a.order - b.order);
+          end++;
+          pos = 0;
+        } else {
+          pos++;
+        }
+      } else {
+        copy[end].state = 1;
+        end++;
+        pos = 0;
+      }
+      setCollection(clone);
+    }
+  }, animationSpeed);
   setAnimation(animation);
 }
 export function BubbleSort(
