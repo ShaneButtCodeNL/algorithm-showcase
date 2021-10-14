@@ -17,6 +17,114 @@ const comparator = (v1, v2, flag) => {
 };
 const setAnimationSpeed = (sp) =>
   document.documentElement.style.setProperty("--animation-time", `${sp}ms`);
+
+export function MergeSort(
+  collection,
+  asending,
+  setCollection,
+  setAnimation,
+  animationSpeed
+) {
+  let length = collection.length,
+    merged = [],
+    mergeLeft = null,
+    mergeRight = null,
+    state = 0;
+  const clone = cloneCollection(collection);
+  let tempcopy = [...clone];
+  tempcopy.sort((a, b) => a.order - b.order);
+  const copy = [];
+  for (let i = 0; i < length; i++) {
+    const item = tempcopy[i];
+    item.order = i * length;
+    item.state = i + 1;
+    copy.push([item]);
+  }
+  tempcopy = null;
+  var animation = setInterval(() => {
+    setCollection(cloneCollection(clone));
+    //Sorted
+    if (copy.length === 1 && mergeLeft === null && mergeRight === null) {
+      clearInterval(animation);
+      setAnimation(null);
+      for (let item of clone) {
+        item.state = 0;
+      }
+      setCollection(cloneCollection(clone));
+    } else {
+      //mergeing
+      if (mergeLeft || mergeRight) {
+        //Left is empty
+        if (mergeLeft.length === 0) {
+          let order = merged[merged.length - 1].order;
+          for (let i = 0; i < mergeRight.length; i++) {
+            mergeRight[i].state = state;
+            mergeRight[i].order = order + 1 + i;
+          }
+          for (let item of merged) {
+            item.state = state;
+          }
+          merged = [...merged, ...mergeRight];
+          copy.push(merged);
+          mergeLeft = null;
+          mergeRight = null;
+          merged = null;
+        }
+        //Right Empty
+        else if (mergeRight.length === 0) {
+          let order = merged[merged.length - 1].order;
+          for (let i = 0; i < mergeLeft.length; i++) {
+            mergeLeft[i].state = state;
+            mergeLeft[i].order = order + 1 + i;
+          }
+          for (let item of merged) {
+            item.state = state;
+          }
+          merged = [...merged, ...mergeLeft];
+          copy.push(merged);
+          mergeLeft = null;
+          mergeRight = null;
+          merged = null;
+        } else {
+          let item1 = mergeLeft[0],
+            item2 = mergeRight[0],
+            order = merged[merged.length - 1].order + 1;
+          if (comparator(item1, item2, asending) <= 0) {
+            item1.state = 0;
+            item1.order = order;
+            merged.push(mergeLeft.shift());
+          } else {
+            item2.state = 0;
+            item2.order = order;
+            merged.push(mergeRight.shift());
+          }
+        }
+      } else {
+        mergeLeft = copy.shift();
+        mergeRight = copy.shift();
+        let item1 = mergeLeft[0],
+          item2 = mergeRight[0];
+        if (comparator(item1, item2, asending) <= 0) {
+          state = item1.state;
+          item1.state = 0;
+          merged = [mergeLeft.shift()];
+        } else {
+          state = item2.state;
+          item2.state = 0;
+          merged = [mergeRight.shift()];
+        }
+        for (let i = 1; i <= mergeLeft.length; i++)
+          mergeLeft[i - 1].order =
+            merged[0].order + 2 * mergeLeft.length + mergeRight.length + i;
+        for (let i = 1; i <= mergeRight.length; i++)
+          mergeRight[i - 1].order =
+            merged[0].order + 2 * mergeLeft.length + 2 * mergeRight.length + i;
+      }
+    }
+  }, animationSpeed);
+  setAnimation(animation);
+}
+
 export function SelectionSort(
   collection,
   asending,

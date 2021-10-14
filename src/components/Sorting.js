@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { BubbleSort, InsertionSort, SelectionSort } from "./Scripts/Sort";
+import {
+  BubbleSort,
+  InsertionSort,
+  MergeSort,
+  SelectionSort,
+} from "./Scripts/Sort";
 import SortingNodeList from "./SortingNodeList";
 import SortingToolBar from "./SortingToolBar";
 
@@ -106,6 +111,15 @@ export default function Sorting(props) {
           setAnimation,
           animationSpeed,
           rightPosition
+        );
+        break;
+      case 4:
+        MergeSort(
+          collection,
+          asending,
+          setCollection,
+          setAnimation,
+          animationSpeed
         );
         break;
       default:

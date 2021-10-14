@@ -325,9 +325,7 @@ SearchNodeList
   flex-wrap: wrap;
   max-width: calc(50 * var(--search-node-size));
 }
-.orderNode {
-  transition: order var(--animation-time) ease-out;
-}
+
 .searchPointerList {
   display: flex;
   height: fit-content;
