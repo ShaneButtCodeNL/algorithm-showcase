@@ -102,6 +102,7 @@ export function MergeSort(
       } else {
         mergeLeft = copy.shift();
         mergeRight = copy.shift();
+
         let item1 = mergeLeft[0],
           item2 = mergeRight[0];
         if (comparator(item1, item2, asending) <= 0) {
@@ -157,7 +158,11 @@ export function SelectionSort(
       setLeftPosition(-1);
     } else {
       const com = comparator(copy[pos], copy[minPos], asending);
-      if (com < 0) minPos = pos;
+      if (com < 0) {
+        copy[minPos].state = 0;
+        copy[pos].state = -1;
+        minPos = pos;
+      }
       //At end of collection
       if (pos === length - 1) {
         swap(begin, minPos, copy);
@@ -165,6 +170,7 @@ export function SelectionSort(
         begin++;
         pos = begin;
         minPos = begin;
+        copy[minPos].state = -1;
       } else {
         pos++;
       }
@@ -194,8 +200,9 @@ export function InsertionSort(
     pos = 0;
   const clone = cloneCollection(collection);
   const copy = [...clone];
-  copy[0].state = 1;
   copy.sort((a, b) => a.order - b.order);
+  copy[0].state = 1;
+  copy[end].state = -1;
   var animation = setInterval(() => {
     //Sorted
     if (end === length) {
@@ -207,6 +214,8 @@ export function InsertionSort(
     } else {
       setPosition(pos);
       setRightPosition(end);
+      setCollection(clone);
+
       if (pos < end) {
         //Found insertion
         if (copy[end].value <= copy[pos].value) {
@@ -219,6 +228,7 @@ export function InsertionSort(
           copy[end].order = pos;
           copy.sort((a, b) => a.order - b.order);
           end++;
+          if (end < length) copy[end].state = -1;
           pos = 0;
         } else {
           pos++;
@@ -226,9 +236,10 @@ export function InsertionSort(
       } else {
         copy[end].state = 1;
         end++;
+        if (end < length) copy[end].state = -1;
+
         pos = 0;
       }
-      setCollection(clone);
     }
   }, animationSpeed);
   setAnimation(animation);
@@ -254,8 +265,10 @@ export function BubbleSort(
   const clone = cloneCollection(collection);
   const copy = [...clone];
   copy.sort((a, b) => a.order - b.order);
+  copy[pos === -1 ? 0 : pos].state = -1;
   var animation = setInterval(() => {
     if (end === 0 || sorted) {
+      setCollection(clone);
       clearInterval(animation);
       setAnimation(null);
       setPosition(-1);
@@ -264,16 +277,21 @@ export function BubbleSort(
     }
     setPosition(pos);
     setRightPosition(end);
+    setCollection(clone);
+
     if (pos < end) {
       let com = comparator(copy[pos], copy[pos + 1], asending);
       if (com > 0) {
         swap(pos, pos + 1, copy);
         swaped = true;
       }
+      copy[pos].state = 0;
+      copy[pos + 1].state = -1;
       pos++;
       if (pos === end) {
         copy[end].state = 1;
         pos = 0;
+        copy[0].state = -1;
         end--;
         if (!swaped) {
           sorted = true;
@@ -282,7 +300,6 @@ export function BubbleSort(
         swaped = false;
       }
     }
-    setCollection(clone);
   }, animationSpeed);
   setAnimation(animation);
 }

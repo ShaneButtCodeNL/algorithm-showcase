@@ -52,6 +52,11 @@ export default function SortingNodeList(props) {
                     blur={false}
                     key={`node${index}`}
                     displayType={props.displayType}
+                    algoID={props.algoID}
+                    isSelectInsertSort={
+                      props.algoID === 3 || props.algoID === 2
+                    }
+                    isSelected={props.mainPointer === item.order}
                   />
                 </>
               ) : (
