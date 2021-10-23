@@ -157,6 +157,7 @@ export default function Searching(props) {
         isAnimated={animation !== null}
         setAnimation={setAnimation}
         stopAnimation={stopAnimation}
+        setContent={props.setContent}
       />
     </>
   );

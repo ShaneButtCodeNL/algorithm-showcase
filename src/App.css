@@ -63,6 +63,8 @@ Main Page
 }
 .titleBar {
   border-bottom: solid 1px;
+  max-width: 100vw;
+  overflow: auto;
 }
 .title {
   display: flex;
@@ -74,8 +76,37 @@ Main Page
   margin: auto 0.4em;
 }
 .problemSelectSelect {
-  width: clamp(20ch, 20vw, 40ch);
+  width: clamp(10ch, 20vw, 20ch);
   height: 3em;
+}
+.popOutDiv {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.5);
+  will-change: max-height, max-width, opacity;
+  transition: max-height var(--animation-time) ease-out,
+    max-width var(--animation-time) ease-out,
+    opacity var(--animation-time) ease-out, top var(--animation-time) ease-out,
+    left var(--animation-time) ease-out;
+}
+.popOutDiv ul {
+  list-style-type: none;
+}
+.popOutDiv li {
+  width: clamp(30ch, 50vw, 60ch);
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  border-radius: 10%/2em;
 }
 /**
 Control Bar

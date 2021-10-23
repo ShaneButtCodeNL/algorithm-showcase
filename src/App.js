@@ -5,25 +5,34 @@ import PathFinding from "./components/PathFinding";
 import Searching from "./components/Searching";
 import Sorting from "./components/Sorting";
 import Title from "./components/Title";
-
+const defaultContent = "You need to select a problem first.";
 function App() {
-  const [algoType, setAlgoType] = useState(0);
+  const [problemType, setProblemType] = useState(0);
+  const [active, setActive] = useState(false);
+  const [content, setContent] = useState(defaultContent);
   const renderProblem = (num) => {
     switch (num) {
       case 1:
-        return <PathFinding />;
+        return <PathFinding setContent={setContent} />;
       case 2:
-        return <Searching />;
+        return <Searching setContent={setContent} />;
       case 3:
-        return <Sorting />;
+        return <Sorting setContent={setContent} />;
       default:
         return <></>;
     }
   };
   return (
     <div className="App">
-      <Title algoType={algoType} setAlgoType={setAlgoType} />
-      <div className={"displayWindow"}>{renderProblem(algoType)}</div>
+      <Title
+        problemType={problemType}
+        setProblemType={setProblemType}
+        active={active}
+        setActive={setActive}
+        content={content}
+        setContent={setContent}
+      />
+      <div className={"displayWindow"}>{renderProblem(problemType)}</div>
     </div>
   );
 }

@@ -14,6 +14,7 @@ export default function SearchNodeList(props) {
         setJumpSize={props.setJumpSize}
         applySearch={props.applySearch}
         isAnimated={props.isAnimated}
+        setContent={props.setContent}
       />
       <div className="searchNodeList">
         {props.collection.map((item, index) => {

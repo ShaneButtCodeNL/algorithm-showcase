@@ -1,4 +1,6 @@
 []  Explanations of algorithms
+        -Done for search
+[]  how to use
 
 PathFinding
 [X]  Display grid
@@ -35,12 +37,12 @@ Sort
 [X]  InsertionSort
 [X]  SelectionSort
 [X]  MergeSort
-[]  implement colors for merge sort groups
+[X]  implement colors for merge sort groups
 [X]  Implement pointers to show progress
 [X]  Controls for Sort
 [X]  Animate Sort
 [X]  Ability to start/resume animation
-[]  use Colors for sort with bar displaytype to show pointers
+[X]  use Colors for sort with bar displaytype to show pointers
 
 bugs:
 *Fixed* Grids and grid not updateing in BFS each time
