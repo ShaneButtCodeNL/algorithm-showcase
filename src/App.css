@@ -89,7 +89,7 @@ Main Page
   width: 100vw;
   height: 100vh;
   margin: auto;
-  overflow: hidden;
+  overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
   will-change: max-height, max-width, opacity;
   transition: max-height var(--animation-time) ease-out,
@@ -219,12 +219,6 @@ input {
   text-align: center;
 }
 
-.activeToggleItem {
-  border-style: inset;
-  background-color: rgb(100, 100, 100);
-  transition: filter 1000ms ease-out;
-  filter: brightness(1.3);
-}
 .gridAnimationButtonContainer {
   display: flex;
   flex-shrink: 0;
@@ -273,6 +267,33 @@ GridPlane
   grid-template-columns: repeat(var(--col-nums), var(--block-size));
   grid-template-rows: repeat(var(--row-nums), var(--block-size));
   white-space: pre;
+}
+/**
+PathFinding controls
+**/
+.pathFindingControlToggles {
+  display: flex;
+  gap: 1ch;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  flex-wrap: wrap;
+}
+.pathFindingControlToggle {
+  outline: 3px solid;
+  height: fit-content;
+  flex-grow: 1;
+  text-align: center;
+  border-radius: 1em;
+  padding: 0.5ch;
+  max-width: 10ch;
+  outline-style: outset;
+}
+.activeToggleItem {
+  outline-style: inset;
+  background-color: rgb(100, 100, 100);
+  transition: filter 1000ms ease-out;
+  filter: brightness(1.3);
 }
 
 /**

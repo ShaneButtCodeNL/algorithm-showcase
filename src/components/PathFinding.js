@@ -328,6 +328,26 @@ export default function PathFinding(props) {
         midPoint={midPoint}
         end={end}
         blockClick={blockClick}
+        addWall={addWall}
+        changeEnd={changeEnd}
+        changeMidPoint={changeMidPoint}
+        changeOrigin={changeOrigin}
+        toggleAddWall={toggleAddWall}
+        toggleChangeEnd={toggleChangeEnd}
+        toggleChangeOrigin={toggleChangeOrigin}
+        toggleChangeMid={toggleChangeMid}
+        algoID={algoID}
+        setAlgo={setAlgoID}
+        startAnimation={startAnimation}
+        stopAnimation={stopAnimation}
+        isAnimationPlaying={animateInterval !== null}
+        setSolved={setSolved}
+        toggleAddWall={toggleAddWall}
+        toggleChangeEnd={toggleChangeEnd}
+        toggleChangeOrigin={toggleChangeOrigin}
+        toggleChangeMid={toggleChangeMid}
+        applySearch={applySearch}
+        changeStep={changeStep}
       />
     </>
   );

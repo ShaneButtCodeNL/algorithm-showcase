@@ -114,40 +114,6 @@ export default function PathFindingToolBar(props) {
               speedInputRef.current.value = speedSlideRef.current.value;
             }}
           />
-          <div id="toggleModeDiv">
-            <div
-              className={`toggleModeItem ${
-                props.addWall ? "activeToggleItem" : ""
-              }`}
-              onClick={() => props.toggleAddWall()}
-            >
-              Add Wall
-            </div>
-            <div
-              className={`toggleModeItem ${
-                props.changeOrigin ? "activeToggleItem" : ""
-              }`}
-              onClick={() => props.toggleChangeOrigin()}
-            >
-              Move Origin
-            </div>
-            <div
-              className={`toggleModeItem ${
-                props.changeEnd ? "activeToggleItem" : ""
-              }`}
-              onClick={() => props.toggleChangeEnd()}
-            >
-              Move End
-            </div>
-            <div
-              className={`toggleModeItem ${
-                props.changeMidPoint ? "activeToggleItem" : ""
-              }`}
-              onClick={() => props.toggleChangeMid()}
-            >
-              Set MidWay
-            </div>
-          </div>
 
           <select
             className="gridSearchSelect"

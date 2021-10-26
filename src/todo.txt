@@ -21,6 +21,8 @@ PathFinding
 [X]  ability to start/stop animation
 []  add direction moved to blocks
 []  add controls like later addons
+        Moved toggles buttons 
+        still needs implementation of algorithm select and animation controls
 
 Search
 [X]  Linear Search

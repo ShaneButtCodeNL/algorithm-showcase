@@ -63,7 +63,7 @@ export default function Searching(props) {
   const updateCollection = (num) => {
     setCollection(() => makeCollection(num));
     setCollectionSize(num);
-    setPosition(0);
+    setPosition(-1);
   };
 
   const stopAnimation = () => {
