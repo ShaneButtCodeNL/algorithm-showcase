@@ -324,6 +324,10 @@ export default function PathFinding(props) {
         length={length}
         width={width}
         grid={grid}
+        grids={grids}
+        step={step}
+        maxSteps={maxSteps}
+        speed={animateRate}
         origin={origin}
         midPoint={midPoint}
         end={end}
@@ -337,7 +341,7 @@ export default function PathFinding(props) {
         toggleChangeOrigin={toggleChangeOrigin}
         toggleChangeMid={toggleChangeMid}
         algoID={algoID}
-        setAlgo={setAlgoID}
+        setAlgoID={setAlgoID}
         startAnimation={startAnimation}
         stopAnimation={stopAnimation}
         isAnimationPlaying={animateInterval !== null}
@@ -348,6 +352,10 @@ export default function PathFinding(props) {
         toggleChangeMid={toggleChangeMid}
         applySearch={applySearch}
         changeStep={changeStep}
+        started={started}
+        setStarted={setStarted}
+        setGrid={setGrid}
+        setGrids={setGrids}
       />
     </>
   );

@@ -12,7 +12,17 @@ export default function GridPlane(props) {
     >
       <GridPlaneControlBar
         algoID={props.algoID}
-        setAlgo={props.setAlgo}
+        grid={props.grid}
+        grids={props.grids}
+        step={props.step}
+        maxSteps={props.maxSteps}
+        speed={props.speed}
+        started={props.started}
+        setStarted={props.setStarted}
+        origin={props.origin}
+        midPoint={props.midPoint}
+        end={props.end}
+        setAlgoID={props.setAlgoID}
         startAnimation={props.startAnimation}
         stopAnimation={props.stopAnimation}
         isAnimationPlaying={props.isAnimationPlaying}
