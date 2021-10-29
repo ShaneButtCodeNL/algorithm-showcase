@@ -2,8 +2,11 @@ import { useRef, useState } from "react";
 
 const min = 2;
 const max = 25;
-const minSpeed = 50;
-const maxSpeed = 500;
+const maxSpeed = 5;
+const minSpeed = 0;
+const speedRate = 100;
+const getSpeed = (num) => (num === 0 ? 10 : speedRate * num);
+const getSpeedSetting = (num) => (num === 10 ? 0 : num / speedRate);
 export default function PathFindingToolBar(props) {
   const [slide, setSlide] = useState(0);
   const lengthSlideRef = useRef(null);
@@ -91,13 +94,14 @@ export default function PathFindingToolBar(props) {
             className="toolBarInput"
             type="number"
             ref={speedInputRef}
-            defaultValue={props.speed}
+            defaultValue={getSpeedSetting(props.speed)}
             min={minSpeed}
             max={maxSpeed}
             disabled={props.isAnimationPlaying}
             onChange={() => {
-              props.setSpeed(parseInt(speedInputRef.current.value));
-              speedSlideRef.current.value = speedInputRef.current.value;
+              let s = getSpeed(Number.parseInt(speedInputRef.current.value));
+              props.setSpeed(s);
+              speedSlideRef.current.value = getSpeedSetting(s);
             }}
           />
           <input
@@ -105,13 +109,14 @@ export default function PathFindingToolBar(props) {
             type="range"
             id="speedSlider"
             name="speedSlider"
-            defaultValue={props.speed}
+            defaultValue={getSpeedSetting(props.speed)}
             min={minSpeed}
             max={maxSpeed}
             disabled={props.isAnimationPlaying}
             onChange={() => {
-              props.setSpeed(speedSlideRef.current.value);
-              speedInputRef.current.value = speedSlideRef.current.value;
+              let s = getSpeed(Number.parseInt(speedSlideRef.current.value));
+              props.setSpeed(s);
+              speedInputRef.current.value = getSpeedSetting(s);
             }}
           />
         </div>
