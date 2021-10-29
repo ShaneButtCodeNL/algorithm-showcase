@@ -1,5 +1,25 @@
 import { useRef } from "react";
 
+const dijkstra =
+  "Dijkstra's algorithm is an algorithm for finding the shortest distance between two points./br" +
+  "The algorithm expands from the source traveling to the node with least traveling distance from the source./br" +
+  "Thinking of the grid as a graph with n*m nodes, and unweighted edges between orthogonal nodes. This just turns into a simple Bredth First Search traversal of the grid./br" +
+  "The main advantages of this algorithm are if there exists a path between two nodes it will find it, and it will be guarenteed to be a shortest path./br" +
+  "The runtime is O(n*m) where n is the length and m is the height of the grid.";
+const aStar =
+  "AStar,or A*, algorithm is an algorithm for finding the shortest distance between two points./br" +
+  "The algorithm expands from the source block traveling to next block using a rule to determine which block is best./br" +
+  "In this case the rule used is the sum to extend to the block, g(n), and the distance from the block to the goal block,heuristic h(n)./br" +
+  "Since this is an unweighted n*m graph with orthongonal edges the g(n) cost is g(n) of current block +1, and the h(n) cost we simply use a manhatten distance./br" +
+  "The main advantages of this algorithm are if there exists a path between two nodes it will find it, and it will be guarenteed to be a shortest path./br" +
+  "The runtime is O(n*m) where n is the length and m is the height of the grid. But since this a greedy algoritm it will find a solution faster than or equal to Dijkstra's";
+const hsearch =
+  "A heuristic search algorithm is an algorithm for finding a path between two points quickly. It's important to note this path may not be a shortest path./br" +
+  "The algorithm expands from the source block traveling to the next block that has the best heuristic cost./br" +
+  "Since this is an unweighted n*m graph with orthongonal edges the heuristic cost is the manhatten distance from the block to the end./br" +
+  "The main advantage of this algorithm is it is a greedy algorithm so it will tend to be faster than most algorithms./br" +
+  "the run time is O(n*m)  where n is the length and m is the height of the grid. But it will tend to finish quicker than this.";
+const content = [dijkstra, aStar, hsearch];
 export default function GridPlaneControlBar(props) {
   const algoSelectRef = useRef(null);
   const stepRef = useRef(null);
@@ -23,9 +43,12 @@ export default function GridPlaneControlBar(props) {
               props.setStarted(false);
               props.changeStep(0);
               props.setSolved(false);
+              props.setContent(
+                content[Number.parseInt(algoSelectRef.current.value) - 1]
+              );
             }}
           >
-            <option value={1}>Dicktras</option>
+            <option value={1}>Dijkstra's</option>
             <option value={2}>A* </option>
             <option value={3}>Heuristic Best</option>
           </select>

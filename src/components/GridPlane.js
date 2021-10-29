@@ -37,10 +37,7 @@ export default function GridPlane(props) {
         changeEnd={props.changeEnd}
         changeMidPoint={props.changeMidPoint}
         changeOrigin={props.changeOrigin}
-        toggleAddWall={props.toggleAddWall}
-        toggleChangeEnd={props.toggleChangeEnd}
-        toggleChangeOrigin={props.toggleChangeOrigin}
-        toggleChangeMid={props.toggleChangeMid}
+        setContent={props.setContent}
       />
       <div className="gridPlaneWrapper">
         <div id="gridPlane">

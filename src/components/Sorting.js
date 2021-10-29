@@ -158,6 +158,7 @@ export default function Sorting(props) {
         setAsending={setAsending}
         applySort={applySort}
         resetPointers={resetPointers}
+        setContent={props.setContent}
       />
     </>
   );

@@ -346,16 +346,13 @@ export default function PathFinding(props) {
         stopAnimation={stopAnimation}
         isAnimationPlaying={animateInterval !== null}
         setSolved={setSolved}
-        toggleAddWall={toggleAddWall}
-        toggleChangeEnd={toggleChangeEnd}
-        toggleChangeOrigin={toggleChangeOrigin}
-        toggleChangeMid={toggleChangeMid}
         applySearch={applySearch}
         changeStep={changeStep}
         started={started}
         setStarted={setStarted}
         setGrid={setGrid}
         setGrids={setGrids}
+        setContent={props.setContent}
       />
     </>
   );

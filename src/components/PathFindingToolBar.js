@@ -15,8 +15,6 @@ export default function PathFindingToolBar(props) {
   const speedInputRef = useRef(null);
   const widthSlideRef = useRef(null);
   const widthInputRef = useRef(null);
-  const algoSelectRef = useRef(null);
-  const stepRef = useRef(null);
   return (
     <>
       <div

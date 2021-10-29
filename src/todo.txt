@@ -1,5 +1,4 @@
-[]  Explanations of algorithms
-        -Done for search
+[X]  Explanations of algorithms
 []  how to use
 
 PathFinding
