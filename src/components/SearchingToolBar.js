@@ -8,6 +8,8 @@ const getSpeed = (num) => speedRate * num;
 const getSpeedSetting = (num) => num / speedRate;
 export default function SearchingToolBar(props) {
   const [slide, setSlide] = useState(0);
+  const [active, setActive] = useState(false);
+  const [content, setContent] = useState("");
   const sizeSliderRef = useRef(null);
   const sizeInputRef = useRef(null);
   const speedSliderRef = useRef(null);
