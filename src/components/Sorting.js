@@ -41,9 +41,11 @@ export default function Sorting(props) {
     let cloned = (c ? c : collection).map((v) => {
       return { ...v };
     });
-    for (let item of cloned) {
+    cloned.sort((a, b) => a.order - b.order);
+    cloned.forEach((item, index) => {
       item.state = 0;
-    }
+      item.order = index;
+    });
     return cloned;
   };
   const resetPointers = () => {
@@ -78,7 +80,7 @@ export default function Sorting(props) {
     switch (id) {
       case 1:
         BubbleSort(
-          clone,
+          collection,
           asending,
           setCollection,
           setMainPointer,
@@ -91,7 +93,8 @@ export default function Sorting(props) {
         break;
       case 2:
         SelectionSort(
-          clone,
+          collection,
+
           asending,
           setCollection,
           setMainPointer,
@@ -103,7 +106,7 @@ export default function Sorting(props) {
         break;
       case 3:
         InsertionSort(
-          clone,
+          collection,
           asending,
           setCollection,
           setMainPointer,
@@ -130,6 +133,7 @@ export default function Sorting(props) {
     <>
       <SortingToolBar
         size={size}
+        algoID={algoID}
         updateCollection={updateCollection}
         animationSpeed={animationSpeed}
         setAnimationSpeed={setAnimationSpeed}
@@ -146,6 +150,9 @@ export default function Sorting(props) {
         algoID={algoID}
         setAlgoID={setAlgoID}
         collection={collection}
+        setCollection={setCollection}
+        resetSearchState={resetSearchState}
+        resetPointers={resetPointers}
         size={size}
         mainPointer={mainPointer}
         leftPointer={leftPosition}

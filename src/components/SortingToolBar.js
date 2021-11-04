@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import PopOutDiv from "./PopOutDiv";
 const maxSize = 100;
 const minSize = 10;
 const maxSpeed = 5;
@@ -6,17 +7,40 @@ const minSpeed = 1;
 const speedRate = 100;
 const getSpeed = (num) => speedRate * num;
 const getSpeedSetting = (num) => num / speedRate;
+const barContent =
+  "Colors:/br" +
+  "A green block is in a relative sorted position./br" +
+  "A red block is the current block we are going to place in a relative sorted position./br" +
+  "A blue block means we are currently looking at the value of the block.";
+const mergeContent =
+  "Colors:/br" +
+  "A Yellow bar is the merged part of two lists./br" +
+  "All other colors show which bars are grouped together.";
+const numberContent =
+  "Pointers:/br" +
+  "The Right facing carat '>', and Left facing carat '<' shows the window of values we are currently sorting the value in. If they are not present then we are looking at the entire set./br" +
+  "The down arrow show a specfic position we are looking at./br" +
+  "Colors:/br" +
+  "A green block means this value is in a sorted position.";
+
 export default function SortingToolBar(props) {
   const [slide, setSlide] = useState(0);
   const [active, setActive] = useState(false);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(numberContent);
+  const [bars, setBars] = useState(false);
   const sizeSliderRef = useRef(null);
   const sizeInputRef = useRef(null);
   const speedSliderRef = useRef(null);
   const speedInputRef = useRef(null);
   const displayRef = useRef(null);
+  useEffect(() => {
+    if (props.algoID === 4) setContent(mergeContent);
+    else
+      setContent(displayRef.current.value === "1" ? barContent : numberContent);
+  }, [props.algoID]);
   return (
     <>
+      <PopOutDiv active={active} setActive={setActive} content={content} />
       <div
         className="sideBar"
         style={{
@@ -29,9 +53,17 @@ export default function SortingToolBar(props) {
             ref={displayRef}
             disabled={props.isAnimated}
             style={{ opacity: props.isAnimated ? "0.5" : "1" }}
-            onChange={() =>
-              props.setDisplayType(Number.parseInt(displayRef.current.value))
-            }
+            onChange={() => {
+              props.setDisplayType(Number.parseInt(displayRef.current.value));
+              setContent(
+                props.algoID === 4
+                  ? mergeContent
+                  : displayRef.current.value === "1"
+                  ? barContent
+                  : numberContent
+              );
+              setBars(displayRef.current.value === "1");
+            }}
           >
             <option value={0}>Numbers</option>
             <option value={1}>Bars</option>
@@ -107,6 +139,13 @@ export default function SortingToolBar(props) {
             onClick={() => props.randomizeCollection()}
           >
             Randomize List
+          </button>
+          <button
+            type="button"
+            name="keyButton"
+            onClick={() => setActive((a) => !a)}
+          >
+            Key
           </button>
         </div>
       </div>

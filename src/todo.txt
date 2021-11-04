@@ -1,5 +1,6 @@
+[]  Add a splash page to first page to reduce empty space
 [X]  Explanations of algorithms
-[]  how to use
+[X]  Add Keys
 
 PathFinding
 [X]  Display grid

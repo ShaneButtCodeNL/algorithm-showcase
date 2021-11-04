@@ -24,7 +24,10 @@ export default function SortingControlBar(props) {
   const algoSelectRef = useRef(null);
 
   return (
-    <fieldset className="searchControlBar">
+    <fieldset
+      className="searchControlBar"
+      style={{ marginBottom: props.algoID === 4 ? "1.2em" : "0em" }}
+    >
       <legend>Controls</legend>
       <div className="controlBarValueContainer">
         <div className="controlBarValueItem">
@@ -42,6 +45,8 @@ export default function SortingControlBar(props) {
               props.setContent(
                 content[Number.parseInt(algoSelectRef.current.value) - 1]
               );
+              props.setCollection(props.resetSearchState(props.collection));
+              props.resetPointers();
             }}
           >
             <option value={1}>Bubble Sort</option>

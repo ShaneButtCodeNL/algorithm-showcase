@@ -10,6 +10,7 @@ export default function SortingNodeList(props) {
   return (
     <div className="sortingDisplayWindow">
       <SortingControlBar
+        collection={props.collection}
         setAlgoID={props.setAlgoID}
         algoID={props.algoID}
         applySort={props.applySort}
@@ -17,6 +18,9 @@ export default function SortingNodeList(props) {
         stopAnimation={props.stopAnimation}
         resetPointers={props.resetPointers}
         setContent={props.setContent}
+        setCollection={props.setCollection}
+        resetSearchState={props.resetSearchState}
+        resetPointers={props.resetPointers}
       />
       <div
         className="searchNodeList"
