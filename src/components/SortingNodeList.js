@@ -20,7 +20,6 @@ export default function SortingNodeList(props) {
         setContent={props.setContent}
         setCollection={props.setCollection}
         resetSearchState={props.resetSearchState}
-        resetPointers={props.resetPointers}
       />
       <div
         className="searchNodeList"

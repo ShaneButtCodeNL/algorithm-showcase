@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import "./components/PathFinding";
+import Encryption from "./components/Encryption";
 import PathFinding from "./components/PathFinding";
 import Searching from "./components/Searching";
 import Sorting from "./components/Sorting";
@@ -18,6 +19,8 @@ function App() {
         return <Searching setContent={setContent} />;
       case 3:
         return <Sorting setContent={setContent} />;
+      case 4:
+        return <Encryption setContent={setContent} />;
       default:
         return <></>;
     }

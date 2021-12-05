@@ -9,13 +9,14 @@ const defaultContent = "You need to select a problem first.",
   searchingContent =
     "Searching is the problem of finding if a certain object exists in a collection of items./br Linear search iterates over the list one item at a time until either it reaches the end of the list or finds an item that matches the search criteria./brThis algorithm runs in O(n), Linear time",
   sortingContent =
-    "Sorting is the problem of arranging the items of a collection in a certain order./brBubble Sort works by iterateing through the list and compareing the current value to the next value, moving the largest/smallest element towards the end of the list./brThe RunTime of Bubble sort is O(n^2).";
-
+    "Sorting is the problem of arranging the items of a collection in a certain order./brBubble Sort works by iterateing through the list and compareing the current value to the next value, moving the largest/smallest element towards the end of the list./brThe RunTime of Bubble sort is O(n^2).",
+  encryptionContent = "DEFAULT";
 const problemExplainations = [
   defaultContent,
   pathFindingContent,
   searchingContent,
   sortingContent,
+  encryptionContent,
 ];
 export default function ProblemSelect(props) {
   const problemSelectRef = useRef(null);
@@ -38,6 +39,7 @@ export default function ProblemSelect(props) {
         <option value={1}>PathFinding</option>
         <option value={2}>Search</option>
         <option value={3}>Sort</option>
+        <option value={4}>Encryption</option>
       </select>
     </div>
   );
