@@ -29,8 +29,8 @@ export default function EncryptionControlBar(props) {
               );
             }}
           >
-            <option value={1}>Shift Encryption</option>
-            <option value={2}>Transposition Encryption</option>
+            <option value={1}>Transposition Encryption</option>
+            <option value={2}>Shift Encryption</option>
           </select>
         </div>
       </div>

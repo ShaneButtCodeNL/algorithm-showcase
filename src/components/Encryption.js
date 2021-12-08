@@ -4,9 +4,11 @@ import EncryptionToolBar from "./EncryptionToolBar";
 
 export default function Encryption(props) {
   const [message, setMessage] = useState("TEST DATA");
+  const [messageCharacter, setMessageCharacter] = useState("");
+  const [processedCharacter, setProcessedCharacter] = useState("");
   const [result, setResult] = useState("");
   const [algoID, setAlgoID] = useState(1);
-  const [position, setPosition] = useState(0);
+  const [position, setPosition] = useState(-1);
   const [animationSpeed, setAnimationSpeed] = useState(100);
   const [animation, setAnimation] = useState(null);
   //Shift Encryption
@@ -24,6 +26,10 @@ export default function Encryption(props) {
         isAnimated={animation !== null}
         message={message}
         setMessage={setMessage}
+        messageCharacter={messageCharacter}
+        setMessageCharacter={setMessageCharacter}
+        processedCharacter={processedCharacter}
+        setProcessedCharacter={setProcessedCharacter}
         result={result}
         setResult={setResult}
         algoID={algoID}

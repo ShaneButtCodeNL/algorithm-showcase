@@ -252,6 +252,7 @@ Search Control Bar
 
 .searchControlBar select {
   width: 18ch;
+  min-width: fit-content;
 }
 /**
 GridPlane
@@ -442,13 +443,13 @@ Encryption
 }
 .messageCharacterContainer {
   border: 1px solid;
-  display: grid;
-  place-items: center;
   width: 2ch;
   height: fit-content;
 }
 .messageCharacter {
   white-space: pre;
+  margin: auto;
+  width: fit-content;
 }
 #encryptionBox {
   display: grid;
