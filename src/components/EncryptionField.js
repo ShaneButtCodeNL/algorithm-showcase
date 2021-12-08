@@ -5,13 +5,21 @@ export default function EncryptionField(props) {
   return (
     <div className="encryptionFieldContainer">
       <EncryptionControlBar
+        algoID={props.algoID}
+        message={props.message}
+        position={props.position}
+        setPosition={props.setPosition}
+        setMessageCharacter={props.setMessageCharacter}
+        setResult={props.setResult}
         setContent={props.setContent}
         isAnimated={props.isAnimated}
         setAlgoID={props.setAlgoID}
         message={props.message}
         setMessage={props.setMessage}
-        transpose={props.transpose}
-        setTranspose={props.setTranspose}
+        shift={props.shift}
+        setShift={props.setShift}
+        setProcessedMessage={props.setProcessedMessage}
+        setProcessedCharacter={props.setProcessedCharacter}
       />
       <div id="encryptionField">
         {props.algoID === 1 ? (
@@ -62,7 +70,7 @@ export default function EncryptionField(props) {
                 value={props.messageCharacter}
                 style={{ width: "2ch", textAlign: "center" }}
               />
-              <span>Tranpose :</span>
+              <span>Shift :</span>
               <input
                 type="text"
                 disabled={true}
@@ -84,6 +92,7 @@ export default function EncryptionField(props) {
                   type="text"
                   className="resultingString"
                   disabled={true}
+                  defaultValue={props.result}
                 />
               </div>
             </div>

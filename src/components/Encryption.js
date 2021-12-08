@@ -3,7 +3,7 @@ import EncryptionField from "./EncryptionField";
 import EncryptionToolBar from "./EncryptionToolBar";
 
 export default function Encryption(props) {
-  const [message, setMessage] = useState("TEST DATA");
+  const [message, setMessage] = useState("Hello World");
   const [messageCharacter, setMessageCharacter] = useState("");
   const [processedCharacter, setProcessedCharacter] = useState("");
   const [result, setResult] = useState("");
@@ -12,10 +12,10 @@ export default function Encryption(props) {
   const [animationSpeed, setAnimationSpeed] = useState(100);
   const [animation, setAnimation] = useState(null);
   //Shift Encryption
-  const [shiftLength, setShiftLength] = useState(1);
-  const [shiftHeight, setShiftHeight] = useState(1);
+  const [transposeLength, setTransposeLength] = useState(1);
+  const [transposeHeight, setTransposeHeight] = useState(1);
   //Transpose Encryption
-  const [transpose, setTranspose] = useState(0);
+  const [shift, setShift] = useState(3);
   return (
     <>
       <EncryptionToolBar
@@ -36,12 +36,12 @@ export default function Encryption(props) {
         setAlgoID={setAlgoID}
         position={position}
         setPosition={setPosition}
-        shiftHeight={shiftHeight}
-        setShiftHeight={setShiftHeight}
-        shiftLength={shiftLength}
-        setShiftLength={setShiftLength}
-        transpose={transpose}
-        setTranspose={setTranspose}
+        transposeHeight={transposeHeight}
+        settransposeHeight={setTransposeHeight}
+        transposeLength={transposeLength}
+        settransposeLength={setTransposeLength}
+        shift={shift}
+        setShift={setShift}
         setContent={props.setContent}
       />
     </>
