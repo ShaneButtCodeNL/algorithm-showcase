@@ -74,7 +74,7 @@ export default function EncryptionField(props) {
               <input
                 type="text"
                 disabled={true}
-                value={props.transpose}
+                value={props.shift}
                 style={{ width: "2ch", textAlign: "center" }}
               />
               <span>Output:</span>

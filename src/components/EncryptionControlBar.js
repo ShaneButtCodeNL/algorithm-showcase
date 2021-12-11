@@ -9,8 +9,10 @@ const content = [shift, tranposition];
 export default function EncryptionControlBar(props) {
   const algoSelectRef = useRef(null);
   const messageRef = useRef(null);
+  const shiftRef = useRef(null);
   const [nextButtonText, setNextButtonText] = useState("NEXT >>");
   const [step, setStep] = useState(0);
+  const [decyrption, setDecryption] = useState(false);
   return (
     <fieldset
       className="searchControlBar"
@@ -37,6 +39,34 @@ export default function EncryptionControlBar(props) {
             <option value={1}>Shift Encryption</option>
             <option value={2}>Transposition Encryption</option>
           </select>
+        </div>
+      </div>
+      <div className="controlBarValueContainer">
+        <div className="controlBarValueItem">
+          <label htmlFor="shiftAmmount">Shift By:</label>
+          <br />
+          <input
+            name="shiftAmmount"
+            defaultValue={props.shift}
+            type="number"
+            min="1"
+            max="25"
+            ref={shiftRef}
+            onChange={() => {
+              if (Number.parseInt(shiftRef.current.value) > 25)
+                shiftRef.current.value = 25;
+              if (Number.parseInt(shiftRef.current.value) < 1)
+                shiftRef.current.value = 1;
+              props.setShift(Number.parseInt(shiftRef.current.value));
+            }}
+          />
+        </div>
+        <div className="controlBarValueItem">
+          <label htmlFor="en/decrypt">Action:</label>
+          <br />
+          <button type="button" onClick={() => setDecryption((d) => !d)}>
+            {decyrption ? "Decrypt" : "Encrypt"}
+          </button>
         </div>
       </div>
       <div className="controlBarValueContainer">
@@ -72,12 +102,21 @@ export default function EncryptionControlBar(props) {
                   props.setMessageCharacter,
                   setStep,
                   props.setProcessedCharacter,
-                  props.setResult
+                  props.setResult,
+                  decyrption
                 );
             }}
           >
             {nextButtonText}
           </button>
+        </div>
+        <div className="controlBarValueItem">
+          <button type="button">{`${
+            props.isAnimated ? "Stop " : ""
+          }Animate`}</button>
+        </div>
+        <div className="controlBarValueItem">
+          <button type="button">Finish</button>
         </div>
       </div>
     </fieldset>
