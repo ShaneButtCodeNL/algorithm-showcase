@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useState } from "react/cjs/react.development";
 
-import { Shift, FinishShift } from "./Scripts/Encryption.js";
+import { Shift, FinishShift, AnimatedShift } from "./Scripts/Encryption.js";
 
 const shift = "Shift",
   tranposition = "Transposition";
@@ -47,6 +47,7 @@ export default function EncryptionControlBar(props) {
           <br />
           <input
             name="shiftAmmount"
+            disabled={props.isAnimated}
             defaultValue={props.shift}
             type="number"
             min="1"
@@ -64,7 +65,11 @@ export default function EncryptionControlBar(props) {
         <div className="controlBarValueItem">
           <label htmlFor="en/decrypt">Action:</label>
           <br />
-          <button type="button" onClick={() => setDecryption((d) => !d)}>
+          <button
+            type="button"
+            disabled={props.isAnimated}
+            onClick={() => setDecryption((d) => !d)}
+          >
             {decyrption ? "Decrypt" : "Encrypt"}
           </button>
         </div>
@@ -112,13 +117,35 @@ export default function EncryptionControlBar(props) {
           </button>
         </div>
         <div className="controlBarValueItem">
-          <button type="button">{`${
-            props.isAnimated ? "Stop " : ""
-          }Animate`}</button>
+          <button
+            type="button"
+            onClick={() => {
+              if (props.algoID === 1)
+                if (props.isAnimated) {
+                  clearInterval(props.animation);
+                  props.setAnimation(null);
+                } else
+                  AnimatedShift(
+                    props.message,
+                    props.shift,
+                    props.position,
+                    step,
+                    props.setPosition,
+                    props.setMessageCharacter,
+                    setStep,
+                    props.setProcessedCharacter,
+                    props.setResult,
+                    decyrption,
+                    props.setAnimation,
+                    props.animationSpeed
+                  );
+            }}
+          >{`${props.isAnimated ? "Stop " : ""}Animate`}</button>
         </div>
         <div className="controlBarValueItem">
           <button
             type="button"
+            disabled={props.isAnimated}
             onClick={() => {
               props.reset();
               setStep(0);

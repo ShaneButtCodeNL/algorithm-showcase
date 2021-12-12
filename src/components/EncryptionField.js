@@ -7,6 +7,7 @@ export default function EncryptionField(props) {
       <EncryptionControlBar
         algoID={props.algoID}
         animation={props.animation}
+        animationSpeed={props.animationSpeed}
         setAnimation={props.setAnimation}
         isAnimated={props.isAnimated}
         message={props.message}

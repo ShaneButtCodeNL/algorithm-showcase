@@ -3,6 +3,9 @@ const A = "A".charCodeAt(0);
 const z = "z".charCodeAt(0);
 const Z = "Z".charCodeAt(0);
 
+const setAnimationSpeed = (sp) =>
+  document.documentElement.style.setProperty("--animation-time", `${sp}ms`);
+
 const isLower = (c) => c.charCodeAt(0) >= a && c.charCodeAt(0) <= z;
 const isUpper = (c) => c.charCodeAt(0) >= A && c.charCodeAt(0) <= Z;
 const isAlpha = (c) => isLower(c) || isUpper(c);
@@ -25,6 +28,48 @@ export function FinishShift(message, shift, appendResult, decryption) {
   for (let c of message) output += applyShift(shift, c, decryption);
   appendResult(output);
 }
+export function AnimatedShift(
+  message,
+  shift,
+  position,
+  step,
+  setPosition,
+  setChar,
+  setStep,
+  setEncryptedChar,
+  appendResult,
+  decryption,
+  setAnimation,
+  animationSpeed
+) {
+  setAnimationSpeed(animationSpeed);
+  let p = position;
+  let s = step;
+  var animation = setInterval(() => {
+    Shift(
+      message,
+      shift,
+      p,
+      s,
+      setPosition,
+      setChar,
+      setStep,
+      setEncryptedChar,
+      appendResult,
+      decryption
+    );
+    if (s === 0) p++;
+    s = (s + 1) % 4;
+    if (p === message.length) {
+      clearInterval(animation);
+      setAnimation(null);
+      setPosition(-1);
+      setStep(0);
+    }
+  }, animationSpeed);
+  setAnimation(animation);
+}
+
 export function Shift(
   message,
   shift,

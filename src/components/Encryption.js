@@ -31,6 +31,7 @@ export default function Encryption(props) {
       />
       <EncryptionField
         animation={animation}
+        animationSpeed={animationSpeed}
         setAnimation={setAnimation}
         isAnimated={animation !== null}
         message={message}
