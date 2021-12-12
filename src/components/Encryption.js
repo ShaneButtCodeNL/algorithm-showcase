@@ -16,6 +16,13 @@ export default function Encryption(props) {
   const [transposeHeight, setTransposeHeight] = useState(1);
   //Transpose Encryption
   const [shift, setShift] = useState(3);
+
+  const reset = () => {
+    setMessageCharacter("");
+    setProcessedCharacter("");
+    setResult("");
+    setPosition(-1);
+  };
   return (
     <>
       <EncryptionToolBar
@@ -23,6 +30,8 @@ export default function Encryption(props) {
         setAnimationSpeed={setAnimationSpeed}
       />
       <EncryptionField
+        animation={animation}
+        setAnimation={setAnimation}
         isAnimated={animation !== null}
         message={message}
         setMessage={setMessage}
@@ -43,6 +52,7 @@ export default function Encryption(props) {
         shift={shift}
         setShift={setShift}
         setContent={props.setContent}
+        reset={reset}
       />
     </>
   );

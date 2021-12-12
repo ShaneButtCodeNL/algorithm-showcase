@@ -6,6 +6,9 @@ export default function EncryptionField(props) {
     <div className="encryptionFieldContainer">
       <EncryptionControlBar
         algoID={props.algoID}
+        animation={props.animation}
+        setAnimation={props.setAnimation}
+        isAnimated={props.isAnimated}
         message={props.message}
         position={props.position}
         setPosition={props.setPosition}
@@ -20,6 +23,7 @@ export default function EncryptionField(props) {
         setShift={props.setShift}
         setProcessedMessage={props.setProcessedMessage}
         setProcessedCharacter={props.setProcessedCharacter}
+        reset={props.reset}
       />
       <div id="encryptionField">
         {props.algoID === 1 ? (

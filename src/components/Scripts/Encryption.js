@@ -19,6 +19,12 @@ const applyShift = (s, c, en) => {
   }
   return c;
 };
+
+export function FinishShift(message, shift, appendResult, decryption) {
+  let output = "";
+  for (let c of message) output += applyShift(shift, c, decryption);
+  appendResult(output);
+}
 export function Shift(
   message,
   shift,

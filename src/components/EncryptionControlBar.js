@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useState } from "react/cjs/react.development";
 
-import { Shift } from "./Scripts/Encryption.js";
+import { Shift, FinishShift } from "./Scripts/Encryption.js";
 
 const shift = "Shift",
   tranposition = "Transposition";
@@ -90,6 +90,7 @@ export default function EncryptionControlBar(props) {
         <div className="controlBarValueItem">
           <button
             type="button"
+            disabled={props.isAnimated}
             onClick={() => {
               console.log("NEXT CLICKED . . .", props.algoID);
               if (props.algoID === 1)
@@ -116,7 +117,22 @@ export default function EncryptionControlBar(props) {
           }Animate`}</button>
         </div>
         <div className="controlBarValueItem">
-          <button type="button">Finish</button>
+          <button
+            type="button"
+            onClick={() => {
+              props.reset();
+              setStep(0);
+              if (props.algoID === 1)
+                FinishShift(
+                  props.message,
+                  props.shift,
+                  props.setResult,
+                  decyrption
+                );
+            }}
+          >
+            Finish
+          </button>
         </div>
       </div>
     </fieldset>
