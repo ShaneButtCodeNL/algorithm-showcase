@@ -57,6 +57,9 @@ export default function EncryptionControlBar(props) {
               if (Number.parseInt(shiftRef.current.value) < 1)
                 shiftRef.current.value = 1;
               props.setShift(Number.parseInt(shiftRef.current.value));
+              props.setPosition(-1);
+              props.setStep(0);
+              props.setResult("");
             }}
           />
         </div>
@@ -66,7 +69,12 @@ export default function EncryptionControlBar(props) {
           <button
             type="button"
             disabled={props.isAnimated}
-            onClick={() => setDecryption((d) => !d)}
+            onClick={() => {
+              setDecryption((d) => !d);
+              props.setPosition(-1);
+              props.setStep(0);
+              props.setResult("");
+            }}
           >
             {decyrption ? "Decrypt" : "Encrypt"}
           </button>
