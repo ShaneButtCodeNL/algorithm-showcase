@@ -3,7 +3,7 @@ import ProblemSelect from "./ProblemSelect";
 
 export default function Title(props) {
   return (
-    <div className="titleBar" style={{ display: "flex", gap: "1ch" }}>
+    <div className="titleBar" style={{ display: "flex", gap: ".7ch" }}>
       <PopOutDiv
         active={props.active}
         content={props.content}
@@ -21,7 +21,7 @@ export default function Title(props) {
       <button
         type="button"
         onClick={() => props.setActive((a) => !a)}
-        style={{ height: "3em", margin: "auto 0" }}
+        style={{ minHeight: "3em", margin: "auto 0" }}
       >
         What is this?
       </button>

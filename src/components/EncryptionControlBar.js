@@ -10,8 +10,6 @@ export default function EncryptionControlBar(props) {
   const algoSelectRef = useRef(null);
   const messageRef = useRef(null);
   const shiftRef = useRef(null);
-  const [nextButtonText, setNextButtonText] = useState("NEXT >>");
-  const [step, setStep] = useState(0);
   const [decyrption, setDecryption] = useState(false);
   return (
     <fieldset
@@ -78,17 +76,26 @@ export default function EncryptionControlBar(props) {
         <div className="controlBarValueItem">
           <label htmlFor="message">Message:</label>
           <br />
-          <input
-            type="text"
-            name="message"
-            defaultValue={props.message}
-            style={{ width: "20ch" }}
-            ref={messageRef}
-            onChange={() => {
-              props.setMessage(messageRef.current.value);
-              props.setPosition(-1);
-            }}
-          />
+          <div>
+            <input
+              type="text"
+              name="message"
+              defaultValue={props.message}
+              style={{ width: "20ch" }}
+              ref={messageRef}
+              onChange={() => {
+                props.setMessage(messageRef.current.value);
+                props.setPosition(-1);
+              }}
+            />
+            <button
+              type="button"
+              style={{ width: "fit-content", marginLeft: "1ch" }}
+              onClick={() => navigator.clipboard.writeText(props.message)}
+            >
+              COPY
+            </button>
+          </div>
         </div>
       </div>
       <div className="controlBarValueContainer">
@@ -103,17 +110,17 @@ export default function EncryptionControlBar(props) {
                   props.message,
                   props.shift,
                   props.position,
-                  step,
+                  props.step,
                   props.setPosition,
                   props.setMessageCharacter,
-                  setStep,
+                  props.setStep,
                   props.setProcessedCharacter,
                   props.setResult,
                   decyrption
                 );
             }}
           >
-            {nextButtonText}
+            {props.position === -1 ? "Start" : "Next >>"}
           </button>
         </div>
         <div className="controlBarValueItem">
@@ -129,10 +136,10 @@ export default function EncryptionControlBar(props) {
                     props.message,
                     props.shift,
                     props.position,
-                    step,
+                    props.step,
                     props.setPosition,
                     props.setMessageCharacter,
-                    setStep,
+                    props.setStep,
                     props.setProcessedCharacter,
                     props.setResult,
                     decyrption,
@@ -148,7 +155,7 @@ export default function EncryptionControlBar(props) {
             disabled={props.isAnimated}
             onClick={() => {
               props.reset();
-              setStep(0);
+              props.setStep(0);
               if (props.algoID === 1)
                 FinishShift(
                   props.message,

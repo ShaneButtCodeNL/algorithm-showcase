@@ -86,12 +86,13 @@ export function Shift(
   //Set Position
   if (step === 0) {
     setPosition((p) => p + 1);
+    setChar(message[position + 1]);
+
     setStep(1);
     return;
   }
   //Set character
   if (step === 1) {
-    setChar(message[position]);
     setStep(2);
     return;
   }

@@ -76,7 +76,6 @@ Main Page
   margin: auto 0.4em;
 }
 .problemSelectSelect {
-  width: clamp(10ch, 20vw, 20ch);
   height: 3em;
 }
 .popOutDiv {
@@ -424,6 +423,14 @@ Sorting
 /**
 Encryption
 **/
+.encryptionFieldContainer {
+  width: 100%;
+  overflow: auto;
+}
+#encryptionFieldDisplay {
+  width: clamp(16ch, 50vw, 56ch);
+}
+
 #encryptionField {
   padding: 1em 0 0 0;
   display: flex;
@@ -437,6 +444,7 @@ Encryption
 
 .messageContainer {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.2ch;
   margin: auto;
   width: fit-content;
@@ -470,7 +478,6 @@ Encryption
 }
 .resultsContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  gap: 1em;
 }

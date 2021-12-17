@@ -9,7 +9,7 @@ export default function Encryption(props) {
   const [result, setResult] = useState("");
   const [algoID, setAlgoID] = useState(1);
   const [position, setPosition] = useState(-1);
-  const [animationSpeed, setAnimationSpeed] = useState(100);
+  const [animationSpeed, setAnimationSpeed] = useState(300);
   const [animation, setAnimation] = useState(null);
   //Shift Encryption
   const [transposeLength, setTransposeLength] = useState(1);
