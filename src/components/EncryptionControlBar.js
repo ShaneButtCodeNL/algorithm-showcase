@@ -10,6 +10,8 @@ export default function EncryptionControlBar(props) {
   const algoSelectRef = useRef(null);
   const messageRef = useRef(null);
   const shiftRef = useRef(null);
+  const transposeHeightRef = useRef(null);
+  const transposeWidthRef = useRef(null);
   const [decyrption, setDecryption] = useState(false);
   return (
     <fieldset
@@ -39,7 +41,51 @@ export default function EncryptionControlBar(props) {
           </select>
         </div>
       </div>
-      <div className="controlBarValueContainer">
+      {
+        //Used for transposition encryption
+      }
+      <div
+        className="controlBarValueContainer"
+        style={{ display: props.algoID === 2 ? "flex" : "none" }}
+      >
+        <div className="controlBarValueItem">
+          <label htmlFor="transposeHeight">Transpose Box Height:</label>
+          <br />
+          <input
+            type="number"
+            defaultValue={props.transposeHeight}
+            min={1}
+            ref={transposeHeightRef}
+            onChange={() => {
+              props.setTransposeHeight(
+                Number.parseInt(transposeHeightRef.current.value)
+              );
+            }}
+          />
+        </div>
+        <div className="controlBarValueItem">
+          <label htmlFor="transposeWidth">Transpose Box Width:</label>
+          <br />
+          <input
+            type="number"
+            defaultValue={props.transposeLength}
+            min={1}
+            ref={transposeWidthRef}
+            onChange={() => {
+              props.setTransposeLength(
+                Number.parseInt(transposeWidthRef.current.value)
+              );
+            }}
+          />
+        </div>
+      </div>
+      {
+        //Used for Shift encryption
+      }
+      <div
+        className="controlBarValueContainer"
+        style={{ display: props.algoID === 1 ? "flex" : "none" }}
+      >
         <div className="controlBarValueItem">
           <label htmlFor="shiftAmmount">Shift By:</label>
           <br />
@@ -80,6 +126,9 @@ export default function EncryptionControlBar(props) {
           </button>
         </div>
       </div>
+      {
+        //Used for Message input
+      }
       <div className="controlBarValueContainer">
         <div className="controlBarValueItem">
           <label htmlFor="message">Message:</label>
@@ -106,6 +155,9 @@ export default function EncryptionControlBar(props) {
           </div>
         </div>
       </div>
+      {
+        //The buttons to interact with the app
+      }
       <div className="controlBarValueContainer">
         <div className="controlBarValueItem">
           <button

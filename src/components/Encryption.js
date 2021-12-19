@@ -30,30 +30,30 @@ export default function Encryption(props) {
         setAnimationSpeed={setAnimationSpeed}
       />
       <EncryptionField
+        algoID={algoID}
         animation={animation}
         animationSpeed={animationSpeed}
-        setAnimation={setAnimation}
         isAnimated={animation !== null}
         message={message}
-        setMessage={setMessage}
         messageCharacter={messageCharacter}
-        setMessageCharacter={setMessageCharacter}
-        processedCharacter={processedCharacter}
-        setProcessedCharacter={setProcessedCharacter}
-        result={result}
-        setResult={setResult}
-        algoID={algoID}
-        setAlgoID={setAlgoID}
         position={position}
-        setPosition={setPosition}
-        transposeHeight={transposeHeight}
-        settransposeHeight={setTransposeHeight}
-        transposeLength={transposeLength}
-        settransposeLength={setTransposeLength}
-        shift={shift}
-        setShift={setShift}
-        setContent={props.setContent}
+        processedCharacter={processedCharacter}
         reset={reset}
+        result={result}
+        shift={shift}
+        transposeHeight={transposeHeight}
+        transposeLength={transposeLength}
+        setAlgoID={setAlgoID}
+        setAnimation={setAnimation}
+        setContent={props.setContent}
+        setMessage={setMessage}
+        setMessageCharacter={setMessageCharacter}
+        setPosition={setPosition}
+        setProcessedCharacter={setProcessedCharacter}
+        setResult={setResult}
+        setShift={setShift}
+        setTransposeHeight={setTransposeHeight}
+        setTransposeLength={setTransposeLength}
       />
     </>
   );

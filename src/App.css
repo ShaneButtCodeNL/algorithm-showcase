@@ -459,15 +459,15 @@ Encryption
   margin: auto;
   width: fit-content;
 }
-#encryptionBox {
+.encryptionBox {
   display: grid;
   grid-template-columns: 1fr 1fr;
   row-gap: 0.4em;
 }
-#encryptionBox span {
+.encryptionBox span {
   margin-left: auto;
 }
-#encryptionBox input {
+.encryptionBox input {
   margin-left: 1.5em;
 }
 .encryptionBoxItem {
