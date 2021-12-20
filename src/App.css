@@ -481,3 +481,22 @@ Encryption
   flex-direction: column;
   justify-content: center;
 }
+
+.transposeContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.1em;
+}
+
+.transposeCol {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+}
+
+.transposeCharacterBox {
+  white-space: pre;
+  border: solid 1px;
+  width: fit-content;
+  min-width: 2ch;
+}

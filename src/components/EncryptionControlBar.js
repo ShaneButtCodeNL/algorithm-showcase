@@ -11,7 +11,6 @@ export default function EncryptionControlBar(props) {
   const messageRef = useRef(null);
   const shiftRef = useRef(null);
   const transposeHeightRef = useRef(null);
-  const transposeWidthRef = useRef(null);
   const [decyrption, setDecryption] = useState(false);
   return (
     <fieldset
@@ -55,25 +54,17 @@ export default function EncryptionControlBar(props) {
             type="number"
             defaultValue={props.transposeHeight}
             min={1}
+            max={props.message.length || 1}
             ref={transposeHeightRef}
             onChange={() => {
               props.setTransposeHeight(
                 Number.parseInt(transposeHeightRef.current.value)
               );
-            }}
-          />
-        </div>
-        <div className="controlBarValueItem">
-          <label htmlFor="transposeWidth">Transpose Box Width:</label>
-          <br />
-          <input
-            type="number"
-            defaultValue={props.transposeLength}
-            min={1}
-            ref={transposeWidthRef}
-            onChange={() => {
-              props.setTransposeLength(
-                Number.parseInt(transposeWidthRef.current.value)
+              props.setTransposeBox(() =>
+                props.makeTransposeBox(
+                  props.message,
+                  Number.parseInt(transposeHeightRef.current.value)
+                )
               );
             }}
           />
@@ -143,6 +134,11 @@ export default function EncryptionControlBar(props) {
               onChange={() => {
                 props.setMessage(messageRef.current.value);
                 props.setPosition(-1);
+                transposeHeightRef.current.value = "1";
+                props.setTransposeHeight(1);
+                props.setTransposeBox(() =>
+                  props.makeTransposeBox(messageRef.current.value, 1)
+                );
               }}
             />
             <button

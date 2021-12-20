@@ -13,13 +13,14 @@ export default function EncryptionField(props) {
           animation={props.animation}
           animationSpeed={props.animationSpeed}
           isAnimated={props.isAnimated}
+          makeTransposeBox={props.makeTransposeBox}
           message={props.message}
           position={props.position}
           reset={props.reset}
           shift={props.shift}
           step={step}
+          transposeBox={props.transposeBox}
           transposeHeight={props.transposeHeight}
-          transposeLength={props.transposeLength}
           setAlgoID={props.setAlgoID}
           setAnimation={props.setAnimation}
           setContent={props.setContent}
@@ -31,11 +32,12 @@ export default function EncryptionField(props) {
           setResult={props.setResult}
           setShift={props.setShift}
           setStep={setStep}
+          setTransposeBox={props.setTransposeBox}
           setTransposeHeight={props.setTransposeHeight}
-          setTransposeLength={props.setTransposeLength}
         />
         <div id="encryptionField">
           <div id="messageField" className="encryptionFieldItem">
+            <label>Message:</label>
             <div className="messageContainer">
               {props.message.split("").map((v, i) => {
                 const pos = props.position - i;
@@ -115,6 +117,31 @@ export default function EncryptionField(props) {
                   boxShadow: step === 3 ? "0px 0px 10px yellow" : "none",
                 }}
               />
+            </div>
+          </div>
+          {
+            //For transpose
+          }
+          <div
+            id="transposeEncryptionContainer"
+            className="encryptionFieldItem"
+            style={{ display: props.algoID === 2 ? "inline" : "none" }}
+          >
+            <label>Transpose Area:</label>
+            <div className="transposeContainer">
+              {props.transposeBox.map((row, rowIndex) => {
+                return (
+                  <div className="transposeCol">
+                    {row.map((_, colIndex) => {
+                      return (
+                        <div className="transposeCharacterBox">
+                          {props.transposeBox[rowIndex][colIndex]}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div id="resultsField" className="encryptionFieldItem">
