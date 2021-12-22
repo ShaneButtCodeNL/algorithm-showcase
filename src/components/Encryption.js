@@ -38,6 +38,8 @@ export default function Encryption(props) {
     setProcessedCharacter("");
     setResult("");
     setPosition(-1);
+    setTransposeHeight(1);
+    setTransposeBox(() => makeTransposeBox(message, 1));
   };
 
   return (

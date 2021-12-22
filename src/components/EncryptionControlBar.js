@@ -6,6 +6,7 @@ import {
   FinishShift,
   AnimatedShift,
   Transpose,
+  finishTranspose,
 } from "./Scripts/Encryption.js";
 
 const shift = "Shift",
@@ -42,6 +43,9 @@ export default function EncryptionControlBar(props) {
               props.setContent(
                 content[Number.parseInt(algoSelectRef.current.value) - 1]
               );
+              props.reset();
+              transposeHeightRef.current.value = 1;
+              shiftRef.current.value = 3;
             }}
           >
             <option value={1}>Shift Encryption</option>
@@ -75,8 +79,25 @@ export default function EncryptionControlBar(props) {
                   Number.parseInt(transposeHeightRef.current.value)
                 )
               );
+              props.setResult("");
             }}
           />
+        </div>
+        <div className="controlBarValueItem">
+          <label htmlFor="en/decrypt">Action:</label>
+          <br />
+          <button
+            type="button"
+            disabled={props.isAnimated}
+            onClick={() => {
+              setDecryption((d) => !d);
+              props.setPosition(-1);
+              props.setStep(0);
+              props.setResult("");
+            }}
+          >
+            {decyrption ? "Decrypt" : "Encrypt"}
+          </button>
         </div>
       </div>
       {
@@ -256,6 +277,13 @@ export default function EncryptionControlBar(props) {
                   props.shift,
                   props.setResult,
                   decyrption
+                );
+              if (props.algoID === 2)
+                finishTranspose(
+                  props.message,
+                  props.transposeBox,
+                  props.setTransposeBox,
+                  props.setResult
                 );
             }}
           >

@@ -158,6 +158,28 @@ const retrieveCharFromTransposeBox = (
  *
  */
 
+export function finishTranspose(
+  message,
+  transposeBox,
+  setTransposeBox,
+  appendResult
+) {
+  let l = transposeBox.length,
+    w = transposeBox[0].length,
+    res = new Array(l * w);
+  for (let i = 0; i < l; i++) {
+    for (let j = 0; j < w; j++) {
+      let pos = i * w + j;
+      let rPos = j * l + i;
+      let c = message[rPos];
+      transposeBox[i][j] = c;
+      res[pos] = c;
+    }
+  }
+  setTransposeBox(transposeBox.map((a) => a.map((v) => (v ? v : " "))));
+  appendResult(res.join("").trim());
+}
+
 export function Transpose(
   message,
   position,
