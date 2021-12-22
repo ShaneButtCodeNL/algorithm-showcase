@@ -1,7 +1,12 @@
 import { useRef } from "react";
 import { useState } from "react/cjs/react.development";
 
-import { Shift, FinishShift, AnimatedShift } from "./Scripts/Encryption.js";
+import {
+  Shift,
+  FinishShift,
+  AnimatedShift,
+  Transpose,
+} from "./Scripts/Encryption.js";
 
 const shift = "Shift",
   tranposition = "Transposition";
@@ -12,6 +17,10 @@ export default function EncryptionControlBar(props) {
   const shiftRef = useRef(null);
   const transposeHeightRef = useRef(null);
   const [decyrption, setDecryption] = useState(false);
+  const [tPosition, setTPosition] = useState(-1);
+  const [transposeX, setTransposeX] = useState(-1);
+  const [transposeY, setTransposeY] = useState(-1);
+  const [isTransposed, setIsTransposed] = useState(false);
   return (
     <fieldset
       className="searchControlBar"
@@ -156,11 +165,15 @@ export default function EncryptionControlBar(props) {
       }
       <div className="controlBarValueContainer">
         <div className="controlBarValueItem">
+          {
+            //Proceeds the animation one stage
+          }
           <button
             type="button"
             disabled={props.isAnimated}
             onClick={() => {
               console.log("NEXT CLICKED . . .", props.algoID);
+              //Shift encryption
               if (props.algoID === 1)
                 Shift(
                   props.message,
@@ -174,12 +187,34 @@ export default function EncryptionControlBar(props) {
                   props.setResult,
                   decyrption
                 );
+              if (props.algoID === 2)
+                Transpose(
+                  props.message,
+                  props.position,
+                  tPosition,
+                  props.step,
+                  props.setResult,
+                  isTransposed,
+                  props.transposeBox,
+                  transposeX,
+                  transposeY,
+                  props.setPosition,
+                  props.setStep,
+                  setTPosition,
+                  props.setTransposeBox,
+                  setTransposeX,
+                  setTransposeY,
+                  setIsTransposed
+                );
             }}
           >
-            {props.position === -1 ? "Start" : "Next >>"}
+            {props.position !== -1 || isTransposed ? "Next >>" : "Start"}
           </button>
         </div>
         <div className="controlBarValueItem">
+          {
+            //Plays the animation
+          }
           <button
             type="button"
             onClick={() => {
@@ -206,6 +241,9 @@ export default function EncryptionControlBar(props) {
           >{`${props.isAnimated ? "Stop " : ""}Animate`}</button>
         </div>
         <div className="controlBarValueItem">
+          {
+            //Proceds to completed state
+          }
           <button
             type="button"
             disabled={props.isAnimated}
