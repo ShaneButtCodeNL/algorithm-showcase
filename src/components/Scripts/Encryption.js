@@ -66,7 +66,6 @@ const IncrementTransposePosHorizontal = (
   setXPos,
   setYPos
 ) => {
-  console.log("xPos:", xPos, "yPos:", yPos, "w:", width, "h:", height);
   if (xPos === width - 1) {
     if (yPos === height - 1) {
       setXPos(-1);
@@ -140,7 +139,6 @@ const retrieveCharFromTransposeBox = (
   setY,
   appendResult
 ) => {
-  console.log("Retrieve from trnaspose box . . .\nxPos:", xPos, "yPos", yPos);
   appendResult((r) => r + transposeBox[xPos][yPos]);
   IncrementTransposePosVerticle(
     transposeBox.length,
@@ -157,6 +155,111 @@ const retrieveCharFromTransposeBox = (
  * Exported Transpose Encryption Functions
  *
  */
+
+export function animatedTranspose(
+  message,
+  position,
+  tPosition,
+  step,
+  appendResult,
+  isTransposed,
+  transposeBox,
+  transposeX,
+  transposeY,
+  setPosition,
+  setStep,
+  setTPosition,
+  setTransposeBox,
+  setTransposeX,
+  setTransposeY,
+  setIsTransposed,
+  setAnimation,
+  animationSpeed
+) {
+  setAnimationSpeed(animationSpeed);
+  let p = position,
+    pT = tPosition;
+  let s = step;
+  let pX = transposeX,
+    pY = transposeY;
+  let isTrans = isTransposed;
+  let tBox = clone2DArray(transposeBox);
+  const w = tBox.length,
+    h = tBox[0].length;
+  var animation = setInterval(() => {
+    Transpose(
+      message,
+      p,
+      pT,
+      s,
+      appendResult,
+      isTrans,
+      tBox,
+      pX,
+      pY,
+      setPosition,
+      setStep,
+      setTPosition,
+      setTransposeBox,
+      setTransposeX,
+      setTransposeY,
+      setIsTransposed
+    );
+    if (isTrans) {
+      console.log("ISTRANS", pX, pY, pT, tBox);
+      if (s === 0) {
+        pT++;
+        if (pX === -1) pX = 0;
+        if (pY === -1) pY = 0;
+      } else {
+        if (pT === message.length - 1) {
+          clearInterval(animation);
+          setAnimation(null);
+          setPosition(-1);
+          setTransposeY(-1);
+          setTransposeX(-1);
+          setTPosition(-1);
+        }
+        if (pY === h - 1) {
+          if (pX === w - 1) {
+            pX = -1;
+            pY = -1;
+          } else {
+            pX++;
+            pY = 0;
+          }
+        } else pY++;
+      }
+    } else {
+      if (s === 0) {
+        p++;
+        if (pX === -1) pX = 0;
+        if (pY === -1) pY = 0;
+      }
+      //step 1
+      else {
+        if (p === message.length - 1) {
+          isTrans = true;
+          pX = -1;
+          pY = -1;
+          p = -1;
+        } else {
+          if (pX === w - 1) {
+            if (pY === h - 1) {
+              pX = -1;
+              pY = -1;
+            } else {
+              pY++;
+              pX = 0;
+            }
+          } else pX++;
+        }
+      }
+    }
+    s = s ^ 1;
+  }, animationSpeed);
+  setAnimation(animation);
+}
 
 export function finishTranspose(
   message,

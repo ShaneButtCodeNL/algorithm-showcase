@@ -7,6 +7,7 @@ import {
   AnimatedShift,
   Transpose,
   finishTranspose,
+  animatedTranspose,
 } from "./Scripts/Encryption.js";
 
 const shift = "Shift",
@@ -277,25 +278,45 @@ export default function EncryptionControlBar(props) {
           <button
             type="button"
             onClick={() => {
-              if (props.algoID === 1)
-                if (props.isAnimated) {
-                  clearInterval(props.animation);
-                  props.setAnimation(null);
-                } else
-                  AnimatedShift(
-                    props.message,
-                    props.shift,
-                    props.position,
-                    props.step,
-                    props.setPosition,
-                    props.setMessageCharacter,
-                    props.setStep,
-                    props.setProcessedCharacter,
-                    props.setResult,
-                    props.decryption,
-                    props.setAnimation,
-                    props.animationSpeed
-                  );
+              if (props.isAnimated) {
+                clearInterval(props.animation);
+                props.setAnimation(null);
+              } else if (props.algoID === 1)
+                AnimatedShift(
+                  props.message,
+                  props.shift,
+                  props.position,
+                  props.step,
+                  props.setPosition,
+                  props.setMessageCharacter,
+                  props.setStep,
+                  props.setProcessedCharacter,
+                  props.setResult,
+                  props.decryption,
+                  props.setAnimation,
+                  props.animationSpeed
+                );
+              else if (props.algoID === 2)
+                animatedTranspose(
+                  props.message,
+                  props.position,
+                  tPosition,
+                  props.step,
+                  props.setResult,
+                  isTransposed,
+                  props.transposeBox,
+                  transposeX,
+                  transposeY,
+                  props.setPosition,
+                  props.setStep,
+                  setTPosition,
+                  props.setTransposeBox,
+                  setTransposeX,
+                  setTransposeY,
+                  setIsTransposed,
+                  props.setAnimation,
+                  props.animationSpeed
+                );
             }}
           >{`${props.isAnimated ? "Stop " : ""}Animate`}</button>
         </div>
@@ -308,6 +329,7 @@ export default function EncryptionControlBar(props) {
             disabled={props.isAnimated}
             onClick={() => {
               props.reset();
+              resetTranspose();
               props.setStep(0);
               if (props.algoID === 1)
                 FinishShift(
