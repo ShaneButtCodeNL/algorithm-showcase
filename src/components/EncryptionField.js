@@ -4,6 +4,7 @@ const oOffset = 0.3;
 const oFunction = (v) => 1 - v * (v < 0 ? oOffset * -1 : oOffset);
 export default function EncryptionField(props) {
   const [step, setStep] = useState(0);
+  const [decryption, setDecryption] = useState(false);
 
   return (
     <div className="encryptionFieldContainer">
@@ -12,8 +13,10 @@ export default function EncryptionField(props) {
           algoID={props.algoID}
           animation={props.animation}
           animationSpeed={props.animationSpeed}
+          decryption={decryption}
           isAnimated={props.isAnimated}
           makeTransposeBox={props.makeTransposeBox}
+          makeTransposeBoxRotated={props.makeTransposeBoxRotated}
           message={props.message}
           position={props.position}
           reset={props.reset}
@@ -24,6 +27,7 @@ export default function EncryptionField(props) {
           setAlgoID={props.setAlgoID}
           setAnimation={props.setAnimation}
           setContent={props.setContent}
+          setDecryption={setDecryption}
           setMessage={props.setMessage}
           setMessageCharacter={props.setMessageCharacter}
           setPosition={props.setPosition}

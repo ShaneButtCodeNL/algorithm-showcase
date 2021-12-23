@@ -17,11 +17,18 @@ export default function EncryptionControlBar(props) {
   const messageRef = useRef(null);
   const shiftRef = useRef(null);
   const transposeHeightRef = useRef(null);
-  const [decyrption, setDecryption] = useState(false);
   const [tPosition, setTPosition] = useState(-1);
   const [transposeX, setTransposeX] = useState(-1);
   const [transposeY, setTransposeY] = useState(-1);
   const [isTransposed, setIsTransposed] = useState(false);
+  const resetTranspose = () => {
+    setIsTransposed(false);
+    setTPosition(-1);
+    setTransposeX(-1);
+    setTransposeY(-1);
+    props.setStep(0);
+    props.setPosition(-1);
+  };
   return (
     <fieldset
       className="searchControlBar"
@@ -61,7 +68,9 @@ export default function EncryptionControlBar(props) {
         style={{ display: props.algoID === 2 ? "flex" : "none" }}
       >
         <div className="controlBarValueItem">
-          <label htmlFor="transposeHeight">Transpose Box Height:</label>
+          <label htmlFor="transposeHeight">
+            Transpose Box {props.decryption ? "Width" : "Height"}:
+          </label>
           <br />
           <input
             type="number"
@@ -73,10 +82,16 @@ export default function EncryptionControlBar(props) {
               props.setTransposeHeight(
                 Number.parseInt(transposeHeightRef.current.value)
               );
+              resetTranspose();
               props.setTransposeBox(() =>
                 props.makeTransposeBox(
                   props.message,
-                  Number.parseInt(transposeHeightRef.current.value)
+                  props.decryption
+                    ? Math.ceil(
+                        props.message.length /
+                          Number.parseInt(transposeHeightRef.current.value)
+                      )
+                    : Number.parseInt(transposeHeightRef.current.value)
                 )
               );
               props.setResult("");
@@ -90,13 +105,17 @@ export default function EncryptionControlBar(props) {
             type="button"
             disabled={props.isAnimated}
             onClick={() => {
-              setDecryption((d) => !d);
+              props.setDecryption((d) => !d);
               props.setPosition(-1);
               props.setStep(0);
+              props.setTransposeBox(
+                props.makeTransposeBox(props.message, props.transposeBox.length)
+              );
+              resetTranspose();
               props.setResult("");
             }}
           >
-            {decyrption ? "Decrypt" : "Encrypt"}
+            {props.decryption ? "Decrypt" : "Encrypt"}
           </button>
         </div>
       </div>
@@ -137,13 +156,13 @@ export default function EncryptionControlBar(props) {
             type="button"
             disabled={props.isAnimated}
             onClick={() => {
-              setDecryption((d) => !d);
+              props.setDecryption((d) => !d);
               props.setPosition(-1);
               props.setStep(0);
               props.setResult("");
             }}
           >
-            {decyrption ? "Decrypt" : "Encrypt"}
+            {props.decryption ? "Decrypt" : "Encrypt"}
           </button>
         </div>
       </div>
@@ -166,8 +185,12 @@ export default function EncryptionControlBar(props) {
                 props.setPosition(-1);
                 transposeHeightRef.current.value = "1";
                 props.setTransposeHeight(1);
+                resetTranspose();
                 props.setTransposeBox(() =>
-                  props.makeTransposeBox(messageRef.current.value, 1)
+                  props.makeTransposeBox(
+                    messageRef.current.value,
+                    props.decryption ? messageRef.current.value.length : 1
+                  )
                 );
               }}
             />
@@ -206,9 +229,23 @@ export default function EncryptionControlBar(props) {
                   props.setStep,
                   props.setProcessedCharacter,
                   props.setResult,
-                  decyrption
+                  props.decryption
                 );
-              if (props.algoID === 2)
+              if (props.algoID === 2) {
+                if (props.position === -1 && !isTransposed) {
+                  props.setTransposeBox(() =>
+                    props.makeTransposeBox(
+                      props.message,
+                      props.decryption
+                        ? Math.ceil(
+                            props.message.length /
+                              Number.parseInt(transposeHeightRef.current.value)
+                          )
+                        : Number.parseInt(transposeHeightRef.current.value)
+                    )
+                  );
+                  resetTranspose();
+                }
                 Transpose(
                   props.message,
                   props.position,
@@ -227,6 +264,7 @@ export default function EncryptionControlBar(props) {
                   setTransposeY,
                   setIsTransposed
                 );
+              }
             }}
           >
             {props.position !== -1 || isTransposed ? "Next >>" : "Start"}
@@ -254,7 +292,7 @@ export default function EncryptionControlBar(props) {
                     props.setStep,
                     props.setProcessedCharacter,
                     props.setResult,
-                    decyrption,
+                    props.decryption,
                     props.setAnimation,
                     props.animationSpeed
                   );
@@ -276,7 +314,7 @@ export default function EncryptionControlBar(props) {
                   props.message,
                   props.shift,
                   props.setResult,
-                  decyrption
+                  props.decryption
                 );
               if (props.algoID === 2)
                 finishTranspose(

@@ -6,7 +6,6 @@ import EncryptionToolBar from "./EncryptionToolBar";
  * Creates a 2d Array to place characters of a string into
  * @param {String} msg The message to be encrypted
  * @param {Number} h The number of rows to place it in
- * @param {Boolean} empty make an empty box
  * @returns {Number[][]} The transpose box
  */
 const makeTransposeBox = (msg, h) => {
@@ -16,6 +15,18 @@ const makeTransposeBox = (msg, h) => {
   );
 };
 
+/**
+ * Creates a 2d Array to place characters of a string into
+ * @param {String} msg The message to be encrypted
+ * @param {Number} w The number of cols to place it in
+ * @returns {Number[][]} The transpose box
+ */
+const makeTransposeBoxRotated = (msg, w) => {
+  const h = Math.ceil(msg.length / w);
+  return Array.from({ lenght: h }, (_) =>
+    Array.from({ length: w }, (_) => " ")
+  );
+};
 export default function Encryption(props) {
   const [message, setMessage] = useState("Hello World");
   const [messageCharacter, setMessageCharacter] = useState("");
@@ -54,6 +65,7 @@ export default function Encryption(props) {
         animationSpeed={animationSpeed}
         isAnimated={animation !== null}
         makeTransposeBox={makeTransposeBox}
+        makeTransposeBoxRotated={makeTransposeBoxRotated}
         message={message}
         messageCharacter={messageCharacter}
         position={position}
