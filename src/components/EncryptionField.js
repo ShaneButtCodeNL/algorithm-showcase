@@ -4,6 +4,8 @@ const oOffset = 0.3;
 const oFunction = (v) => 1 - v * (v < 0 ? oOffset * -1 : oOffset);
 export default function EncryptionField(props) {
   const [step, setStep] = useState(0);
+  const [transposeX, setTransposeX] = useState(-1);
+  const [transposeY, setTransposeY] = useState(-1);
   const [decryption, setDecryption] = useState(false);
 
   return (
@@ -24,6 +26,8 @@ export default function EncryptionField(props) {
           step={step}
           transposeBox={props.transposeBox}
           transposeHeight={props.transposeHeight}
+          transposeX={transposeX}
+          transposeY={transposeY}
           setAlgoID={props.setAlgoID}
           setAnimation={props.setAnimation}
           setContent={props.setContent}
@@ -38,6 +42,8 @@ export default function EncryptionField(props) {
           setStep={setStep}
           setTransposeBox={props.setTransposeBox}
           setTransposeHeight={props.setTransposeHeight}
+          setTransposeX={setTransposeX}
+          setTransposeY={setTransposeY}
         />
         <div id="encryptionField">
           <div id="messageField" className="encryptionFieldItem">
@@ -135,10 +141,18 @@ export default function EncryptionField(props) {
             <div className="transposeContainer">
               {props.transposeBox.map((row, rowIndex) => {
                 return (
-                  <div className="transposeCol">
+                  <div className="transposeCol" key={`row-${rowIndex}`}>
                     {row.map((_, colIndex) => {
                       return (
-                        <div className="transposeCharacterBox">
+                        <div
+                          className="transposeCharacterBox"
+                          key={`row-${rowIndex}-col-${colIndex}`}
+                          style={
+                            rowIndex === transposeX && colIndex === transposeY
+                              ? { boxShadow: "0 0 0.15em 0.1em #FFDB00" }
+                              : {}
+                          }
+                        >
                           {props.transposeBox[rowIndex][colIndex]}
                         </div>
                       );

@@ -19,14 +19,12 @@ export default function EncryptionControlBar(props) {
   const shiftRef = useRef(null);
   const transposeHeightRef = useRef(null);
   const [tPosition, setTPosition] = useState(-1);
-  const [transposeX, setTransposeX] = useState(-1);
-  const [transposeY, setTransposeY] = useState(-1);
   const [isTransposed, setIsTransposed] = useState(false);
   const resetTranspose = () => {
     setIsTransposed(false);
     setTPosition(-1);
-    setTransposeX(-1);
-    setTransposeY(-1);
+    props.setTransposeX(-1);
+    props.setTransposeY(-1);
     props.setStep(0);
     props.setPosition(-1);
   };
@@ -255,14 +253,14 @@ export default function EncryptionControlBar(props) {
                   props.setResult,
                   isTransposed,
                   props.transposeBox,
-                  transposeX,
-                  transposeY,
+                  props.transposeX,
+                  props.transposeY,
                   props.setPosition,
                   props.setStep,
                   setTPosition,
                   props.setTransposeBox,
-                  setTransposeX,
-                  setTransposeY,
+                  props.setTransposeX,
+                  props.setTransposeY,
                   setIsTransposed
                 );
               }
@@ -305,14 +303,14 @@ export default function EncryptionControlBar(props) {
                   props.setResult,
                   isTransposed,
                   props.transposeBox,
-                  transposeX,
-                  transposeY,
+                  props.transposeX,
+                  props.transposeY,
                   props.setPosition,
                   props.setStep,
                   setTPosition,
                   props.setTransposeBox,
-                  setTransposeX,
-                  setTransposeY,
+                  props.setTransposeX,
+                  props.setTransposeY,
                   setIsTransposed,
                   props.setAnimation,
                   props.animationSpeed
