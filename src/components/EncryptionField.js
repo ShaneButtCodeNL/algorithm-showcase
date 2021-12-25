@@ -91,7 +91,10 @@ export default function EncryptionField(props) {
           <div
             id="shiftEncryptionContainer"
             className="encryptionFieldItem"
-            style={{ display: props.algoID === 1 ? "inline" : "none" }}
+            style={{
+              display:
+                props.algoID === 1 || props.algoID === 3 ? "inline" : "none",
+            }}
           >
             <div className="encryptionFieldItem encryptionBox">
               <span>Value:</span>
@@ -149,7 +152,11 @@ export default function EncryptionField(props) {
                           key={`row-${rowIndex}-col-${colIndex}`}
                           style={
                             rowIndex === transposeX && colIndex === transposeY
-                              ? { boxShadow: "0 0 0.15em 0.1em #FFDB00" }
+                              ? {
+                                  boxShadow: "0 0 0.15em 0.1em #FFDB00",
+                                  backgroundColor: "#FFDB00",
+                                  color: "black",
+                                }
                               : {}
                           }
                         >

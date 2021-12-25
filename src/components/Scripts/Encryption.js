@@ -362,6 +362,125 @@ export function Transpose(
 
 /**
  *
+ * Exported Better Shift Functions
+ *
+ */
+export function FinishBetterShift(
+  message,
+  shift,
+  appendResult,
+  decryption,
+  resetShift
+) {
+  let output = "";
+  for (let c of message) {
+    output += applyShift(shift, c, decryption);
+    shift = (shift + 1) % 26;
+  }
+  resetShift();
+  appendResult(output);
+}
+
+export function AnimatedBetterShift(
+  message,
+  shift,
+  position,
+  step,
+  setPosition,
+  setChar,
+  setStep,
+  setEncryptedChar,
+  setShift,
+  resetShift,
+  appendResult,
+  decryption,
+  setAnimation,
+  animationSpeed
+) {
+  setAnimationSpeed(animationSpeed);
+  let p = position;
+  let s = step;
+  let sh = shift;
+  var animation = setInterval(() => {
+    BetterShift(
+      message,
+      sh,
+      p,
+      s,
+      setPosition,
+      setChar,
+      setStep,
+      setEncryptedChar,
+      setShift,
+      appendResult,
+      decryption,
+      resetShift
+    );
+    if (s === 0) p++;
+    if (s === 4) sh = (sh + 1) % 26;
+    s = (s + 1) % 5;
+    if (p === message.length) {
+      clearInterval(animation);
+      setAnimation(null);
+      setPosition(-1);
+      setStep(0);
+    }
+  }, animationSpeed);
+  setAnimation(animation);
+}
+export function BetterShift(
+  message,
+  shift,
+  position,
+  step,
+  setPosition,
+  setChar,
+  setStep,
+  setEncryptedChar,
+  setShift,
+  appendResult,
+  decryption,
+  resetShift
+) {
+  if (position === -1) appendResult("");
+  //Set Position
+  if (step === 0) {
+    setPosition((p) => p + 1);
+    setChar(message[position + 1]);
+
+    setStep(1);
+    return;
+  }
+  //Set character
+  if (step === 1) {
+    setStep(2);
+    return;
+  }
+  //Set encrypted char
+  if (step === 2) {
+    setEncryptedChar(applyShift(shift, message[position], decryption));
+    setStep(3);
+    return;
+  }
+  //Add to result
+  if (step === 3) {
+    appendResult((s) => s + applyShift(shift, message[position], decryption));
+    setStep(4);
+    return;
+  }
+  //Increment shift value
+  setStep(0);
+  setShift((v) => (v + 1) % 26);
+  if (position === message.length - 1) {
+    setPosition(-1);
+    resetShift();
+  }
+  setChar("");
+  setEncryptedChar("");
+}
+
+/**
+ *
  * Exported Shift encryption functions
  *
  */
@@ -412,7 +531,6 @@ export function AnimatedShift(
   }, animationSpeed);
   setAnimation(animation);
 }
-
 export function Shift(
   message,
   shift,

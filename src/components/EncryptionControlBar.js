@@ -8,11 +8,15 @@ import {
   Transpose,
   finishTranspose,
   animatedTranspose,
+  BetterShift,
+  AnimatedBetterShift,
+  FinishBetterShift,
 } from "./Scripts/Encryption.js";
 
 const shift = "Shift",
-  tranposition = "Transposition";
-const content = [shift, tranposition];
+  tranposition = "Transposition",
+  betterShift = "betterShift";
+const content = [shift, tranposition, betterShift];
 export default function EncryptionControlBar(props) {
   const algoSelectRef = useRef(null);
   const messageRef = useRef(null);
@@ -56,6 +60,7 @@ export default function EncryptionControlBar(props) {
           >
             <option value={1}>Shift Encryption</option>
             <option value={2}>Transposition Encryption</option>
+            <option value={3}>Better Shift Encryption</option>
           </select>
         </div>
       </div>
@@ -123,7 +128,9 @@ export default function EncryptionControlBar(props) {
       }
       <div
         className="controlBarValueContainer"
-        style={{ display: props.algoID === 1 ? "flex" : "none" }}
+        style={{
+          display: props.algoID === 1 || props.algoID === 3 ? "flex" : "none",
+        }}
       >
         <div className="controlBarValueItem">
           <label htmlFor="shiftAmmount">Shift By:</label>
@@ -216,6 +223,7 @@ export default function EncryptionControlBar(props) {
             disabled={props.isAnimated}
             onClick={() => {
               console.log("NEXT CLICKED . . .", props.algoID);
+
               //Shift encryption
               if (props.algoID === 1)
                 Shift(
@@ -262,6 +270,22 @@ export default function EncryptionControlBar(props) {
                   props.setTransposeX,
                   props.setTransposeY,
                   setIsTransposed
+                );
+              }
+              if (props.algoID === 3) {
+                BetterShift(
+                  props.message,
+                  props.shift,
+                  props.position,
+                  props.step,
+                  props.setPosition,
+                  props.setMessageCharacter,
+                  props.setStep,
+                  props.setProcessedCharacter,
+                  props.setShift,
+                  props.setResult,
+                  props.decryption,
+                  () => props.setShift(Number.parseInt(shiftRef.current.value))
                 );
               }
             }}
@@ -315,6 +339,23 @@ export default function EncryptionControlBar(props) {
                   props.setAnimation,
                   props.animationSpeed
                 );
+              else if (props.algoID === 3)
+                AnimatedBetterShift(
+                  props.message,
+                  props.shift,
+                  props.position,
+                  props.step,
+                  props.setPosition,
+                  props.setMessageCharacter,
+                  props.setStep,
+                  props.setProcessedCharacter,
+                  props.setShift,
+                  () => props.setShift(Number.parseInt(shiftRef.current.value)),
+                  props.setResult,
+                  props.decryption,
+                  props.setAnimation,
+                  props.animationSpeed
+                );
             }}
           >{`${props.isAnimated ? "Stop " : ""}Animate`}</button>
         </div>
@@ -342,6 +383,14 @@ export default function EncryptionControlBar(props) {
                   props.transposeBox,
                   props.setTransposeBox,
                   props.setResult
+                );
+              if (props.algoID === 3)
+                FinishBetterShift(
+                  props.message,
+                  Number.parseInt(shiftRef.current.value),
+                  props.setResult,
+                  props.decryption,
+                  () => props.setShift(Number.parseInt(shiftRef.current.value))
                 );
             }}
           >
