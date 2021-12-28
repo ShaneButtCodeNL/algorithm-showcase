@@ -1,4 +1,6 @@
-import { useRef } from "react";
+//ON STEP 5 OF RSA KEY GENERATION
+
+import { useEffect, useRef } from "react";
 import { useState } from "react";
 
 import {
@@ -13,6 +15,7 @@ import {
   FinishBetterShift,
 } from "./Scripts/Encryption.js";
 
+//List of primes less than 1000
 const shift =
     "Shift Encryption works by shifting the characters in a word by a set distance./br" +
     'If a character "A" is encrypted by 3 places it becomes "D" from "A"->"B"->"C"->"D"./br' +
@@ -42,15 +45,22 @@ const shift =
     "This also applyies to decryption, we just loop to the end of the dictionary./br" +
     'If a character "B" is decrypted 3 places it becomes "Y" from "B"->"A"->"Z"->"Y"./br' +
     'In this project only alpha characters are en/decrypted using two dictionaries ["A","B",...,"Y","Z"] and ["a","b",...,"y","z"] used for lower and upper characters/br' +
-    "This Algorythm is not good to use to encrypt important data as a computer can break this very fast.";
-const content = [shift, tranposition, betterShift];
+    "This Algorythm is not good to use to encrypt important data as a computer can break this very fast.",
+  rsa = "RSA";
+const content = [shift, tranposition, betterShift, rsa];
 export default function EncryptionControlBar(props) {
   const algoSelectRef = useRef(null);
   const messageRef = useRef(null);
   const shiftRef = useRef(null);
   const transposeHeightRef = useRef(null);
+  const pPrimeRef = useRef(null);
+  const qPrimeRef = useRef(null);
+  const eRef = useRef(null);
   const [tPosition, setTPosition] = useState(-1);
   const [isTransposed, setIsTransposed] = useState(false);
+
+  useEffect(() => (eRef.current.value = props.eRSA), [props.eRSA]);
+
   const resetTranspose = () => {
     setIsTransposed(false);
     setTPosition(-1);
@@ -59,6 +69,7 @@ export default function EncryptionControlBar(props) {
     props.setStep(0);
     props.setPosition(-1);
   };
+  //const primes = useState(() => generatePrimes(1000));
   return (
     <fieldset
       className="searchControlBar"
@@ -89,6 +100,78 @@ export default function EncryptionControlBar(props) {
             <option value={2}>Transposition Encryption</option>
             <option value={3}>Better Shift Encryption</option>
             <option value={4}>RSA</option>
+          </select>
+        </div>
+      </div>
+      {
+        //Used for RSA
+      }
+      <div
+        className="controlBarValueContainer"
+        style={{ display: props.algoID === 4 ? "flex" : "none" }}
+      >
+        <div className="controlBarValueItem">
+          <label>Prime p:</label>
+          <br />
+          <select
+            ref={pPrimeRef}
+            defaultValue={props.primeP}
+            onChange={() => {
+              props.setPrimeP(Number.parseInt(pPrimeRef.current.value));
+            }}
+          >
+            {props.primes.map((v) => (
+              <option
+                key={`p-${v}`}
+                value={v}
+                style={v === props.primeQ ? { display: "none" } : {}}
+              >
+                {v}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="controlBarValueItem">
+          <label>Prime q:</label>
+          <br />
+          <select
+            ref={qPrimeRef}
+            defaultValue={props.primeQ}
+            onChange={() => {
+              props.setPrimeQ(Number.parseInt(qPrimeRef.current.value));
+            }}
+          >
+            {props.primes.map((v) => (
+              <option
+                key={`p-${v}`}
+                value={v}
+                style={v === props.primeP ? { display: "none" } : {}}
+              >
+                {v}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      <div
+        className="controlBarValueContainer"
+        style={{ display: props.algoID === 4 ? "flex" : "none" }}
+      >
+        <div className="controlBarValueItem">
+          <label>Prime e : </label>
+          <br />
+          <select
+            ref={eRef}
+            defaultValue={props.eRSA}
+            onChange={() => {
+              props.setERSA(Number.parseInt(eRef.current.value));
+            }}
+          >
+            {props.eRSAArray.map((v) => (
+              <option key={`e-RSA-${v}`} value={v}>
+                {v}
+              </option>
+            ))}
           </select>
         </div>
       </div>

@@ -1,5 +1,42 @@
 import EncryptionControlBar from "./EncryptionControlBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+/**
+ * Finds the Greatest common factor of two numbers
+ * @param {Number} x Number 1
+ * @param {Number} y Number 2
+ * @returns {Number} The greatest common factor of x & y
+ */
+const gcf = (x, y) => {
+  while (y) {
+    let t = y;
+    y = x % y;
+    x = t;
+  }
+  return x;
+};
+/**
+ * Finds the Lowest Common Multiple of two numbers
+ * @param {Number} x Number 1
+ * @param {Number} y Number 2
+ * @returns {Number} The lowest common multiple of x & y
+ */
+const lcm = (x, y) => (x * y) / gcf(x, y);
+/**
+ * Finds all prime numbers under a limit using euclidean sieve
+ * @param {Number} n Max limit for the list
+ * @returns {Number[]} List of primes less than or equal to n
+ */
+const generatePrimes = (n) => {
+  let a = Array.from({ length: n - 1 }, (_, i) => i + 2);
+  let p = 0;
+  while (p < a.length) {
+    a = a.filter((v) => v === a[p] || v % a[p] !== 0);
+    p++;
+  }
+  return a;
+};
+const primes = generatePrimes(1000);
 const oOffset = 0.3;
 const oFunction = (v) => 1 - v * (v < 0 ? oOffset * -1 : oOffset);
 export default function EncryptionField(props) {
@@ -7,7 +44,23 @@ export default function EncryptionField(props) {
   const [transposeX, setTransposeX] = useState(-1);
   const [transposeY, setTransposeY] = useState(-1);
   const [decryption, setDecryption] = useState(false);
+  const [primeP, setPrimeP] = useState(2);
+  const [primeQ, setPrimeQ] = useState(5);
+  const [modulusN, setModulusN] = useState(10);
+  const [lambdaN, setLambdaN] = useState(4);
+  const [eRSA, setERSA] = useState(3);
+  const [eRSAArray, setERSAArray] = useState(
+    primes.filter((v) => lambdaN % v !== 0)
+  );
 
+  useEffect(() => {
+    const newLN = lcm(primeP - 1, primeQ - 1);
+    const newERSAARRAY = primes.filter((v) => newLN % v !== 0);
+    setERSAArray(newERSAARRAY);
+    setERSA(newERSAARRAY[0]);
+    setModulusN(primeQ * primeP);
+    setLambdaN(newLN);
+  }, [primeP, primeQ]);
   return (
     <div className="encryptionFieldContainer">
       <div id="encryptionFieldDisplay">
@@ -16,11 +69,17 @@ export default function EncryptionField(props) {
           animation={props.animation}
           animationSpeed={props.animationSpeed}
           decryption={decryption}
+          eRSA={eRSA}
+          eRSAArray={eRSAArray}
           isAnimated={props.isAnimated}
+          lambdaN={lambdaN}
           makeTransposeBox={props.makeTransposeBox}
           makeTransposeBoxRotated={props.makeTransposeBoxRotated}
           message={props.message}
           position={props.position}
+          primeP={primeP}
+          primeQ={primeQ}
+          primes={primes}
           reset={props.reset}
           shift={props.shift}
           step={step}
@@ -32,9 +91,13 @@ export default function EncryptionField(props) {
           setAnimation={props.setAnimation}
           setContent={props.setContent}
           setDecryption={setDecryption}
+          setERSA={setERSA}
+          setERSAArray={setERSAArray}
           setMessage={props.setMessage}
           setMessageCharacter={props.setMessageCharacter}
           setPosition={props.setPosition}
+          setPrimeP={setPrimeP}
+          setPrimeQ={setPrimeQ}
           setProcessedCharacter={props.setProcessedCharacter}
           setProcessedMessage={props.setProcessedMessage}
           setResult={props.setResult}
@@ -167,6 +230,23 @@ export default function EncryptionField(props) {
                   </div>
                 );
               })}
+            </div>
+          </div>
+          {
+            //For RSA
+          }
+          <div
+            id="RSAEncryptionContainer"
+            className="encryptionFieldItem"
+            display={props.algoID === 4 ? { display: "none" } : {}}
+          >
+            <div>
+              <label>N=( p*q ) : </label>
+              <span>{modulusN}</span>
+            </div>
+            <div>
+              <label>Lambda N=LCM( ( p-1 ) , ( q-1 ) ) : </label>
+              <span>{lambdaN}</span>
             </div>
           </div>
           <div id="resultsField" className="encryptionFieldItem">
