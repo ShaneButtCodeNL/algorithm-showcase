@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 
 import {
   Shift,
@@ -13,9 +13,36 @@ import {
   FinishBetterShift,
 } from "./Scripts/Encryption.js";
 
-const shift = "Shift",
-  tranposition = "Transposition",
-  betterShift = "betterShift";
+const shift =
+    "Shift Encryption works by shifting the characters in a word by a set distance./br" +
+    'If a character "A" is encrypted by 3 places it becomes "D" from "A"->"B"->"C"->"D"./br' +
+    "Decryption works by shifting the character in the opposite direction./br" +
+    'If a character "D" is decrypted by 3 places it becomes "A" from "D"->"C"->"B"->"A"./br' +
+    "For instances where the new position is beyond the range of the dictionary we just loop around to the beginning./br" +
+    'If a character "Y" is encrypted by 3 places it becomes "B" from "Y"->"Z"->"A"->"B"./br' +
+    "This also applyies to decryption, we just loop to the end of the dictionary./br" +
+    'If a character "B" is decrypted 3 places it becomes "Y" from "B"->"A"->"Z"->"Y"./br' +
+    'In this project only alpha characters are en/decrypted using two dictionaries ["A","B",...,"Y","Z"] and ["a","b",...,"y","z"] used for lower and upper characters/br' +
+    "This Algorythm is not good to use to encrypt important data as a computer can break this very fast.",
+  tranposition =
+    "Transposition Encryption works by placeing characters into a  n*m box by filling up rows one at a time, then reading those characters one column at a time./br" +
+    'The message "hello world" being transposed into a 2*6 box will look like . . .\n[\n\t["h","e","l","l","o"," "]\n\t["w","o","r","l","d",""]\n]\nWe Then read the columns first giving us "hweolrllod "./br' +
+    "To decrypt an encrypted message we transpose it into a m*n box" +
+    'The message "hweolrllod " being transposed into a 2*6 box will look like . . .\n[\n\t["h","w"]\n\t["e","o"]\n\t["l","r"]\n\t["l","l"]\n\t["o","d"]\n\t[" ",""]\n]\nWe Then read the columns first giving us "hello world"./br' +
+    'Important notes are the length of the string must be less than or equal to the size of the box "n*m".\nThis Algorythm is also not good to use to encrypt important data as a computer can break this very fast.',
+  betterShift =
+    "Better Shift Encryption works by shifting the characters in a word by a set distance but changeing the distance with each character./br" +
+    'If a character "A" is encrypted by 3 places it becomes "D" from "A"->"B"->"C"->"D"./br' +
+    'If another character "A" is encrypted it will shift by 4 places it becomes "E" from "A"->"B"->"C"->"D"->"E"./br' +
+    "Decryption works by shifting the character in the opposite direction./br" +
+    'If a character "D" is decrypted by 3 places it becomes "A" from "D"->"C"->"B"->"A"./br' +
+    'If the next character "E" is decrypted it is shifted by 4 places it becomes "A" from "E"->"D"->"C"->"B"->"A"./br' +
+    "For instances where the new position is beyond the range of the dictionary we just loop around to the beginning./br" +
+    'If a character "Y" is encrypted by 3 places it becomes "B" from "Y"->"Z"->"A"->"B"./br' +
+    "This also applyies to decryption, we just loop to the end of the dictionary./br" +
+    'If a character "B" is decrypted 3 places it becomes "Y" from "B"->"A"->"Z"->"Y"./br' +
+    'In this project only alpha characters are en/decrypted using two dictionaries ["A","B",...,"Y","Z"] and ["a","b",...,"y","z"] used for lower and upper characters/br' +
+    "This Algorythm is not good to use to encrypt important data as a computer can break this very fast.";
 const content = [shift, tranposition, betterShift];
 export default function EncryptionControlBar(props) {
   const algoSelectRef = useRef(null);
@@ -61,6 +88,7 @@ export default function EncryptionControlBar(props) {
             <option value={1}>Shift Encryption</option>
             <option value={2}>Transposition Encryption</option>
             <option value={3}>Better Shift Encryption</option>
+            <option value={4}>RSA</option>
           </select>
         </div>
       </div>

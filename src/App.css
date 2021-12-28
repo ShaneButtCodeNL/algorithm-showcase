@@ -106,6 +106,7 @@ Main Page
   background-color: rgba(255, 255, 255, 0.9);
   color: black;
   border-radius: 10%/2em;
+  white-space: pre-wrap;
 }
 /**
 Control Bar

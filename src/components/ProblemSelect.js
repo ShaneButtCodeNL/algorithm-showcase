@@ -10,7 +10,17 @@ const defaultContent = "You need to select a problem first.",
     "Searching is the problem of finding if a certain object exists in a collection of items./br Linear search iterates over the list one item at a time until either it reaches the end of the list or finds an item that matches the search criteria./brThis algorithm runs in O(n), Linear time",
   sortingContent =
     "Sorting is the problem of arranging the items of a collection in a certain order./brBubble Sort works by iterateing through the list and compareing the current value to the next value, moving the largest/smallest element towards the end of the list./brThe RunTime of Bubble sort is O(n^2).",
-  encryptionContent = "DEFAULT";
+  encryptionContent =
+    "Shift Encryption works by shifting the characters in a word by a set distance./br" +
+    'If a character "A" is encrypted by 3 places it becomes "D" from "A"->"B"->"C"->"D"./br' +
+    "Decryption works by shifting the character in the opposite direction./br" +
+    'If a character "D" is decrypted by 3 places it becomes "A" from "D"->"C"->"B"->"A"./br' +
+    "For instances where the new position is beyond the range of the dictionary we just loop around to the beginning./br" +
+    'If a character "Y" is encrypted by 3 places it becomes "B" from "Y"->"Z"->"A"->"B"./br' +
+    "This also applyies to decryption, we just loop to the end of the dictionary./br" +
+    'If a character "B" is decrypted 3 places it becomes "Y" from "B"->"A"->"Z"->"Y"./br' +
+    'In this project only alpha characters are en/decrypted using two dictionaries ["A","B",...,"Y","Z"] and ["a","b",...,"y","z"] used for lower and upper characters/br' +
+    "This Algorythm is not good to use to encrypt important data as a computer can break this very fast.";
 const problemExplainations = [
   defaultContent,
   pathFindingContent,
