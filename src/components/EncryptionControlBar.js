@@ -15,7 +15,6 @@ import {
   FinishBetterShift,
 } from "./Scripts/Encryption.js";
 
-//List of primes less than 1000
 const shift =
     "Shift Encryption works by shifting the characters in a word by a set distance./br" +
     'If a character "A" is encrypted by 3 places it becomes "D" from "A"->"B"->"C"->"D"./br' +
@@ -94,6 +93,13 @@ export default function EncryptionControlBar(props) {
               props.reset();
               transposeHeightRef.current.value = 1;
               shiftRef.current.value = 3;
+              if (Number.parseInt(algoSelectRef.current.value) === 4) {
+                props.setMessage((m) => m.substring(0, 3));
+                messageRef.current.value = messageRef.current.value.substring(
+                  0,
+                  3
+                );
+              }
             }}
           >
             <option value={1}>Shift Encryption</option>
@@ -173,6 +179,26 @@ export default function EncryptionControlBar(props) {
               </option>
             ))}
           </select>
+        </div>
+        <div className="controlBarValueItem">
+          <label htmlFor="en/decrypt">Action:</label>
+          <br />
+          <button
+            type="button"
+            disabled={props.isAnimated}
+            onClick={() => {
+              props.setDecryption((d) => !d);
+              props.setPosition(-1);
+              props.setStep(0);
+              props.setTransposeBox(
+                props.makeTransposeBox(props.message, props.transposeBox.length)
+              );
+              resetTranspose();
+              props.setResult("");
+            }}
+          >
+            {props.decryption ? "Decrypt" : "Encrypt"}
+          </button>
         </div>
       </div>
       {
@@ -298,6 +324,11 @@ export default function EncryptionControlBar(props) {
               style={{ width: "20ch" }}
               ref={messageRef}
               onChange={() => {
+                if (Number.parseInt(algoSelectRef.current.value) === 4)
+                  messageRef.current.value = messageRef.current.value.substring(
+                    0,
+                    3
+                  );
                 props.setMessage(messageRef.current.value);
                 props.setPosition(-1);
                 transposeHeightRef.current.value = "1";

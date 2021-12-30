@@ -1,6 +1,33 @@
 import EncryptionControlBar from "./EncryptionControlBar";
 import { useEffect, useState } from "react";
 
+const codes = { a: 1, A: 27 };
+for (let i = "b".charCodeAt(0); i <= "z".charCodeAt(0); i++)
+  codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
+for (let i = "B".charCodeAt(0); i <= "Z".charCodeAt(0); i++)
+  codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
+console.log(codes);
+const findD = (e, n) => {
+  for (let i = 2; i < n; i++) {
+    let d = (i * n + 1) / e;
+    if (d === Math.floor(d)) return d;
+  }
+  return null;
+};
+const convertMSGToNum = (msg) => {
+  let res = [];
+  //Only alpha
+  for (let c of msg) if (codes[c] !== undefined) res.push(c);
+  return Number.parseInt(
+    res
+      .map((v) => {
+        let c = codes[v];
+        if (c < 10) return `0${c}`;
+        return `${c}`;
+      })
+      .join("")
+  );
+};
 /**
  * Finds the Greatest common factor of two numbers
  * @param {Number} x Number 1
@@ -36,7 +63,7 @@ const generatePrimes = (n) => {
   }
   return a;
 };
-const primes = generatePrimes(1000);
+const primes = generatePrimes(10000);
 const oOffset = 0.3;
 const oFunction = (v) => 1 - v * (v < 0 ? oOffset * -1 : oOffset);
 export default function EncryptionField(props) {
@@ -52,15 +79,24 @@ export default function EncryptionField(props) {
   const [eRSAArray, setERSAArray] = useState(
     primes.filter((v) => lambdaN % v !== 0)
   );
-
+  const [dRSA, setDRSA] = useState(() => findD(eRSAArray, lambdaN));
+  const [msgNum, setMsgNum] = useState(() => convertMSGToNum(props.message));
   useEffect(() => {
-    const newLN = lcm(primeP - 1, primeQ - 1);
-    const newERSAARRAY = primes.filter((v) => newLN % v !== 0);
+    setMsgNum(convertMSGToNum(props.message));
+  }, [props.message]);
+  useEffect(() => {
+    const newLN = (primeP - 1) * (primeQ - 1);
+    const newERSAARRAY = primes.filter((v) => newLN % v !== 0 && v < newLN);
     setERSAArray(newERSAARRAY);
     setERSA(newERSAARRAY[0]);
     setModulusN(primeQ * primeP);
+    setDRSA(() => findD(eRSA, newLN));
     setLambdaN(newLN);
   }, [primeP, primeQ]);
+  useEffect(() => {
+    const newLN = (primeP - 1) * (primeQ - 1);
+    setDRSA(() => findD(eRSA, newLN));
+  }, [eRSA]);
   return (
     <div className="encryptionFieldContainer">
       <div id="encryptionFieldDisplay">
@@ -69,6 +105,7 @@ export default function EncryptionField(props) {
           animation={props.animation}
           animationSpeed={props.animationSpeed}
           decryption={decryption}
+          dRSA={dRSA}
           eRSA={eRSA}
           eRSAArray={eRSAArray}
           isAnimated={props.isAnimated}
@@ -91,6 +128,7 @@ export default function EncryptionField(props) {
           setAnimation={props.setAnimation}
           setContent={props.setContent}
           setDecryption={setDecryption}
+          setDRSA={setDRSA}
           setERSA={setERSA}
           setERSAArray={setERSAArray}
           setMessage={props.setMessage}
@@ -238,17 +276,33 @@ export default function EncryptionField(props) {
           <div
             id="RSAEncryptionContainer"
             className="encryptionFieldItem"
-            display={props.algoID === 4 ? { display: "none" } : {}}
+            style={props.algoID === 4 ? {} : { display: "none" }}
           >
             <div>
               <label>N=( p*q ) : </label>
               <span>{modulusN}</span>
             </div>
             <div>
-              <label>Lambda N=LCM( ( p-1 ) , ( q-1 ) ) : </label>
+              <label>Totient N=( p-1 )*( q-1 ) : </label>
               <span>{lambdaN}</span>
             </div>
+            <div>
+              <label>public key ( n , e ) : </label>
+              <span>{`( ${modulusN} , ${eRSA} )`}</span>
+            </div>
+            <div>
+              <label>private key d : </label>
+              <span>{dRSA}</span>
+            </div>
+            <div>
+              <label>Message as a number C : </label>
+              <span>{msgNum}</span>
+            </div>
           </div>
+
+          {
+            //END OF RSA
+          }
           <div id="resultsField" className="encryptionFieldItem">
             <div className="resultsContainer">
               <label>Result:</label>
