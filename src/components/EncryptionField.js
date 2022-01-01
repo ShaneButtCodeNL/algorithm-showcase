@@ -2,15 +2,14 @@ import EncryptionControlBar from "./EncryptionControlBar";
 import { useEffect, useState } from "react";
 
 const codes = { a: 1, A: 27 };
+const RSAArrayCap = 998;
 for (let i = "b".charCodeAt(0); i <= "z".charCodeAt(0); i++)
   codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
 for (let i = "B".charCodeAt(0); i <= "Z".charCodeAt(0); i++)
   codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
-console.log(codes);
-const findD = (e, n) => {
-  for (let i = 2; i < n; i++) {
-    let d = (i * n + 1) / e;
-    if (d === Math.floor(d)) return d;
+const findD = (e, mod) => {
+  for (let i = 1; i < mod; i++) {
+    if (((e % mod) * (i % mod)) % mod === 1) return i;
   }
   return null;
 };
@@ -74,19 +73,25 @@ export default function EncryptionField(props) {
   const [primeP, setPrimeP] = useState(2);
   const [primeQ, setPrimeQ] = useState(5);
   const [modulusN, setModulusN] = useState(10);
-  const [lambdaN, setLambdaN] = useState(4);
+  const [lambdaN, setLambdaN] = useState(() => lcm(2, 5));
   const [eRSA, setERSA] = useState(3);
   const [eRSAArray, setERSAArray] = useState(
-    primes.filter((v) => lambdaN % v !== 0)
+    Array.from({ length: lambdaN - 2 }, (_, i) => i + 2).filter(
+      (v) => gcf(v, lambdaN) === 1
+    )
   );
   const [dRSA, setDRSA] = useState(() => findD(eRSAArray, lambdaN));
-  const [msgNum, setMsgNum] = useState(() => convertMSGToNum(props.message));
+  const [cipher, setCipher] = useState(() => convertMSGToNum(props.message));
+
   useEffect(() => {
-    setMsgNum(convertMSGToNum(props.message));
+    setCipher(convertMSGToNum(props.message));
   }, [props.message]);
   useEffect(() => {
-    const newLN = (primeP - 1) * (primeQ - 1);
-    const newERSAARRAY = primes.filter((v) => newLN % v !== 0 && v < newLN);
+    const newLN = lcm(primeP - 1, primeQ - 1);
+    const newERSAARRAY = Array.from(
+      { length: Math.min(newLN - 2, RSAArrayCap) },
+      (_, i) => i + 2
+    ).filter((v) => gcf(v, newLN) === 1);
     setERSAArray(newERSAARRAY);
     setERSA(newERSAARRAY[0]);
     setModulusN(primeQ * primeP);
@@ -94,7 +99,7 @@ export default function EncryptionField(props) {
     setLambdaN(newLN);
   }, [primeP, primeQ]);
   useEffect(() => {
-    const newLN = (primeP - 1) * (primeQ - 1);
+    const newLN = lcm(primeP - 1, primeQ - 1);
     setDRSA(() => findD(eRSA, newLN));
   }, [eRSA]);
   return (
@@ -104,6 +109,7 @@ export default function EncryptionField(props) {
           algoID={props.algoID}
           animation={props.animation}
           animationSpeed={props.animationSpeed}
+          cipher={cipher}
           decryption={decryption}
           dRSA={dRSA}
           eRSA={eRSA}
@@ -113,6 +119,7 @@ export default function EncryptionField(props) {
           makeTransposeBox={props.makeTransposeBox}
           makeTransposeBoxRotated={props.makeTransposeBoxRotated}
           message={props.message}
+          modulusN={modulusN}
           position={props.position}
           primeP={primeP}
           primeQ={primeQ}
@@ -126,6 +133,7 @@ export default function EncryptionField(props) {
           transposeY={transposeY}
           setAlgoID={props.setAlgoID}
           setAnimation={props.setAnimation}
+          setCipher={setCipher}
           setContent={props.setContent}
           setDecryption={setDecryption}
           setDRSA={setDRSA}
@@ -283,20 +291,20 @@ export default function EncryptionField(props) {
               <span>{modulusN}</span>
             </div>
             <div>
-              <label>Totient N=( p-1 )*( q-1 ) : </label>
+              <label>Totient N=LCM( p-1 , q-1 ) : </label>
               <span>{lambdaN}</span>
             </div>
             <div>
-              <label>public key ( n , e ) : </label>
-              <span>{`( ${modulusN} , ${eRSA} )`}</span>
+              <label>public key ( e , n ) : </label>
+              <span>{`( ${eRSA} , ${modulusN} )`}</span>
             </div>
             <div>
-              <label>private key d : </label>
-              <span>{dRSA}</span>
+              <label>private key ( d, n ) : </label>
+              <span>{`${dRSA} , ${modulusN}`}</span>
             </div>
             <div>
               <label>Message as a number C : </label>
-              <span>{msgNum}</span>
+              <span>{cipher}</span>
             </div>
           </div>
 

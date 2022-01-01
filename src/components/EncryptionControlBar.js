@@ -13,8 +13,12 @@ import {
   BetterShift,
   AnimatedBetterShift,
   FinishBetterShift,
+  FinishRSA,
 } from "./Scripts/Encryption.js";
-
+//""
+const minCipherRSA = 0;
+//"ZZZ"
+const maxCipherRSA = 525252;
 const shift =
     "Shift Encryption works by shifting the characters in a word by a set distance./br" +
     'If a character "A" is encrypted by 3 places it becomes "D" from "A"->"B"->"C"->"D"./br' +
@@ -50,6 +54,7 @@ const content = [shift, tranposition, betterShift, rsa];
 export default function EncryptionControlBar(props) {
   const algoSelectRef = useRef(null);
   const messageRef = useRef(null);
+  const cipherRef = useRef(null);
   const shiftRef = useRef(null);
   const transposeHeightRef = useRef(null);
   const pPrimeRef = useRef(null);
@@ -68,7 +73,6 @@ export default function EncryptionControlBar(props) {
     props.setStep(0);
     props.setPosition(-1);
   };
-  //const primes = useState(() => generatePrimes(1000));
   return (
     <fieldset
       className="searchControlBar"
@@ -313,7 +317,42 @@ export default function EncryptionControlBar(props) {
         //Used for Message input
       }
       <div className="controlBarValueContainer">
-        <div className="controlBarValueItem">
+        <div
+          className="controlBarValueItem"
+          style={
+            !(props.algoID === 4 && props.decryption) ? { display: "none" } : {}
+          }
+        >
+          <label htmlFor="cipher">CIPHER :</label>
+          <br />
+          <div>
+            <input
+              type="number"
+              name="cipher"
+              defaultValue={props.cipher || 0}
+              min={minCipherRSA}
+              style={{ width: "20ch" }}
+              ref={cipherRef}
+              onChange={() => {
+                props.setCipher(Number.parseInt(cipherRef.current.value));
+              }}
+            />
+            <button
+              type="button"
+              style={{ width: "fit-content", marginLeft: "1ch" }}
+              onClick={() => navigator.clipboard.writeText(props.cipher)}
+            >
+              COPY
+            </button>
+          </div>
+        </div>
+
+        <div
+          className="controlBarValueItem"
+          style={
+            props.algoID === 4 && props.decryption ? { display: "none" } : {}
+          }
+        >
           <label htmlFor="message">Message:</label>
           <br />
           <div>
@@ -351,11 +390,38 @@ export default function EncryptionControlBar(props) {
             </button>
           </div>
         </div>
+        {props.algoID === 4 ? (
+          <div className="controlBarValueItem">
+            <br />
+            <button
+              type="button"
+              onClick={() =>
+                props.setResult(
+                  "" +
+                    FinishRSA(
+                      props.cipher,
+                      props.decryption,
+                      props.modulusN,
+                      props.eRSA,
+                      props.dRSA
+                    )
+                )
+              }
+            >
+              {`Start ${props.decryption ? "De" : "En"}cryption`}
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       {
         //The buttons to interact with the app
       }
-      <div className="controlBarValueContainer">
+      <div
+        className="controlBarValueContainer"
+        style={props.algoID === 4 ? { display: "none" } : {}}
+      >
         <div className="controlBarValueItem">
           {
             //Proceeds the animation one stage
