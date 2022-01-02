@@ -163,7 +163,6 @@ const retrieveCharFromTransposeBox = (
  * @param {*} m
  */
 const modExp = (a, b, m) => {
-  console.log("MEXP", a, b, m);
   const limit = Math.ceil(Math.log(b) / Math.log(2));
   let calc = { 1: a };
   let r = a;
@@ -177,8 +176,6 @@ const modExp = (a, b, m) => {
   let p = 1;
   while (p <= b) {
     if (b & p) res = (res * calc[p]) % m;
-    console.log(b, p, b & p, res);
-
     p = p << 1;
   }
 
@@ -192,14 +189,7 @@ const modExp = (a, b, m) => {
  */
 
 export function FinishRSA(message, decryption, n, e, d) {
-  const limit = decryption ? d : e;
-  let res = message;
-  console.log("START LIMIT", limit, "res", res, "n", n, "E", e, message);
-  //for (let i = 0; i < limit; i++) {
-  //res = (res * message) % n;
-  // console.log("END OF", i, "LIMIT", limit, "res", res);
-  //}
-  return modExp(message, limit, n);
+  return modExp(message, decryption ? d : e, n);
 }
 
 /**

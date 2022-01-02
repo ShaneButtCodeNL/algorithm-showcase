@@ -1,14 +1,10 @@
 import EncryptionControlBar from "./EncryptionControlBar";
 import { useEffect, useState } from "react";
 
+//Dictionary used for converting numbers to characters
 const codes = { 1: "a", 27: "A" };
 const RSAArrayCap = 998;
-//for (let i = "b".charCodeAt(0); i <= "z".charCodeAt(0); i++) {
-//  codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
-//}
-//for (let i = "B".charCodeAt(0); i <= "Z".charCodeAt(0); i++) {
-//  codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
-//}
+
 for (let i = 0; i < 25; i++) {
   //b-z
   codes[i + 2] = String.fromCharCode("b".charCodeAt(0) + i);
@@ -16,7 +12,6 @@ for (let i = 0; i < 25; i++) {
   codes[i + 2 + 26] = String.fromCharCode("B".charCodeAt(0) + i);
 }
 for (let i = 0; i < 47; i++) codes[i + 53] = String.fromCharCode(161 + i);
-//codes[74] = String.fromCharCode(165);
 //65 is ""
 codes[65] = String.fromCharCode(936);
 console.log("codes\n", codes);
@@ -102,6 +97,7 @@ const generatePrimes = (n) => {
   }
   return a;
 };
+//Primes less than 2100
 const primes = generatePrimes(2100);
 const oOffset = 0.3;
 const oFunction = (v) => 1 - v * (v < 0 ? oOffset * -1 : oOffset);
