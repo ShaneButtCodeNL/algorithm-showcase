@@ -1,32 +1,72 @@
 import EncryptionControlBar from "./EncryptionControlBar";
 import { useEffect, useState } from "react";
 
-const codes = { a: 1, A: 27 };
+const codes = { 1: "a", 27: "A" };
 const RSAArrayCap = 998;
-for (let i = "b".charCodeAt(0); i <= "z".charCodeAt(0); i++)
-  codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
-for (let i = "B".charCodeAt(0); i <= "Z".charCodeAt(0); i++)
-  codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
+//for (let i = "b".charCodeAt(0); i <= "z".charCodeAt(0); i++) {
+//  codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
+//}
+//for (let i = "B".charCodeAt(0); i <= "Z".charCodeAt(0); i++) {
+//  codes[String.fromCharCode(i)] = codes[String.fromCharCode(i - 1)] + 1;
+//}
+for (let i = 0; i < 25; i++) {
+  //b-z
+  codes[i + 2] = String.fromCharCode("b".charCodeAt(0) + i);
+  //B-Z
+  codes[i + 2 + 26] = String.fromCharCode("B".charCodeAt(0) + i);
+}
+for (let i = 0; i < 47; i++) codes[i + 53] = String.fromCharCode(161 + i);
+//codes[74] = String.fromCharCode(165);
+//65 is ""
+codes[65] = String.fromCharCode(936);
+console.log("codes\n", codes);
+
+const reverseLookUpCodes = (value) =>
+  Object.keys(codes).find((k) => codes[k] === value);
+
 const findD = (e, mod) => {
   for (let i = 1; i < mod; i++) {
     if (((e % mod) * (i % mod)) % mod === 1) return i;
   }
   return null;
 };
+
+/**
+ * Converts a base 10 integer as a string
+ * @param {Number} number An encoded string as a base 10 integer
+ * @returns {String} A string
+ */
+const convertNumToMsg = (number) => {
+  let msg = [];
+  while (number) {
+    let v = number % 100;
+    number = Math.floor(number / 100);
+    msg.unshift(codes[v]);
+  }
+  if (msg.length) return msg.join("");
+  return "";
+};
+
+/**
+ * Converts a string into a base 10 integer
+ * @param {String} msg
+ * @returns {Number} a base 10 integer
+ */
 const convertMSGToNum = (msg) => {
   let res = [];
   //Only alpha
-  for (let c of msg) if (codes[c] !== undefined) res.push(c);
+  for (let c of msg) if (reverseLookUpCodes(c) !== undefined) res.push(c);
   return Number.parseInt(
     res
       .map((v) => {
-        let c = codes[v];
+        let c = reverseLookUpCodes(v);
         if (c < 10) return `0${c}`;
         return `${c}`;
       })
       .join("")
   );
 };
+
 /**
  * Finds the Greatest common factor of two numbers
  * @param {Number} x Number 1
@@ -62,7 +102,7 @@ const generatePrimes = (n) => {
   }
   return a;
 };
-const primes = generatePrimes(10000);
+const primes = generatePrimes(2100);
 const oOffset = 0.3;
 const oFunction = (v) => 1 - v * (v < 0 ? oOffset * -1 : oOffset);
 export default function EncryptionField(props) {
@@ -82,6 +122,7 @@ export default function EncryptionField(props) {
   );
   const [dRSA, setDRSA] = useState(() => findD(eRSAArray, lambdaN));
   const [cipher, setCipher] = useState(() => convertMSGToNum(props.message));
+  const [encodedCipher, setEncodedCipher] = useState(null);
 
   useEffect(() => {
     setCipher(convertMSGToNum(props.message));
@@ -102,6 +143,11 @@ export default function EncryptionField(props) {
     const newLN = lcm(primeP - 1, primeQ - 1);
     setDRSA(() => findD(eRSA, newLN));
   }, [eRSA]);
+  useEffect(() => {
+    const res = convertNumToMsg(Number.parseInt(encodedCipher));
+    console.log(res);
+    props.setResult(res);
+  }, [encodedCipher]);
   return (
     <div className="encryptionFieldContainer">
       <div id="encryptionFieldDisplay">
@@ -110,8 +156,10 @@ export default function EncryptionField(props) {
           animation={props.animation}
           animationSpeed={props.animationSpeed}
           cipher={cipher}
+          convertMSGToNum={convertMSGToNum}
           decryption={decryption}
           dRSA={dRSA}
+          encodedCipher={encodedCipher}
           eRSA={eRSA}
           eRSAArray={eRSAArray}
           isAnimated={props.isAnimated}
@@ -137,6 +185,7 @@ export default function EncryptionField(props) {
           setContent={props.setContent}
           setDecryption={setDecryption}
           setDRSA={setDRSA}
+          setEncodedCipher={setEncodedCipher}
           setERSA={setERSA}
           setERSAArray={setERSAArray}
           setMessage={props.setMessage}
@@ -156,42 +205,46 @@ export default function EncryptionField(props) {
         />
         <div id="encryptionField">
           <div id="messageField" className="encryptionFieldItem">
-            <label>Message:</label>
+            <label>{`${
+              props.algoID === 4 && decryption ? "Cipher" : "Message"
+            } : `}</label>
             <div className="messageContainer">
-              {props.message.split("").map((v, i) => {
-                const pos = props.position - i;
-                const dValue =
-                  props.position === -1
-                    ? "block"
-                    : pos >= -2 && pos <= 2
-                    ? "block"
-                    : "none";
-                const oValue = props.position === -1 ? 1 : oFunction(pos);
-                const colorBG = pos ? "rgb(85, 85, 85)" : "rgb(16, 247, 8)";
-                return (
-                  <div
-                    className="messageCharacterContainer"
-                    key={i}
-                    style={{
-                      display: dValue,
-                      opacity: oValue,
-                      backgroundColor: colorBG,
-                    }}
-                  >
+              {(props.algoID === 4 && decryption ? "" + cipher : props.message)
+                .split("")
+                .map((v, i) => {
+                  const pos = props.position - i;
+                  const dValue =
+                    props.position === -1
+                      ? "block"
+                      : pos >= -2 && pos <= 2
+                      ? "block"
+                      : "none";
+                  const oValue = props.position === -1 ? 1 : oFunction(pos);
+                  const colorBG = pos ? "rgb(85, 85, 85)" : "rgb(16, 247, 8)";
+                  return (
                     <div
-                      className="messageCharacter"
+                      className="messageCharacterContainer"
+                      key={i}
                       style={{
                         display: dValue,
                         opacity: oValue,
                         backgroundColor: colorBG,
-                        ...(pos === 0 ? { color: "black" } : {}),
                       }}
                     >
-                      {v}
+                      <div
+                        className="messageCharacter"
+                        style={{
+                          display: dValue,
+                          opacity: oValue,
+                          backgroundColor: colorBG,
+                          ...(pos === 0 ? { color: "black" } : {}),
+                        }}
+                      >
+                        {v}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
           {
@@ -302,7 +355,9 @@ export default function EncryptionField(props) {
               <label>private key ( d, n ) : </label>
               <span>{`${dRSA} , ${modulusN}`}</span>
             </div>
-            <div>
+            <div
+              style={props.algoID === 4 && !decryption ? {} : { opacity: "0" }}
+            >
               <label>Message as a number C : </label>
               <span>{cipher}</span>
             </div>
@@ -313,6 +368,42 @@ export default function EncryptionField(props) {
           }
           <div id="resultsField" className="encryptionFieldItem">
             <div className="resultsContainer">
+              <label style={props.algoID === 4 ? {} : { display: "none" }}>
+                Encoded Cipher:
+              </label>
+              <input
+                type="text"
+                className="encodedCipher"
+                disabled={true}
+                defaultValue={encodedCipher}
+                style={{ display: "none" }}
+              />
+              <div
+                className="messageContainer"
+                style={props.algoID === 4 ? {} : { display: "none" }}
+              >
+                {(encodedCipher ? "" + encodedCipher : "Awaiting Input")
+                  .split("")
+                  .map((v, i) => {
+                    return (
+                      <div className="messageCharacterContainer" key={i}>
+                        <div className="messageCharacter">{v}</div>
+                      </div>
+                    );
+                  })}
+              </div>
+              <button
+                type="button"
+                style={{
+                  maxWidth: "14ch",
+                  minWidth: "5ch",
+                  width: "100%",
+                  margin: "1ch auto",
+                }}
+                onClick={() => navigator.clipboard.writeText(encodedCipher)}
+              >
+                COPY
+              </button>
               <label>Result:</label>
               <input
                 type="text"
@@ -321,17 +412,9 @@ export default function EncryptionField(props) {
                 defaultValue={props.result}
                 style={{ display: "none" }}
               />
+
               <div className="messageContainer">
                 {props.result.split("").map((v, i) => {
-                  const pos = props.position - i;
-                  const dValue =
-                    props.position === -1
-                      ? "block"
-                      : pos >= -2 && pos <= 2
-                      ? "block"
-                      : "none";
-                  const oValue = props.position === -1 ? 1 : oFunction(pos);
-                  const colorBG = pos ? "rgb(85, 85, 85)" : "rgb(16, 247, 8)";
                   return (
                     <div className="messageCharacterContainer" key={i}>
                       <div className="messageCharacter">{v}</div>
