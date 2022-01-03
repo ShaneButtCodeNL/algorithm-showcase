@@ -119,6 +119,7 @@ export default function EncryptionField(props) {
   const [dRSA, setDRSA] = useState(() => findD(eRSAArray, lambdaN));
   const [cipher, setCipher] = useState(() => convertMSGToNum(props.message));
   const [encodedCipher, setEncodedCipher] = useState(null);
+  const [isNLongEnough, setIsNLongEnough] = useState(modulusN > cipher);
 
   useEffect(() => {
     setCipher(convertMSGToNum(props.message));
@@ -159,10 +160,12 @@ export default function EncryptionField(props) {
           eRSA={eRSA}
           eRSAArray={eRSAArray}
           isAnimated={props.isAnimated}
+          isNLongEnough={isNLongEnough}
           lambdaN={lambdaN}
           makeTransposeBox={props.makeTransposeBox}
           makeTransposeBoxRotated={props.makeTransposeBoxRotated}
           message={props.message}
+          messageToNum={convertMSGToNum}
           modulusN={modulusN}
           position={props.position}
           primeP={primeP}
@@ -184,6 +187,7 @@ export default function EncryptionField(props) {
           setEncodedCipher={setEncodedCipher}
           setERSA={setERSA}
           setERSAArray={setERSAArray}
+          setIsNLongEnough={setIsNLongEnough}
           setMessage={props.setMessage}
           setMessageCharacter={props.setMessageCharacter}
           setPosition={props.setPosition}
@@ -349,7 +353,7 @@ export default function EncryptionField(props) {
             </div>
             <div>
               <label>private key ( d, n ) : </label>
-              <span>{`${dRSA} , ${modulusN}`}</span>
+              <span>{`( ${dRSA} , ${modulusN} )`}</span>
             </div>
             <div
               style={props.algoID === 4 && !decryption ? {} : { opacity: "0" }}

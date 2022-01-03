@@ -16,7 +16,6 @@ import {
   FinishRSA,
 } from "./Scripts/Encryption.js";
 //""
-const minCipherRSA = 0;
 const shift =
     "Shift Encryption works by shifting the characters in a word by a set distance./br" +
     'If a character "A" is encrypted by 3 places it becomes "D" from "A"->"B"->"C"->"D"./br' +
@@ -47,12 +46,19 @@ const shift =
     'If a character "B" is decrypted 3 places it becomes "Y" from "B"->"A"->"Z"->"Y"./br' +
     'In this project only alpha characters are en/decrypted using two dictionaries ["A","B",...,"Y","Z"] and ["a","b",...,"y","z"] used for lower and upper characters/br' +
     "This Algorythm is not good to use to encrypt important data as a computer can break this very fast.",
-  rsa = "RSA";
+  rsa =
+    "RSA is a public-key cryptosystem./br" +
+    "A public-key cryptosystem is where there is a distinct encyrption and decryption key. The encryption key, or public key, is given out to anyone to decrypt a message. The decryption key,private key, is kept hidden and is used to decrypt an encrypted message./br" +
+    'The strength of RSA comes for the difficulty of factoring the product of two large prime numbers "p" and "q"./br' +
+    "In this project I use quite small primes ,less than 2100 for two main reasons.\n\t1. This is meant to demonstate the algorythm to humans and a number with 1000's of digits is not easy for most people to read.\n\t2. The RSA algorythm is rather slow with larger numbers so the smaller numbers also make it run faster.\nThis is also the reason the message can only be 3 characters long./br" +
+    "The algorithm selects two primes p and q and multiplies them to get n such that n=p*q\nWe then find the totient of n and since n is the product of two primes we know it's phi(n)=(p-1)(q-1). We'll just call it phi from here.\nNext we need to find a value e such that e>1 and e<phi and e is co-prime to phi.\nNext we need to find a value d such that d*e=1(mod(phi)) or d*e(mod(phi))===1\nThis gives us the public key (e,n) and private key (d,n). Note the private key doesn't need to include n we do it for completeness./br" +
+    "To encrypt data you use the formula c(m)=m^e(mod(n)), where c is the cipher and m is the message. In this project I use a base 10 number,[0,9], to encode ascii strings./br" +
+    "To decrypt data you use the formula m(c)=c^d(mod(n)), where m is the message and c is the cipher. In this project I use a base 10 number,[0,9], to encode ascii strings./br" +
+    "Interesting fact you can also encrypt a message with the private key and decrypt it with the public key.";
 const content = [shift, tranposition, betterShift, rsa];
 export default function EncryptionControlBar(props) {
   const algoSelectRef = useRef(null);
   const messageRef = useRef(null);
-  const cipherRef = useRef(null);
   const shiftRef = useRef(null);
   const transposeHeightRef = useRef(null);
   const pPrimeRef = useRef(null);
@@ -116,16 +122,28 @@ export default function EncryptionControlBar(props) {
       }
       <div
         className="controlBarValueContainer"
-        style={{ display: props.algoID === 4 ? "flex" : "none" }}
+        style={{
+          display: props.algoID === 4 ? "flex" : "none",
+        }}
       >
         <div className="controlBarValueItem">
-          <label>Prime p:</label>
+          <label
+            style={{
+              backgroundColor: props.isNLongEnough ? "transparent" : "red",
+            }}
+          >
+            Prime p:
+          </label>
           <br />
           <select
             ref={pPrimeRef}
             defaultValue={props.primeP}
             onChange={() => {
               props.setPrimeP(Number.parseInt(pPrimeRef.current.value));
+              props.setIsNLongEnough(
+                Number.parseInt(pPrimeRef.current.value) * props.primeQ >
+                  props.cipher
+              );
             }}
           >
             {props.primes.map((v) => (
@@ -140,13 +158,23 @@ export default function EncryptionControlBar(props) {
           </select>
         </div>
         <div className="controlBarValueItem">
-          <label>Prime q:</label>
+          <label
+            style={{
+              backgroundColor: props.isNLongEnough ? "transparent" : "red",
+            }}
+          >
+            Prime q:
+          </label>
           <br />
           <select
             ref={qPrimeRef}
             defaultValue={props.primeQ}
             onChange={() => {
               props.setPrimeQ(Number.parseInt(qPrimeRef.current.value));
+              props.setIsNLongEnough(
+                Number.parseInt(qPrimeRef.current.value) * props.primeP >
+                  props.cipher
+              );
             }}
           >
             {props.primes.map((v) => (
@@ -166,7 +194,15 @@ export default function EncryptionControlBar(props) {
         style={{ display: props.algoID === 4 ? "flex" : "none" }}
       >
         <div className="controlBarValueItem">
-          <label>Prime e : </label>
+          <label
+            style={
+              props.eRSAArray.length === 0 || !props.eRSA
+                ? { backgroundColor: "red" }
+                : {}
+            }
+          >
+            Co-Prime e :{" "}
+          </label>
           <br />
           <select
             ref={eRef}
@@ -334,6 +370,9 @@ export default function EncryptionControlBar(props) {
                     0,
                     3
                   );
+                props.setIsNLongEnough(
+                  props.modulusN > props.messageToNum(messageRef.current.value)
+                );
                 props.setMessage(messageRef.current.value);
                 props.setPosition(-1);
                 transposeHeightRef.current.value = "1";
@@ -361,6 +400,11 @@ export default function EncryptionControlBar(props) {
             <br />
             <button
               type="button"
+              disabled={
+                props.eRSAArray.length === 0 ||
+                !props.eRSA ||
+                !props.isNLongEnough
+              }
               onClick={() =>
                 props.setEncodedCipher(
                   "" +
