@@ -17,6 +17,35 @@ const comparator = (v1, v2, flag) => {
 };
 const setAnimationSpeed = (sp) =>
   document.documentElement.style.setProperty("--animation-time", `${sp}ms`);
+/**
+ * TODO
+ * @param {*} collection
+ * @param {*} asending
+ * @param {*} setCollection
+ * @param {*} setPosition
+ * @param {*} setLeftPosition
+ * @param {*} setRightPosition
+ * @param {*} setAnimation
+ * @param {*} animationSpeed
+ * @param {*} beginPos
+ */
+export function QuickSort(
+  collection,
+  asending,
+  setCollection,
+  setPosition,
+  setLeftPosition,
+  setRightPosition,
+  setAnimation,
+  animationSpeed,
+  beginPos
+) {
+  setAnimationSpeed(animationSpeed);
+  const clone = cloneCollection(collection);
+  var animation = setInterval(() => {
+    setCollection(cloneCollection(clone));
+  });
+}
 
 export function MergeSort(
   collection,

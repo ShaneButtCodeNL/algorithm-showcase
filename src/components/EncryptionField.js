@@ -399,6 +399,7 @@ export default function EncryptionField(props) {
                   minWidth: "5ch",
                   width: "100%",
                   margin: "1ch auto",
+                  ...(props.algoID === 4 ? {} : { display: "none" }),
                 }}
                 onClick={() => navigator.clipboard.writeText(encodedCipher)}
               >
