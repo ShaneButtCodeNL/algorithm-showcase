@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "./App.css";
-import "./components/PathFinding";
-import Encryption from "./components/Encryption";
-import PathFinding from "./components/PathFinding";
-import Searching from "./components/Searching";
-import Sorting from "./components/Sorting";
+import "./components/pathfinding/PathFinding";
+import Encryption from "./components/encryption/Encryption";
+import PathFinding from "./components/pathfinding/PathFinding";
+import Searching from "./components/search/Searching";
+import Sorting from "./components/sort/Sorting";
 import Title from "./components/Title";
+import BackTracking from "./components/backtracking/BackTracking";
 const defaultContent = "You need to select a problem first.";
 function App() {
   const [problemType, setProblemType] = useState(0);
@@ -21,6 +22,8 @@ function App() {
         return <Sorting setContent={setContent} />;
       case 4:
         return <Encryption setContent={setContent} />;
+      case 5:
+        return <BackTracking setContent={setContent} />;
       default:
         return <></>;
     }

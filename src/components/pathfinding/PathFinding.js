@@ -6,7 +6,7 @@ import {
   BFSWithMidPoint,
   AStarWithMidPoint,
   HSearchWithMidPoint,
-} from "./Scripts/PathFinding";
+} from "../../Scripts/PathFinding";
 import GridPlane from "./GridPlane";
 import PathFindingToolBar from "./PathFindingToolBar";
 

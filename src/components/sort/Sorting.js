@@ -4,7 +4,7 @@ import {
   InsertionSort,
   MergeSort,
   SelectionSort,
-} from "./Scripts/Sort";
+} from "../../Scripts/Sort";
 import SortingNodeList from "./SortingNodeList";
 import SortingToolBar from "./SortingToolBar";
 

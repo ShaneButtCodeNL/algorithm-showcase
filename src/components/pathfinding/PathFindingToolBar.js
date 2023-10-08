@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import PopOutDiv from "./PopOutDiv";
+import PopOutDiv from "../PopOutDiv";
 const min = 2;
 const max = 25;
 const maxSpeed = 5;

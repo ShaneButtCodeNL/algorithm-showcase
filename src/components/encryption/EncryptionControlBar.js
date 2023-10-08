@@ -14,7 +14,7 @@ import {
   AnimatedBetterShift,
   FinishBetterShift,
   FinishRSA,
-} from "./Scripts/Encryption.js";
+} from "../../Scripts/Encryption.js";
 //""
 const shift =
     "Shift Encryption works by shifting the characters in a word by a set distance./br" +

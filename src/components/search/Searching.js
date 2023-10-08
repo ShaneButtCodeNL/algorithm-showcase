@@ -2,7 +2,7 @@ import { useState } from "react";
 import SearchingToolBar from "./SearchingToolBar";
 import SearchNodeList from "./SearchNodeList";
 
-import { BinarySearch, JumpSeaarch, LinearSearch } from "./Scripts/Search";
+import { BinarySearch, JumpSeaarch, LinearSearch } from "../../Scripts/Search";
 const maxValue = 100,
   minValue = -100;
 
