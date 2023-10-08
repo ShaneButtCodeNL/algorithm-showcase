@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 import { sudokuSolverDescription } from "../../Scripts/strings";
+import { text } from "@fortawesome/fontawesome-svg-core";
 
 const content = [sudokuSolverDescription];
 export default function BackTrackingControlBar(props) {
@@ -9,7 +10,7 @@ export default function BackTrackingControlBar(props) {
       <legend>Controls</legend>
       <div className="controlBarValueContainer">
         <div className="controlBarValueItem">
-          <label htmlFor="searchAlgorithm">Algorithm:</label>
+          <label htmlFor="Back-Tracking-Problem-Select">Algorithm:</label>
           <br />
           {
             //TODO add disabled on animation
@@ -25,17 +26,63 @@ export default function BackTrackingControlBar(props) {
           </select>
         </div>
       </div>
+      <div className="controlBarValueContainer">
+        <div className="controlBarValueItem">
+          <label htmlFor="Sudoku-Input-Grid">Input:</label>
+          <div
+            className="sudokuBoardInput"
+            name="Sudoku-Input-Grid"
+            style={{ display: "grid", gridTemplateColumns: "repeat(9,2em)" }}
+          >
+            {props.sudokuBoard.map((c, i) => {
+              const ref = React.createRef();
+              return (
+                <select
+                  key={`sudoku-input-${i}`}
+                  defaultValue={c}
+                  ref={ref}
+                  onChange={(e) => {
+                    console.log("HERE");
+                    const newBoard = `${props.sudokuBoard
+                      .slice(0, i)
+                      .join("")}${e.target.value}${props.sudokuBoard
+                      .slice(i + 1)
+                      .join("")}`;
+                    console.log("newBoard", newBoard);
+
+                    props.setBoards([newBoard]);
+                  }}
+                >
+                  {["", "1", "2", "3", "4", "5", "6", "7", "8", "9"].map(
+                    (v, j) => (
+                      <option value={v === "" ? "." : v} key={`opt-${i}-${j}`}>
+                        {v}
+                      </option>
+                    )
+                  )}
+                </select>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="controlBarValueContainer">
+        <div className="controlBarValueItem">
+          <label htmlFor="Sudoku-Input-String">Input as String:</label>
+          <br />
+          <input
+            type="text"
+            value={props.sudokuBoard.join("")}
+            style={{ width: "21rem", padding: ".5rem .5rem" }}
+            readOnly
+          />
+          <button type="button">Copy</button>
+          <button type="button">Paste</button>
+        </div>
+      </div>
       {
         //TODO add show none if not selected
       }
-      <div className="controlBarValueContainer" style={{ display: "flex" }}>
-        <div className="selectInputSudokuContainer">
-          <select>
-            <option value={1}>Board</option>
-            <option value={2}>String</option>
-          </select>
-        </div>
-      </div>
     </fieldset>
   );
 }
