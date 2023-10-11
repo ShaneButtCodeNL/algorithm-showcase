@@ -27,6 +27,11 @@ const defaultContent = "You need to select a problem first.",
     "2. Put in a value that doesn't break the rules of sudoku./br" +
     "3. if no valid value can be placed go back to last empty value an enter the next valid value. If no valid value can be entered and cannot go back to a previous state then there is no solution. End/br" +
     "4. If board is solved END else go to one";
+const sudokuTemplates = [
+  ".387642..16...8.3.4791.26..3......2..2.34..51...25.4...13.275..6.7.1....25.6....7",
+  "1854297..962...41.......9...9..3.....1.7....67..1.6.8..3..8...2....5.8.....6..54.",
+  "926.7......1.4.......2..81..85.....7.34.....6.....4......91.6....76.3..5.......3.",
+];
 
 export {
   defaultContent,
@@ -35,4 +40,5 @@ export {
   sortingContent,
   encryptionContent,
   sudokuSolverDescription,
+  sudokuTemplates,
 };

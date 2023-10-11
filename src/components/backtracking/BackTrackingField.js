@@ -1,12 +1,14 @@
 import BackTrackingControlBar from "./BackTrackingControlBar";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
+import SudokuSolverDisplay from "./sudoku/SudokuSolverDisplay";
 const emptyBoard = ".".repeat(81);
 export default function BackTrackingField(props) {
   const [step, setStep] = useState(0);
   const [boards, setBoards] = useState([emptyBoard]);
+  const [currentBoard, setCurrentBoard] = useState(0);
+  const [sudokuPointer, setSudokuPointer] = useState(-1);
   return (
-    <>
+    <div className="backTrackingContainer">
       <BackTrackingControlBar
         algoId={props.algoId}
         animation={props.animation}
@@ -15,9 +17,19 @@ export default function BackTrackingField(props) {
         setAlgoID={props.setAlgoID}
         setAnimation={props.setAnimation}
         setBoards={setBoards}
+        setCurrentBoard={setCurrentBoard}
         setStep={setStep}
-        sudokuBoard={boards[0].split("")}
+        setSudokuPointer={setSudokuPointer}
+        sudokuBoard={boards[0]}
       />
-    </>
+      {props.algoId === 1 ? (
+        <SudokuSolverDisplay
+          board={boards[currentBoard]}
+          sudokuPointer={sudokuPointer}
+        />
+      ) : (
+        <></>
+      )}
+    </div>
   );
 }

@@ -501,3 +501,26 @@ Encryption
   width: fit-content;
   min-width: 2ch;
 }
+.backTrackingContainer {
+  display: flex;
+  flex-direction: column;
+}
+#sudokuSolverDisplay {
+  --grid-repeat: repeat(9, 2em);
+  --line-width: 2px;
+  display: grid;
+  grid-template-columns: var(--grid-repeat);
+  grid-template-rows: var(--grid-repeat);
+  background-color: #000;
+  border: #000 var(--line-width) solid;
+  gap: var(--line-width);
+  height: fit-content;
+  width: fit-content;
+  margin: 1em auto;
+}
+.sudokuBoardTile {
+  background-color: var(--background-color);
+  line-height: 2em;
+  text-align: center;
+  color: var(--toolbar-font-color);
+}

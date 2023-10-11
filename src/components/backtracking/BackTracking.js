@@ -3,7 +3,7 @@ import BackTrackingToolBar from "./BackTrackingToolBar";
 import { useState } from "react";
 
 export default function BackTracking(props) {
-  const [algoID, setAlgoID] = useState(1);
+  const [algoId, setAlgoId] = useState(1);
   const [animationSpeed, setAnimationSpeed] = useState(300);
   const [animation, setAnimation] = useState(null);
   return (
@@ -13,11 +13,11 @@ export default function BackTracking(props) {
         setAnimationSpeed={setAnimationSpeed}
       />
       <BackTrackingField
-        algoID={algoID}
+        algoId={algoId}
         animation={animation}
         animationSpeed={animationSpeed}
         isAnimated={animation !== null}
-        setAlgoID={setAlgoID}
+        setAlgoId={setAlgoId}
         setAnimation={setAnimation}
         setContent={props.setContent}
       />
