@@ -7,6 +7,9 @@ export default function BackTrackingField(props) {
   const [boards, setBoards] = useState([emptyBoard]);
   const [currentBoard, setCurrentBoard] = useState(0);
   const [sudokuPointer, setSudokuPointer] = useState(-1);
+  const addBoardToBoards = (aBoard) => {
+    setBoards((currentBoards) => currentBoards.push(aBoard));
+  };
   return (
     <div className="backTrackingContainer">
       <BackTrackingControlBar
