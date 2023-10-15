@@ -1,5 +1,23 @@
 const rangeFromOneToNineString = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
+function getColumnFromPosition(pos) {
+  return pos % 9;
+}
+function getRowFromPosition(pos) {
+  return Math.floor(pos / 9);
+}
+function getSubBoardFromPosition(pos) {
+  const rowOffset = Math.floor(pos / 27) * 3;
+  const colOffset = Math.floor((pos % 9) / 3);
+  return rowOffset + colOffset;
+}
+function getFirstMissingPosition(board) {
+  return board.indexOf(".");
+}
+function insertValueIntoBoard(board, value, index) {
+  return `${board.substring(0, index)}${value}${board.substring(index + 1)}`;
+}
+
 /**
  * Checks if a row on a sudoku board is filled with valid values or empty values.
  * @param {number} rowNumber The Row of the board we are checking.
@@ -175,4 +193,78 @@ export function isBoardSolved(board) {
     if (!solved) return false;
   }
   return true;
+}
+
+// Solves a sudoku board and tracks the state at each step to be animated
+/*
+Will return obj[] with obj like:
+{
+  board:string,
+  currentPos:number
+  checkNumber:number
+  solved:boolean
+}
+ */
+export function sudokuSolver(board) {
+  if (isBoardSolved(board))
+    return [{ board, currentPos: -1, checkNumber: null, solved: true }];
+  let sudokuStepsToSolution = [];
+  const boardSolutionsQueue = [
+    {
+      currentBoard: board,
+      currentValue: 1,
+      currentIndex: getFirstMissingPosition(board),
+    },
+  ];
+
+  while (boardSolutionsQueue.length) {
+    //Get current check
+    let { currentBoard, currentValue, currentIndex } =
+      boardSolutionsQueue.pop();
+    let boardCopy;
+    while (currentValue <= 10) {
+      boardCopy = insertValueIntoBoard(
+        currentBoard,
+        currentValue,
+        currentIndex
+      );
+      let solved = isBoardSolved(boardCopy);
+      sudokuStepsToSolution.push({
+        board: boardCopy,
+        currentPos: currentIndex,
+        checkNumber: currentValue,
+        solved,
+      });
+      if (solved) {
+        sudokuStepsToSolution.push({
+          board: boardCopy,
+          currentPos: -1,
+          checkNumber: null,
+          solved,
+        });
+        return sudokuStepsToSolution;
+      }
+      currentValue++;
+      //Check is value is valid if it is look at next pos
+      if (isBoardValid(boardCopy)) break;
+    }
+    // Was a valid value found if not go back
+    if (currentValue > 10) continue;
+    if (currentValue < 10)
+      boardSolutionsQueue.push({ currentBoard, currentValue, currentIndex });
+    //Add next pos to explore to the queue
+    boardSolutionsQueue.push({
+      currentBoard: boardCopy,
+      currentValue: 1,
+      currentIndex: getFirstMissingPosition(boardCopy),
+    });
+  }
+  // Sudoku not solved
+  sudokuStepsToSolution.push({
+    board,
+    currentPos: -1,
+    checkNumber: null,
+    solved: false,
+  });
+  return sudokuStepsToSolution;
 }
