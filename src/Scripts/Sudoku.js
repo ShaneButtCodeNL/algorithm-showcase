@@ -15,6 +15,7 @@ function getFirstMissingPosition(board) {
   return board.indexOf(".");
 }
 function insertValueIntoBoard(board, value, index) {
+  if (value >= 10) value = ".";
   return `${board.substring(0, index)}${value}${board.substring(index + 1)}`;
 }
 

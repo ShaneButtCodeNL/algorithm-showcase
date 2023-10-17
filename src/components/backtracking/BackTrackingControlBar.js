@@ -15,8 +15,6 @@ export default function BackTrackingControlBar(props) {
       props.setAnimation(null);
     } else if (props.algoId === 1) {
       //Sudoku
-      //TODO fix sudoku solver it's added 10 on backtracking causeing a bug
-
       if (!props.solved) {
         step = 0;
         solutionStepsRef.current = sudokuSolver(props.inputBoard);
