@@ -3,10 +3,41 @@ import {
   sudokuSolverDescription,
   sudokuTemplates,
 } from "../../Scripts/strings";
+import { sudokuSolver } from "../../Scripts/Sudoku";
 
 const content = [sudokuSolverDescription];
 export default function BackTrackingControlBar(props) {
   const probSelectRef = useRef(null);
+  const solutionStepsRef = useRef(null);
+  const animationFunction = (step) => {
+    if (props.isAnimated) {
+      clearInterval(props.animation);
+      props.setAnimation(null);
+    } else if (props.algoId === 1) {
+      //Sudoku
+      //TODO fix sudoku solver it's added 10 on backtracking causeing a bug
+
+      if (!props.solved) {
+        step = 0;
+        solutionStepsRef.current = sudokuSolver(props.inputBoard);
+        props.setSolved(true);
+      }
+      var animation = setInterval(() => {
+        console.log("TEST", solutionStepsRef.current.length, props.step);
+        if (step === solutionStepsRef.current.length - 1) {
+          clearInterval(animation);
+          props.setAnimation(null);
+        } else {
+          const nextStep = step + 1;
+          step++;
+          props.setStep((s) => s + 1);
+          props.setDisplayBoard(solutionStepsRef.current[nextStep].board);
+          props.setSudokuPointer(solutionStepsRef.current[nextStep].currentPos);
+        }
+      }, props.animationSpeed);
+      props.setAnimation(animation);
+    }
+  };
   return (
     <fieldset
       className="backtrackControlBar"
@@ -49,7 +80,7 @@ export default function BackTrackingControlBar(props) {
               name="Sudoku-Input-Grid"
               style={{ display: "grid", gridTemplateColumns: "repeat(9,2em)" }}
             >
-              {props.sudokuBoard.split("").map((c, i) => {
+              {props.inputBoard.split("").map((c, i) => {
                 const ref = React.createRef();
                 return (
                   <select
@@ -57,11 +88,14 @@ export default function BackTrackingControlBar(props) {
                     defaultValue={c}
                     ref={ref}
                     onChange={(e) => {
-                      const newBoard = `${props.sudokuBoard.substring(0, i)}${
+                      const newBoard = `${props.inputBoard.substring(0, i)}${
                         e.target.value
-                      }${props.sudokuBoard.substring(i + 1)}`;
+                      }${props.inputBoard.substring(i + 1)}`;
 
-                      props.setBoards([newBoard]);
+                      props.setDisplayBoard(newBoard);
+                      props.setInputBoard(newBoard);
+                      props.setSolved(false);
+                      props.setStep(0);
                     }}
                   >
                     {["", "1", "2", "3", "4", "5", "6", "7", "8", "9"].map(
@@ -86,7 +120,7 @@ export default function BackTrackingControlBar(props) {
             <br />
             <input
               type="text"
-              value={props.sudokuBoard}
+              value={props.inputBoard}
               style={{ width: "21rem", padding: ".5rem .5rem" }}
               readOnly
             />
@@ -101,14 +135,32 @@ export default function BackTrackingControlBar(props) {
             <button
               key={`sudoku-templaate-${i}`}
               onClick={() => {
-                props.setBoards([v]);
+                props.setDisplayBoard(v);
+                props.setInputBoard(v);
                 props.setSudokuPointer(-1);
-                props.setCurrentBoard(0);
+                props.setSolved(false);
+                props.setStep(0);
               }}
             >
               Template {i + 1}
             </button>
           ))}
+        </div>
+      </div>
+      <div className="controlBarValueContainer">
+        <div className="controlBarValueItem">
+          {props.solved ? (
+            <>
+              <button>Start</button>
+              <button>Stop</button>
+              <button>Foward</button>
+              <button>Back</button>
+              <button>Beginning</button>
+              <button>End</button>
+            </>
+          ) : (
+            <button onClick={() => animationFunction(props.step)}>Start</button>
+          )}
         </div>
       </div>
     </fieldset>
