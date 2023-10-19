@@ -1,12 +1,12 @@
 const rangeFromOneToNineString = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
-function getColumnFromPosition(pos) {
+export function getColumnFromPosition(pos) {
   return pos % 9;
 }
-function getRowFromPosition(pos) {
+export function getRowFromPosition(pos) {
   return Math.floor(pos / 9);
 }
-function getSubBoardFromPosition(pos) {
+export function getSubBoardFromPosition(pos) {
   const rowOffset = Math.floor(pos / 27) * 3;
   const colOffset = Math.floor((pos % 9) / 3);
   return rowOffset + colOffset;

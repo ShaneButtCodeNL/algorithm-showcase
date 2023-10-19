@@ -7,7 +7,7 @@ export default function BackTrackingField(props) {
   const [inputBoard, setInputBoard] = useState(emptyBoard);
   const [displayBoard, setDisplayBoard] = useState(emptyBoard);
   const [sudokuPointer, setSudokuPointer] = useState(-1);
-  //const [sudokuSolutionSteps, setSudokuSolutionSteps] = useState(null);
+  const [sudokuValue, setSudokuValue] = useState(null);
   const [solved, setSolved] = useState(false);
   return (
     <div className="backTrackingContainer">
@@ -24,15 +24,16 @@ export default function BackTrackingField(props) {
         setSolved={setSolved}
         setStep={setStep}
         setSudokuPointer={setSudokuPointer}
-        //setSudokuSolutionSteps={setSudokuSolutionSteps}
+        setSudokuValue={setSudokuValue}
         solved={solved}
         step={step}
-        //sudokuSolutionSteps={sudokuSolutionSteps}
       />
       {props.algoId === 1 ? (
         <SudokuSolverDisplay
           displayBoard={displayBoard}
+          inputBoard={inputBoard}
           sudokuPointer={sudokuPointer}
+          sudokuValue={sudokuValue}
         />
       ) : (
         <></>
