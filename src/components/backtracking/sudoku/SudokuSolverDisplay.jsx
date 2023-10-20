@@ -8,20 +8,27 @@ export default function SudokuSolverDisplay(props) {
     <div id="sudokuSolverDisplayContainer">
       <div className="sudokuSolverInformationDisplay">
         <div>
-          <label>Current Value:</label>
-          <span>{props.sudokuValue ? props.sudokuValue : " "}</span>
+          <label>Current Value:&nbsp;</label>
+          <br />
+          <span>
+            {props.sudokuValue
+              ? props.sudokuValue < 10
+                ? props.sudokuValue
+                : "Go Back"
+              : " "}
+          </span>
         </div>
         <div>
-          <label>Pointer:</label>
-          <span>{props.sudokuPointer === -1 ? " " : props.sudokuPointer}</span>
           <label>Current Position:</label>
-          <label>Column:</label>
+          <br />
+          <label>Column:&nbsp;</label>
           <span>
             {props.sudokuPointer === -1
               ? " "
               : getColumnFromPosition(props.sudokuPointer) + 1}
           </span>
-          <label>Row:</label>
+          <br />
+          <label>Row:&nbsp;</label>
           <span>
             {props.sudokuPointer === -1
               ? " "

@@ -9,6 +9,11 @@ const content = [sudokuSolverDescription];
 export default function BackTrackingControlBar(props) {
   const probSelectRef = useRef(null);
   const solutionStepsRef = useRef(null);
+  const sudokuStringInputRef = useRef(null);
+  const sudokuStringCopyFunction = () => {
+    if (sudokuStringInputRef.current)
+      navigator.clipboard.writeText(sudokuStringInputRef.current.value);
+  };
   const animationFunction = (step) => {
     if (props.isAnimated) {
       stopAnimation();
@@ -167,10 +172,12 @@ export default function BackTrackingControlBar(props) {
             <input
               type="text"
               value={props.inputBoard}
+              ref={sudokuStringInputRef}
               style={{
-                width: "36rem",
+                width: "81ch",
                 padding: ".5rem .5rem",
                 gridArea: "sudoku-string-input-input",
+                fontFamily: "monospace",
               }}
               readOnly
             />
@@ -178,15 +185,9 @@ export default function BackTrackingControlBar(props) {
               type="button"
               style={{ gridArea: "sudoku-string-input-copy" }}
               disabled={props.isAnimated}
+              onClick={sudokuStringCopyFunction}
             >
               Copy
-            </button>
-            <button
-              type="button"
-              disabled={props.isAnimated}
-              style={{ gridArea: "sudoku-string-input-paste" }}
-            >
-              Paste
             </button>
           </div>
         </div>
